@@ -1,9 +1,22 @@
 import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router";
 import RootLayout from "./pages/Root";
+import TodoPage from "./pages/Todo";
+import { loader as todoListLoader } from "./components/TodoList";
 
 const router = createBrowserRouter([
-  { path: "/", element: <RootLayout />, children: [] },
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <TodoPage />,
+        loader: todoListLoader,
+        id: "todo-page",
+      },
+    ],
+  },
 ]);
 
 function App() {
