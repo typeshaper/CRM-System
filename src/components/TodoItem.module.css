@@ -1,0 +1,16 @@
+.text-done {
+  text-decoration: line-through;
+}
+
+li {
+  background-color: #fff;
+
+  border: 2px solid rgb(0, 149, 255);
+  border-radius: 12px;
+
+  display: flex;
+  gap: 1rem;
+
+  padding: 1rem;
+  width: 70%;
+}
