@@ -1,0 +1,27 @@
+form {
+  min-width: 70ch;
+  margin: 1rem;
+  padding: 2rem 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+input {
+  margin-right: auto;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid lightgrey;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid grey;
+}
+
+button {
+  border: none;
+  border-radius: var(--main-border-radius);
+  background-color: var(--main-color);
+  padding: 1rem 3rem;
+  color: white;
+}

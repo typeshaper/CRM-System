@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import RootLayout from "./pages/Root";
 import TodoPage from "./pages/Todo";
 import { loader as todoListLoader } from "./components/TodoList";
+import AddTodo, { action as addTodoAction } from "./components/AddTodo";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
         index: true,
         element: <TodoPage />,
         loader: todoListLoader,
+        action: addTodoAction,
         id: "todo-page",
       },
     ],

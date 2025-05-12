@@ -5,8 +5,8 @@
 li {
   background-color: #fff;
 
-  border: 2px solid rgb(0, 149, 255);
-  border-radius: 12px;
+  border: 2px solid var(--main-color);
+  border-radius: var(--main-border-radius);
 
   display: flex;
   gap: 1rem;

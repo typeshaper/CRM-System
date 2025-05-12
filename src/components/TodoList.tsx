@@ -32,7 +32,6 @@ export async function loader() {
       }
     );
   }
-
   const resData: MetaResponse<Todo, TodoInfo> = await response.json();
   return resData;
 }

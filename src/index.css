@@ -62,3 +62,8 @@ h6 {
   flex-direction: column;
   align-items: center;
 }
+
+:root {
+  --main-color: rgb(0, 149, 255);
+  --main-border-radius: 12px;
+}
