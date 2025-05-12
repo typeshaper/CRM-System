@@ -1,0 +1,6 @@
+.list {
+  min-width: 65ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
