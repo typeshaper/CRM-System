@@ -5,32 +5,30 @@ import classes from "./TodoList.module.css";
 
 export default function TodoList() {
   const [todoItems, setTodoItems] = useState<Todo[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadTodoList() {
-      const response: Response = await fetch(
-        "https://easydev.club/api/v1/todos",
-        {
-          method: "GET",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Response(
-          JSON.stringify({ message: "Could not load to do list" }),
-          {
-            status: 500,
-          }
+      try {
+        const response: Response = await fetch(
+          "https://easydev.club/api/v1/todos"
         );
+        const resData: MetaResponse<Todo, TodoInfo> = await response.json();
+        const todoList = resData.data;
+        if (!response.ok) {
+          throw new Error("Could not load to do list");
+        }
+        setTodoItems(todoList);
+      } catch (error) {
+        setError("Could not load to do list!");
       }
-      const resData: MetaResponse<Todo, TodoInfo> = await response.json();
-      setTodoItems(resData.data);
     }
     loadTodoList();
   }, []);
 
   return (
     <ul className={classes.list}>
+      {error && <p>{error}</p>}
       {todoItems.map((todo) => (
         <TodoItem
           key={todo.id}
