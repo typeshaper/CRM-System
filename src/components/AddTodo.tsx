@@ -1,47 +1,46 @@
-import { Form, useActionData } from "react-router";
+import { useFetcher } from "react-router";
 import classes from "./AddTodo.module.css";
 import type { Todo, TodoRequest } from "../types";
-import { useState } from "react";
 
 export default function AddTodo() {
-  const actionData = useActionData();
+  const fetcher = useFetcher();
+  const data = fetcher.data;
 
-  const [inputValue, setInputValue] = useState("");
-  function submitHandler() {
-    setInputValue("");
-  }
-
-  function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    setInputValue(event.currentTarget.value);
+  console.log(data);
+  let errorMessage = <></>;
+  if (data && data.errorMessage) {
+    errorMessage = (
+      <p className={classes["validation-error"]}>{data.errorMessage}</p>
+    );
   }
 
   return (
-    <Form
-      onSubmit={submitHandler}
-      method="POST"
-    >
+    <fetcher.Form method="POST">
+      {errorMessage}
       <input
         type="text"
         placeholder="Enter your task..."
-        min="2"
-        max="64"
         name="title"
-        required
-        value={inputValue}
-        onChange={changeHandler}
       />
       <button>Add</button>
-    </Form>
+    </fetcher.Form>
   );
 }
 
 export async function action({ request }: { request: Request }) {
   const data = await request.formData();
-  const title = data.get("title")?.toString();
+  const title = String(data.get("title"));
   const todoData: TodoRequest = {
     title,
     isDone: false,
   };
+
+  if (title.length > 64 || title.length < 2) {
+    let errorMessage = "Title must be between 2 and 64 characters long!";
+    return new Response(JSON.stringify({ errorMessage }), {
+      status: 400,
+    }).json();
+  }
 
   const response: Response = await fetch("https://easydev.club/api/v1/todos", {
     method: request.method,

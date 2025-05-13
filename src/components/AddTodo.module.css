@@ -1,9 +1,12 @@
 form {
-  min-width: 70ch;
   margin: 1rem;
+  min-width: 70ch;
+  flex-direction: column;
   padding: 2rem 1rem;
   display: flex;
+  flex-direction: row;
   gap: 1rem;
+  position: relative;
 }
 
 input {
@@ -24,4 +27,10 @@ button {
   background-color: var(--main-color);
   padding: 1rem 3rem;
   color: white;
+}
+
+.validation-error {
+  position: absolute;
+  color: red;
+  bottom: 5px;
 }
