@@ -6,7 +6,6 @@ export default function AddTodo() {
   const fetcher = useFetcher();
   const data = fetcher.data;
 
-  console.log(data);
   let errorMessage = <></>;
   if (data && data.errorMessage) {
     errorMessage = (
@@ -14,9 +13,17 @@ export default function AddTodo() {
     );
   }
 
+  let successMessage = <></>;
+  if (data && !data.errorMessage) {
+    successMessage = (
+      <p className={classes["create-success"]}>Task added successfully!</p>
+    );
+  }
+
   return (
     <fetcher.Form method="POST">
       {errorMessage}
+      {successMessage}
       <input
         type="text"
         placeholder="Enter your task..."

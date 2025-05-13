@@ -34,3 +34,9 @@ button {
   color: red;
   bottom: 5px;
 }
+
+.create-success {
+  position: absolute;
+  color: green;
+  bottom: 5px;
+}
