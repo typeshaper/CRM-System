@@ -1,74 +1,74 @@
-import { useFetcher } from "react-router";
-import classes from "./AddTodo.module.css";
-import type { Todo, TodoRequest } from "../types";
+// // import { useFetcher } from "react-router";
+// import classes from "./AddTodo.module.css";
+// import type { Todo, TodoRequest } from "../types";
 
-export default function AddTodo() {
-  const fetcher = useFetcher();
-  const data = fetcher.data;
+// export default function AddTodo() {
+//   // const fetcher = useFetcher();
+//   const data = fetcher.data;
 
-  let errorMessage = <></>;
-  if (data && data.errorMessage) {
-    errorMessage = (
-      <p className={classes["validation-error"]}>{data.errorMessage}</p>
-    );
-  }
+//   let errorMessage = <></>;
+//   if (data && data.errorMessage) {
+//     errorMessage = (
+//       <p className={classes["validation-error"]}>{data.errorMessage}</p>
+//     );
+//   }
 
-  let successMessage = <></>;
-  if (data && !data.errorMessage) {
-    successMessage = (
-      <p className={classes["create-success"]}>Task added successfully!</p>
-    );
-  }
+//   let successMessage = <></>;
+//   if (data && !data.errorMessage) {
+//     successMessage = (
+//       <p className={classes["create-success"]}>Task added successfully!</p>
+//     );
+//   }
 
-  return (
-    <fetcher.Form method="POST">
-      {errorMessage}
-      {successMessage}
-      <input
-        type="text"
-        placeholder="Enter your task..."
-        name="title"
-      />
-      <button>Add</button>
-    </fetcher.Form>
-  );
-}
+//   return (
+//     <fetcher.Form method="POST">
+//       {errorMessage}
+//       {successMessage}
+//       <input
+//         type="text"
+//         placeholder="Enter your task..."
+//         name="title"
+//       />
+//       <button>Add</button>
+//     // </fetcher.Form>
+//   );
+// }
 
-export async function action({ request }: { request: Request }) {
-  const data = await request.formData();
-  const title = String(data.get("title"));
-  const todoData: TodoRequest = {
-    title,
-    isDone: false,
-  };
+// export async function action({ request }: { request: Request }) {
+//   const data = await request.formData();
+//   const title = String(data.get("title"));
+//   const todoData: TodoRequest = {
+//     title,
+//     isDone: false,
+//   };
 
-  if (title.length > 64 || title.length < 2) {
-    let errorMessage = "Title must be between 2 and 64 characters long!";
-    return new Response(JSON.stringify({ errorMessage }), {
-      status: 400,
-    }).json();
-  }
+//   if (title.length > 64 || title.length < 2) {
+//     let errorMessage = "Title must be between 2 and 64 characters long!";
+//     return new Response(JSON.stringify({ errorMessage }), {
+//       status: 400,
+//     }).json();
+//   }
 
-  const response: Response = await fetch("https://easydev.club/api/v1/todos", {
-    method: request.method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(todoData),
-  });
+//   const response: Response = await fetch("https://easydev.club/api/v1/todos", {
+//     method: request.method,
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(todoData),
+//   });
 
-  if (response.status === 500) {
-    throw new Response(JSON.stringify({ message: "Internal server error" }), {
-      status: 500,
-    });
-  }
+//   if (response.status === 500) {
+//     throw new Response(JSON.stringify({ message: "Internal server error" }), {
+//       status: 500,
+//     });
+//   }
 
-  if (response.status === 400) {
-    throw new Response(JSON.stringify({ message: "Validation failed!" }), {
-      status: 400,
-    });
-  }
+//   if (response.status === 400) {
+//     throw new Response(JSON.stringify({ message: "Validation failed!" }), {
+//       status: 400,
+//     });
+//   }
 
-  const resData: Todo = await response.json();
-  return resData;
-}
+//   const resData: Todo = await response.json();
+//   return resData;
+// }

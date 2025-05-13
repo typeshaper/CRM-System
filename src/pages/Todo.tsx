@@ -1,10 +1,10 @@
 import TodoList from "../components/TodoList";
-import AddTodo from "../components/AddTodo";
+// import AddTodo from "../components/AddTodo";
 
 export default function TodoPage() {
   return (
     <>
-      <AddTodo />
+      {/* <AddTodo /> */}
       <TodoList />
     </>
   );

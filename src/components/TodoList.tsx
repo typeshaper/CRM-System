@@ -1,11 +1,33 @@
+import { useEffect, useState } from "react";
 import type { MetaResponse, Todo, TodoInfo } from "../types";
 import TodoItem from "./TodoItem";
-import { useRouteLoaderData } from "react-router";
 import classes from "./TodoList.module.css";
 
 export default function TodoList() {
-  const data: MetaResponse<Todo, TodoInfo> = useRouteLoaderData("todo-page")!;
-  const todoItems: Todo[] = data.data;
+  const [todoItems, setTodoItems] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    async function loadTodoList() {
+      const response: Response = await fetch(
+        "https://easydev.club/api/v1/todos",
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Response(
+          JSON.stringify({ message: "Could not load to do list" }),
+          {
+            status: 500,
+          }
+        );
+      }
+      const resData: MetaResponse<Todo, TodoInfo> = await response.json();
+      setTodoItems(resData.data);
+    }
+    loadTodoList();
+  }, []);
 
   return (
     <ul className={classes.list}>
@@ -17,21 +39,4 @@ export default function TodoList() {
       ))}
     </ul>
   );
-}
-
-export async function loader() {
-  const response: Response = await fetch("https://easydev.club/api/v1/todos", {
-    method: "GET",
-  });
-
-  if (!response.ok) {
-    throw new Response(
-      JSON.stringify({ message: "Could not load to do list" }),
-      {
-        status: 500,
-      }
-    );
-  }
-  const resData: MetaResponse<Todo, TodoInfo> = await response.json();
-  return resData;
 }
