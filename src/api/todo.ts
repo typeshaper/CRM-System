@@ -1,7 +1,8 @@
 import type { MetaResponse, Todo, TodoInfo, TodoRequest } from "../types";
+const BASE_URL = "https://easydev.club/api/v1/";
 
 export async function fetchTodoList() {
-  const response: Response = await fetch("https://easydev.club/api/v1/todos");
+  const response: Response = await fetch(BASE_URL + "todos");
   const resData: MetaResponse<Todo, TodoInfo> = await response.json();
   return resData;
 }
@@ -12,7 +13,7 @@ export async function createTodoItem(title: string) {
     isDone: false,
   };
 
-  const response: Response = await fetch("https://easydev.club/api/v1/todos", {
+  const response: Response = await fetch(BASE_URL + "todos", {
     method: "POST",
     body: JSON.stringify(todo),
     headers: {
@@ -24,7 +25,10 @@ export async function createTodoItem(title: string) {
   return resData;
 }
 
-// Method: POST
-// URL: /todos
-// Request: TodoRequest
-// Response: Todo
+export async function deleteTodoItem(id: number) {
+  const response: Response = await fetch(BASE_URL + "todos/" + id, {
+    method: "DELETE",
+  });
+  const resData: Todo = await response.json();
+  return resData;
+}
