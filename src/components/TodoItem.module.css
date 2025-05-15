@@ -10,7 +10,27 @@ li {
 
   display: flex;
   gap: 1rem;
+  align-items: center;
 
-  padding: 1rem;
+  padding: 0.7rem;
   width: 100%;
+}
+
+.task-status-icon {
+  height: 24px;
+  width: 24px;
+}
+.icons-wrapper {
+  display: flex;
+  margin-left: auto;
+}
+
+.delete-icon-wrapper {
+  background-color: #ff665c;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+.delete-icon-wrapper:hover {
+  background-color: #e85e54;
+  cursor: pointer;
 }
