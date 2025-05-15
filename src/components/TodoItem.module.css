@@ -19,6 +19,7 @@ li {
 .task-status-icon {
   height: 24px;
   width: 24px;
+  cursor: pointer;
 }
 .icons-wrapper {
   display: flex;

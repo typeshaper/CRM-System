@@ -31,3 +31,16 @@ export async function deleteTodoItem(id: number) {
   });
   console.log(response);
 }
+
+export async function editTodo(id: number, taskData: TodoRequest) {
+  const response: Response = await fetch(BASE_URL + "todos/" + id, {
+    method: "PUT",
+    body: JSON.stringify(taskData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const resData: Todo = await response.json();
+  return resData;
+}
