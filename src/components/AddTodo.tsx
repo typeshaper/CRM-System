@@ -1,15 +1,57 @@
 import classes from "./AddTodo.module.css";
-import type { Todo, TodoRequest } from "../types";
+import type { Todo } from "../types";
+import { useState } from "react";
+import { createTodoItem } from "../api/todo";
+import useInput from "../hooks/useInput";
+import { isValidLength } from "../utility/validation";
+import { fetchTodoList } from "../api/todo";
 
-export default function AddTodo() {
+export default function AddTodo({
+  setTodoList,
+}: {
+  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+}) {
+  const [isUploadingTask, setIsUploadingTask] = useState(false);
+
+  const {
+    value: titleValue,
+    handleInputBlur: handleTitleBlur,
+    handleInputChange: handleTitleChange,
+    hasError: titleHasError,
+  } = useInput("", (value) => isValidLength(value));
+
+  function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (titleHasError) return;
+
+    (async () => {
+      setIsUploadingTask(true);
+      await createTodoItem(titleValue);
+      const fetchedData = await fetchTodoList();
+      setTodoList(fetchedData.data);
+      setIsUploadingTask(false);
+    })();
+  }
+
   return (
-    <form method="POST">
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Enter your task..."
         name="title"
+        value={titleValue}
+        onChange={handleTitleChange}
+        onBlur={handleTitleBlur}
       />
-      <button>Add</button>
+      {titleHasError && (
+        <p className={classes["validation-error"]}>
+          Title must be between 2 and 64 characters long!
+        </p>
+      )}
+      {isUploadingTask && (
+        <p className={classes["saving-status"]}>Saving task...</p>
+      )}
+      <button type="submit">Add</button>
     </form>
   );
 }

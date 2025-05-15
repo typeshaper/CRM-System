@@ -40,3 +40,9 @@ button {
   color: green;
   bottom: 5px;
 }
+
+.saving-status {
+  position: absolute;
+  color: white;
+  bottom: 5px;
+}
