@@ -45,7 +45,6 @@ export default function TodoItem({
         <div className={classes["edit-icon-wrapper"]}>
           <img
             onClick={handleDeleteButton}
-            className={classes["deleteIcon"]}
             src={editIcon}
           />
         </div>
@@ -53,7 +52,6 @@ export default function TodoItem({
         <div className={classes["delete-icon-wrapper"]}>
           <img
             onClick={handleDeleteButton}
-            className={classes["delete-icon"]}
             src={deleteIcon}
           />
         </div>
