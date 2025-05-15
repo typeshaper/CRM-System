@@ -3,6 +3,7 @@ import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.png";
 import isNotDone from "../assets/checkbox-undone.png";
 import deleteIcon from "../assets/delete.png";
+import editIcon from "../assets/edit.png";
 import { deleteTodoItem, editTodo, fetchTodoList } from "../api/todo";
 
 export default function TodoItem({
@@ -37,12 +38,22 @@ export default function TodoItem({
         className={classes["task-status-icon"]}
         src={isDone ? isDoneIcon : isNotDone}
       />
+
       <p className={isDone ? classes["text-done"] : ""}>{title}</p>
+
       <div className={classes["icons-wrapper"]}>
-        <div className={classes["delete-icon-wrapper"]}>
+        <div className={classes["edit-icon-wrapper"]}>
           <img
             onClick={handleDeleteButton}
             className={classes["deleteIcon"]}
+            src={editIcon}
+          />
+        </div>
+
+        <div className={classes["delete-icon-wrapper"]}>
+          <img
+            onClick={handleDeleteButton}
+            className={classes["delete-icon"]}
             src={deleteIcon}
           />
         </div>
