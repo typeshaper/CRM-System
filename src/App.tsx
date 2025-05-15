@@ -10,6 +10,19 @@ function App() {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
+    const timerId = setInterval(() => {
+      (async () => {
+        const fetchedData = await fetchTodoList();
+        setTodoList(fetchedData.data);
+      })();
+    }, 10000);
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  useEffect(() => {
     async function getItems() {
       setIsFetching(true);
 
