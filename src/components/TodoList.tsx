@@ -5,9 +5,11 @@ import type { Todo } from "../types";
 export default function TodoList({
   todoList,
   isFetching,
+  setTodoList,
 }: {
   todoList: Todo[];
   isFetching: boolean;
+  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
 }) {
   return (
     <ul className={classes.list}>
@@ -16,6 +18,7 @@ export default function TodoList({
         <TodoItem
           key={todo.id}
           todo={todo}
+          setTodoList={setTodoList}
         />
       ))}
     </ul>

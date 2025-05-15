@@ -29,6 +29,4 @@ export async function deleteTodoItem(id: number) {
   const response: Response = await fetch(BASE_URL + "todos/" + id, {
     method: "DELETE",
   });
-  const resData: Todo = await response.json();
-  return resData;
 }

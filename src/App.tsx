@@ -25,6 +25,7 @@ function App() {
       <AddTodo setTodoList={setTodoList} />
       <TodoList
         todoList={todoList}
+        setTodoList={setTodoList}
         isFetching={isFetching}
       />
     </>

@@ -3,10 +3,24 @@ import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.png";
 import isNotDone from "../assets/checkbox-undone.png";
 import deleteIcon from "../assets/delete.png";
-// import { deleteTodoItem } from "../api/todo";
+import { deleteTodoItem, fetchTodoList } from "../api/todo";
 
-export default function TodoItem({ todo }: { todo: Todo }) {
+export default function TodoItem({
+  todo,
+  setTodoList,
+}: {
+  todo: Todo;
+  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+}) {
   const { title, isDone, id } = todo;
+
+  function handleDeleteButton() {
+    (async () => {
+      await deleteTodoItem(id);
+      const fetchedData = await fetchTodoList();
+      setTodoList(fetchedData.data);
+    })();
+  }
 
   return (
     <li>
@@ -18,7 +32,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
       <div className={classes["icons-wrapper"]}>
         <div className={classes["delete-icon-wrapper"]}>
           <img
-            onClick={}
+            onClick={handleDeleteButton}
             className={classes["deleteIcon"]}
             src={deleteIcon}
           />
