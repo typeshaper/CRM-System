@@ -3,7 +3,7 @@ import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.png";
 import isNotDone from "../assets/checkbox-undone.png";
 import deleteIcon from "../assets/delete.png";
-import { deleteTodoItem, fetchTodoList } from "../api/todo";
+import { deleteTodoItem, editTodo, fetchTodoList } from "../api/todo";
 
 export default function TodoItem({
   todo,
@@ -22,9 +22,18 @@ export default function TodoItem({
     })();
   }
 
+  function handleStatusButton() {
+    (async () => {
+      await editTodo(id, { isDone: !isDone });
+      const fetchedData = await fetchTodoList();
+      setTodoList(fetchedData.data);
+    })();
+  }
+
   return (
     <li>
       <img
+        onClick={handleStatusButton}
         className={classes["task-status-icon"]}
         src={isDone ? isDoneIcon : isNotDone}
       />
