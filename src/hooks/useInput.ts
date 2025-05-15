@@ -20,6 +20,11 @@ export default function useInput(
     setDidEdit(true);
   }
 
+  function resetInput() {
+    setEnteredValue(defaultValue);
+    setDidEdit(false);
+  }
+
   const hasError = didEdit && !valueIsValid;
 
   return {
@@ -27,5 +32,6 @@ export default function useInput(
     handleInputBlur,
     handleInputChange,
     hasError,
+    resetInput,
   };
 }

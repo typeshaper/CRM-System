@@ -18,6 +18,7 @@ export default function AddTodo({
     handleInputBlur: handleTitleBlur,
     handleInputChange: handleTitleChange,
     hasError: titleHasError,
+    resetInput: resetTitle,
   } = useInput("", (value) => isValidLength(value));
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
@@ -30,6 +31,7 @@ export default function AddTodo({
       const fetchedData = await fetchTodoList();
       setTodoList(fetchedData.data);
       setIsUploadingTask(false);
+      resetTitle();
     })();
   }
 
