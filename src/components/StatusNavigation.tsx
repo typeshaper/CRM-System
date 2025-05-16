@@ -1,6 +1,7 @@
 import type { todoStatus, Todo } from "../types";
 import { fetchTodoList } from "../api/todo";
 import classes from "./StatusNavigation.module.css";
+import { useEffect, useState } from "react";
 
 export default function StatusNavigation({
   status,
@@ -11,21 +12,14 @@ export default function StatusNavigation({
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
   status: todoStatus;
 }) {
-  //
-  function handleClick(event: React.SyntheticEvent<HTMLLIElement>) {
-    const statusBtnText = String(event.currentTarget.innerText);
+  const [tasksQuantity, setTasksQuantity] = useState({
+    allTasksQuantity: 0,
+    inWorkTasksQuantity: 0,
+    completedTasksQuantity: 0,
+  });
 
-    switch (statusBtnText) {
-      case "All":
-        setStatus("all");
-        break;
-      case "In work":
-        setStatus("inWork");
-        break;
-      case "Completed":
-        setStatus("completed");
-        break;
-    }
+  function handleClick(status: todoStatus) {
+    setStatus(status);
 
     (async () => {
       const fetchedData = await fetchTodoList(status);
@@ -33,29 +27,49 @@ export default function StatusNavigation({
     })();
   }
 
+  useEffect(() => {
+    (async () => {
+      const fetchedData = await fetchTodoList("all");
+      const todoItems: Todo[] = fetchedData.data;
+      const allTasksQuantity = todoItems.length;
+      const inWorkTasksQuantity = todoItems.filter(
+        (item) => item.isDone
+      ).length;
+      const completedTasksQuantity = todoItems.filter(
+        (item) => !item.isDone
+      ).length;
+
+      setTasksQuantity(() => ({
+        allTasksQuantity,
+        inWorkTasksQuantity,
+        completedTasksQuantity,
+      }));
+    })();
+  });
+
   return (
     <nav className={classes["status-list-wrapper"]}>
       <ul className={classes["status-list"]}>
         <li
           className={`${classes["status-list-item"]} 
           ${status === "all" && classes["active"]}`}
-          onClick={handleClick}
+          onClick={() => handleClick("all")}
         >
-          All
+          All ({tasksQuantity.allTasksQuantity})
         </li>
         <li
           className={`${classes["status-list-item"]} 
           ${status === "inWork" && classes["active"]}`}
-          onClick={handleClick}
+          onClick={() => handleClick("inWork")}
         >
-          In work
+          In work ({tasksQuantity.inWorkTasksQuantity})
         </li>
         <li
           className={`${classes["status-list-item"]} 
           ${status === "completed" && classes["active"]}`}
-          onClick={handleClick}
+          onClick={() => handleClick("completed")}
         >
-          Completed
+          Completed ({tasksQuantity.completedTasksQuantity})
         </li>
       </ul>
     </nav>

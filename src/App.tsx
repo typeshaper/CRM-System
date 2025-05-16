@@ -33,7 +33,7 @@ function App() {
       setIsFetching(false);
     }
     getItems();
-  }, []);
+  }, [status]);
 
   return (
     <>
