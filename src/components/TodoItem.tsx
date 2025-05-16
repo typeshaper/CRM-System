@@ -1,9 +1,9 @@
 import type { Todo } from "../types";
 import classes from "./TodoItem.module.css";
-import isDoneIcon from "../assets/checkbox-done.png";
-import isNotDone from "../assets/checkbox-undone.png";
-import deleteIcon from "../assets/delete.png";
-import editIcon from "../assets/edit.png";
+import isDoneIcon from "../assets/checkbox-done.svg";
+import isNotDone from "../assets/checkbox-undone.svg";
+import deleteIcon from "../assets/delete.svg";
+import editIcon from "../assets/edit.svg";
 import { deleteTodoItem, editTodo, fetchTodoList } from "../api/todo";
 import EditTodo from "./EditTodo";
 import { useState } from "react";

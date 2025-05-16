@@ -4,7 +4,7 @@ import { editTodo } from "../api/todo";
 import type { Todo } from "../types";
 import { fetchTodoList } from "../api/todo";
 import classes from "./EditTodo.module.css";
-import editIcon from "../assets/edit.png";
+import saveIcon from "../assets/save.svg";
 
 export default function EditTodo({
   title,
@@ -55,7 +55,7 @@ export default function EditTodo({
         <div className={classes["save-icon-wrapper"]}>
           <img
             onClick={handleSubmit}
-            src={editIcon}
+            src={saveIcon}
           />
         </div>
       </div>
