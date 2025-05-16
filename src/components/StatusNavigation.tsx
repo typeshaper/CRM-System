@@ -1,5 +1,6 @@
 import type { todoStatus, Todo } from "../types";
 import { fetchTodoList } from "../api/todo";
+import classes from "./StatusNavigation.module.css";
 
 export default function StatusNavigation({
   status,
@@ -13,7 +14,6 @@ export default function StatusNavigation({
   //
   function handleClick(event: React.SyntheticEvent<HTMLLIElement>) {
     const statusBtnText = String(event.currentTarget.innerText);
-    console.log(statusBtnText);
 
     switch (statusBtnText) {
       case "All":
@@ -34,11 +34,29 @@ export default function StatusNavigation({
   }
 
   return (
-    <nav>
-      <ul>
-        <li onClick={handleClick}>All</li>
-        <li onClick={handleClick}>In work</li>
-        <li onClick={handleClick}>Completed</li>
+    <nav className={classes["status-list-wrapper"]}>
+      <ul className={classes["status-list"]}>
+        <li
+          className={`${classes["status-list-item"]} 
+          ${status === "all" && classes["active"]}`}
+          onClick={handleClick}
+        >
+          All
+        </li>
+        <li
+          className={`${classes["status-list-item"]} 
+          ${status === "inWork" && classes["active"]}`}
+          onClick={handleClick}
+        >
+          In work
+        </li>
+        <li
+          className={`${classes["status-list-item"]} 
+          ${status === "completed" && classes["active"]}`}
+          onClick={handleClick}
+        >
+          Completed
+        </li>
       </ul>
     </nav>
   );

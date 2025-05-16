@@ -41,7 +41,7 @@ export default function TodoItem({
   }
 
   return (
-    <li>
+    <li className={classes["todo-item"]}>
       <img
         onClick={handleStatusButton}
         className={classes["task-status-icon"]}

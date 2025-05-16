@@ -2,7 +2,7 @@
   text-decoration: line-through;
 }
 
-li {
+.todo-item {
   background-color: #fff;
 
   border: 2px solid var(--main-color);

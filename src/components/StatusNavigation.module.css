@@ -1,0 +1,21 @@
+.status-list-wrapper {
+  padding: 1rem;
+  width: 65ch;
+}
+
+.status-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status-list-item {
+  list-style: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.status-list-item:hover,
+.active {
+  text-decoration: underline 2px solid var(--main-color);
+  color: var(--main-color);
+}

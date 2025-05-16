@@ -14,8 +14,6 @@ function App() {
   useEffect(() => {
     const timerId = setInterval(() => {
       (async () => {
-        console.log(status);
-
         const fetchedData = await fetchTodoList(status);
         setTodoList(fetchedData.data);
       })();

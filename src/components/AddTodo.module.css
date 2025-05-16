@@ -1,8 +1,8 @@
 form {
-  margin: 1rem;
+  /* margin: 1rem; */
   min-width: 70ch;
   flex-direction: column;
-  padding: 2rem 1rem;
+  padding: 2rem 0 1rem 0;
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -37,17 +37,17 @@ input:focus {
 .validation-error {
   position: absolute;
   color: red;
-  bottom: 5px;
+  bottom: -10px;
 }
 
 .create-success {
   position: absolute;
   color: green;
-  bottom: 5px;
+  bottom: -10px;
 }
 
 .saving-status {
   position: absolute;
   color: white;
-  bottom: 5px;
+  bottom: -10px;
 }
