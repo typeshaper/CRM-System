@@ -1,7 +1,7 @@
 import { isValidLength } from "../utility/validation";
 import useInput from "../hooks/useInput";
 import { editTodo } from "../api/todo";
-import type { Todo } from "../types";
+import type { Todo, todoStatus } from "../types";
 import { fetchTodoList } from "../api/todo";
 import classes from "./EditTodo.module.css";
 import saveIcon from "../assets/save.svg";
@@ -13,12 +13,14 @@ export default function EditTodo({
   setTodoList,
   setIsEditing,
   handleDeleteButton,
+  status,
 }: {
   title: string;
   id: number;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
   handleDeleteButton: () => void;
+  status: todoStatus;
 }) {
   const {
     value: titleValue,
@@ -35,7 +37,7 @@ export default function EditTodo({
     if (event) event.preventDefault();
     (async () => {
       await editTodo(id, { title: titleValue });
-      const fetchedData = await fetchTodoList();
+      const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
       setIsEditing(false);
     })();

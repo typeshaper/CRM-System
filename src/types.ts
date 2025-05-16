@@ -4,6 +4,8 @@ export interface TodoRequest {
 }
 // или так type TodoRequest = Partial<Omit<Todo, "id" | "created">>;
 
+export type todoStatus = "all" | "completed" | "inWork";
+
 export interface Todo {
   id: number;
   title: string;

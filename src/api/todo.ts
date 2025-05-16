@@ -1,8 +1,16 @@
-import type { MetaResponse, Todo, TodoInfo, TodoRequest } from "../types";
+import type {
+  MetaResponse,
+  Todo,
+  TodoInfo,
+  TodoRequest,
+  todoStatus,
+} from "../types";
 const BASE_URL = "https://easydev.club/api/v1/";
 
-export async function fetchTodoList() {
-  const response: Response = await fetch(BASE_URL + "todos");
+export async function fetchTodoList(status: todoStatus) {
+  const response: Response = await fetch(BASE_URL + "todos?filter=" + status, {
+    method: "GET",
+  });
   const resData: MetaResponse<Todo, TodoInfo> = await response.json();
   return resData;
 }

@@ -1,4 +1,4 @@
-import type { Todo } from "../types";
+import type { Todo, todoStatus } from "../types";
 import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.svg";
 import isNotDone from "../assets/checkbox-undone.svg";
@@ -11,9 +11,11 @@ import { useState } from "react";
 export default function TodoItem({
   todo,
   setTodoList,
+  status,
 }: {
   todo: Todo;
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  status: todoStatus;
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -22,7 +24,7 @@ export default function TodoItem({
   function handleDeleteButton() {
     (async () => {
       await deleteTodoItem(id);
-      const fetchedData = await fetchTodoList();
+      const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
     })();
   }
@@ -30,7 +32,7 @@ export default function TodoItem({
   function handleStatusButton() {
     (async () => {
       await editTodo(id, { isDone: !isDone });
-      const fetchedData = await fetchTodoList();
+      const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
     })();
   }
@@ -52,6 +54,7 @@ export default function TodoItem({
 
       {isEditing && (
         <EditTodo
+          status={status}
           title={title}
           id={id}
           setTodoList={setTodoList}

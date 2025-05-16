@@ -1,5 +1,5 @@
 import classes from "./AddTodo.module.css";
-import type { Todo } from "../types";
+import type { Todo, todoStatus } from "../types";
 import { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import useInput from "../hooks/useInput";
@@ -8,8 +8,10 @@ import { fetchTodoList } from "../api/todo";
 
 export default function AddTodo({
   setTodoList,
+  status,
 }: {
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  status: todoStatus;
 }) {
   const [isUploadingTask, setIsUploadingTask] = useState(false);
 
@@ -28,7 +30,7 @@ export default function AddTodo({
     (async () => {
       setIsUploadingTask(true);
       await createTodoItem(titleValue);
-      const fetchedData = await fetchTodoList();
+      const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
       setIsUploadingTask(false);
       resetTitle();
