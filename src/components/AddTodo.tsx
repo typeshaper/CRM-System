@@ -27,13 +27,27 @@ export default function AddTodo({
     event.preventDefault();
     if (titleHasError) return;
 
+    const title = titleValue;
     (async () => {
       setIsUploadingTask(true);
-      await createTodoItem(titleValue);
+      // Создает временную дамми тудушку чтобы был инста отклик
+      setTodoList((prev) => {
+        const newTodoList = structuredClone(prev);
+        newTodoList.push({
+          title: title,
+          id: 0,
+          isDone: false,
+          created: "",
+        });
+
+        return newTodoList;
+      });
+      resetTitle();
+      await createTodoItem(title);
+      // Подгружает уже реальные данные в стейт
       const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
       setIsUploadingTask(false);
-      resetTitle();
     })();
   }
 
