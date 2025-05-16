@@ -59,7 +59,6 @@ export default function TodoItem({
           id={id}
           setTodoList={setTodoList}
           setIsEditing={setIsEditing}
-          handleDeleteButton={handleDeleteButton}
         />
       )}
 

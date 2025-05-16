@@ -29,24 +29,24 @@
   flex: 0 0 fit-content;
 }
 
-.delete-icon-wrapper,
+.undo-icon-wrapper,
 .save-icon-wrapper {
   padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
 }
 
-.delete-icon-wrapper {
-  background-color: #ff665c;
+.undo-icon-wrapper {
+  background-color: #aa2f26;
 }
 
-.delete-icon-wrapper:hover {
-  background-color: #e85e54;
+.undo-icon-wrapper:hover {
+  background-color: #84251e;
 }
 
 .save-icon-wrapper {
-  background-color: #5693ff;
+  background-color: #338876;
 }
 .save-icon-wrapper:hover {
-  background-color: #4d85e6;
+  background-color: #286c5d;
 }
