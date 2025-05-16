@@ -47,7 +47,7 @@ export default function AddTodo({
         onChange={handleTitleChange}
         onBlur={handleTitleBlur}
       />
-      {titleHasError && (
+      {titleHasError && titleValue.length != 0 && (
         <p className={classes["validation-error"]}>
           Title must be between 2 and 64 characters long!
         </p>
