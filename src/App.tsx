@@ -24,7 +24,7 @@ function App() {
     return () => {
       clearInterval(timerId);
     };
-  }, []);
+  }, [status]);
 
   useEffect(() => {
     async function getItems() {
