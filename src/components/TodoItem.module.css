@@ -13,7 +13,7 @@ li {
   align-items: center;
 
   padding: 0.7rem;
-  width: 100%;
+  max-width: 100%;
 }
 
 .task-status-icon {
@@ -25,6 +25,7 @@ li {
   display: flex;
   margin-left: auto;
   gap: 0.5rem;
+  flex: 0 0 fit-content;
 }
 
 .delete-icon-wrapper,

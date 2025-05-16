@@ -53,7 +53,12 @@ export default function AddTodo({
       {isUploadingTask && (
         <p className={classes["saving-status"]}>Saving task...</p>
       )}
-      <button type="submit">Add</button>
+      <button
+        className={classes["add-task-button"]}
+        type="submit"
+      >
+        Add
+      </button>
     </form>
   );
 }

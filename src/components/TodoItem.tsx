@@ -5,6 +5,8 @@ import isNotDone from "../assets/checkbox-undone.png";
 import deleteIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
 import { deleteTodoItem, editTodo, fetchTodoList } from "../api/todo";
+import EditTodo from "./EditTodo";
+import { useState } from "react";
 
 export default function TodoItem({
   todo,
@@ -13,6 +15,8 @@ export default function TodoItem({
   todo: Todo;
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+
   const { title, isDone, id } = todo;
 
   function handleDeleteButton() {
@@ -30,6 +34,9 @@ export default function TodoItem({
       setTodoList(fetchedData.data);
     })();
   }
+  function handleEditButton() {
+    setIsEditing((isEditing) => !isEditing);
+  }
 
   return (
     <li>
@@ -39,15 +46,28 @@ export default function TodoItem({
         src={isDone ? isDoneIcon : isNotDone}
       />
 
-      <p className={isDone ? classes["text-done"] : ""}>{title}</p>
+      {!isEditing && (
+        <p className={isDone ? classes["text-done"] : ""}>{title}</p>
+      )}
+
+      {isEditing && (
+        <EditTodo
+          title={title}
+          id={id}
+          setTodoList={setTodoList}
+          setIsEditing={setIsEditing}
+        />
+      )}
 
       <div className={classes["icons-wrapper"]}>
-        <div className={classes["edit-icon-wrapper"]}>
-          <img
-            onClick={handleDeleteButton}
-            src={editIcon}
-          />
-        </div>
+        {!isEditing && (
+          <div className={classes["edit-icon-wrapper"]}>
+            <img
+              onClick={handleEditButton}
+              src={editIcon}
+            />
+          </div>
+        )}
 
         <div className={classes["delete-icon-wrapper"]}>
           <img
