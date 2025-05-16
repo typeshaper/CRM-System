@@ -56,26 +56,27 @@ export default function TodoItem({
           id={id}
           setTodoList={setTodoList}
           setIsEditing={setIsEditing}
+          handleDeleteButton={handleDeleteButton}
         />
       )}
 
-      <div className={classes["icons-wrapper"]}>
-        {!isEditing && (
+      {!isEditing && (
+        <div className={classes["icons-wrapper"]}>
           <div className={classes["edit-icon-wrapper"]}>
             <img
               onClick={handleEditButton}
               src={editIcon}
             />
           </div>
-        )}
 
-        <div className={classes["delete-icon-wrapper"]}>
-          <img
-            onClick={handleDeleteButton}
-            src={deleteIcon}
-          />
+          <div className={classes["delete-icon-wrapper"]}>
+            <img
+              onClick={handleDeleteButton}
+              src={deleteIcon}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </li>
   );
 }

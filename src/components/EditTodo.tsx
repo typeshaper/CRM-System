@@ -5,17 +5,20 @@ import type { Todo } from "../types";
 import { fetchTodoList } from "../api/todo";
 import classes from "./EditTodo.module.css";
 import saveIcon from "../assets/save.svg";
+import deleteIcon from "../assets/delete.svg";
 
 export default function EditTodo({
   title,
   id,
   setTodoList,
   setIsEditing,
+  handleDeleteButton,
 }: {
   title: string;
   id: number;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  handleDeleteButton: () => void;
 }) {
   const {
     value: titleValue,
@@ -56,6 +59,13 @@ export default function EditTodo({
           <img
             onClick={handleSubmit}
             src={saveIcon}
+          />
+        </div>
+
+        <div className={classes["delete-icon-wrapper"]}>
+          <img
+            onClick={handleDeleteButton}
+            src={deleteIcon}
           />
         </div>
       </div>
