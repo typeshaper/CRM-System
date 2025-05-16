@@ -33,10 +33,10 @@ export default function StatusNavigation({
       const todoItems: Todo[] = fetchedData.data;
       const allTasksQuantity = todoItems.length;
       const inWorkTasksQuantity = todoItems.filter(
-        (item) => item.isDone
+        (item) => !item.isDone
       ).length;
       const completedTasksQuantity = todoItems.filter(
-        (item) => !item.isDone
+        (item) => item.isDone
       ).length;
 
       setTasksQuantity(() => ({
