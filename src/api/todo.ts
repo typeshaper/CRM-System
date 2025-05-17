@@ -37,7 +37,6 @@ export async function deleteTodoItem(id: number) {
   const response: Response = await fetch(BASE_URL + "todos/" + id, {
     method: "DELETE",
   });
-  console.log(response);
 }
 
 export async function editTodo(id: number, taskData: TodoRequest) {

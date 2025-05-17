@@ -25,7 +25,7 @@ export default function AddTodo({
 
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (titleHasError) return;
+    if (titleHasError || titleValue.length === 0) return;
 
     const title = titleValue;
     (async () => {
@@ -61,7 +61,7 @@ export default function AddTodo({
         onChange={handleTitleChange}
         onBlur={handleTitleBlur}
       />
-      {titleHasError && titleValue.length != 0 && (
+      {titleHasError && (
         <p className={classes["validation-error"]}>
           Title must be between 2 and 64 characters long!
         </p>
