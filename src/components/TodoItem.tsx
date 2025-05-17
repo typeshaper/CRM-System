@@ -31,7 +31,6 @@ export default function TodoItem({
       await deleteTodoItem(id);
       const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
-      console.log(fetchedData.data);
     })();
   }
 

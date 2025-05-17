@@ -13,12 +13,23 @@ export default function TodoList({
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
   status: todoStatus;
 }) {
+  const filteredTodoList = structuredClone(todoList).filter((item) => {
+    switch (status) {
+      case "all":
+        return item;
+      case "inWork":
+        return !item.isDone;
+      case "completed":
+        return item.isDone;
+    }
+  });
+
   return (
     <ul className={classes.list}>
       {isFetching && (
         <p className={classes["fetching-message"]}>Fetching todo list...</p>
       )}
-      {todoList.map((todo) => (
+      {filteredTodoList.map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}

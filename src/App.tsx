@@ -28,12 +28,12 @@ function App() {
     async function getItems() {
       setIsFetching(true);
 
-      const fetchedData = await fetchTodoList(status);
+      const fetchedData = await fetchTodoList("all");
       setTodoList(fetchedData.data);
       setIsFetching(false);
     }
     getItems();
-  }, [status]);
+  }, []);
 
   return (
     <>

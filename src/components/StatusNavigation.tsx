@@ -22,17 +22,13 @@ export default function StatusNavigation({
 
   function handleClick(status: todoStatus) {
     setStatus(status);
-
-    (async () => {
-      const fetchedData = await fetchTodoList(status);
-      setTodoList(fetchedData.data);
-    })();
   }
 
   useEffect(() => {
     (async () => {
       const fetchedData = await fetchTodoList("all");
       const todoList = fetchedData.data;
+
       const allTasksQuantity = todoList.length;
       const inWorkTasksQuantity = todoList.filter(
         (item) => !item.isDone
