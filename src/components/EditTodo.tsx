@@ -34,11 +34,18 @@ export default function EditTodo({
   ) {
     event.preventDefault();
 
+    setTodoList((prevTodoList) => {
+      const index = prevTodoList.findIndex((item) => item.id === id);
+      const newTodoList = [...prevTodoList];
+      newTodoList[index].title = titleValue;
+      return newTodoList;
+    });
+
+    setIsEditing(false);
     (async () => {
       await editTodo(id, { title: titleValue });
       const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
-      setIsEditing(false);
     })();
   }
 
