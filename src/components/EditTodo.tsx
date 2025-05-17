@@ -36,7 +36,7 @@ export default function EditTodo({
 
     setTodoList((prevTodoList) => {
       const index = prevTodoList.findIndex((item) => item.id === id);
-      const newTodoList = [...prevTodoList];
+      const newTodoList = structuredClone(prevTodoList);
       newTodoList[index].title = titleValue;
       return newTodoList;
     });
