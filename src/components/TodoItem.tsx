@@ -7,6 +7,7 @@ import editIcon from "../assets/edit.svg";
 import { deleteTodoItem, editTodo, fetchTodoList } from "../api/todo";
 import EditTodo from "./EditTodo";
 import { useState } from "react";
+import TodoList from "./TodoList";
 
 export default function TodoItem({
   todo,
@@ -22,10 +23,16 @@ export default function TodoItem({
   const { title, isDone, id } = todo;
 
   function handleDeleteButton() {
+    setTodoList((prevTodoList) => {
+      const newTodoList = structuredClone(prevTodoList);
+      return newTodoList.filter((item) => item.id !== id);
+    });
+
     (async () => {
       await deleteTodoItem(id);
       const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
+      console.log(fetchedData.data);
     })();
   }
 

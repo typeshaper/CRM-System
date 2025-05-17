@@ -7,9 +7,11 @@ export default function StatusNavigation({
   status,
   setStatus,
   setTodoList,
+  todoList,
 }: {
   setStatus: React.Dispatch<React.SetStateAction<todoStatus>>;
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  todoList: Todo[];
   status: todoStatus;
 }) {
   const [tasksQuantity, setTasksQuantity] = useState({
@@ -20,6 +22,18 @@ export default function StatusNavigation({
 
   function handleClick(status: todoStatus) {
     setStatus(status);
+    setTodoList(
+      todoList.filter((item) => {
+        switch (status) {
+          case "all":
+            return item;
+          case "inWork":
+            return !item.isDone;
+          case "completed":
+            return item.isDone;
+        }
+      })
+    );
 
     (async () => {
       const fetchedData = await fetchTodoList(status);
@@ -29,8 +43,8 @@ export default function StatusNavigation({
 
   useEffect(() => {
     (async () => {
-      const fetchedData = await fetchTodoList("all");
-      const todoItems: Todo[] = fetchedData.data;
+      const fetchedTodoList = await fetchTodoList("all");
+      const todoItems = fetchedTodoList.data;
       const allTasksQuantity = todoItems.length;
       const inWorkTasksQuantity = todoItems.filter(
         (item) => !item.isDone
@@ -45,7 +59,7 @@ export default function StatusNavigation({
         completedTasksQuantity,
       }));
     })();
-  });
+  }, []);
 
   return (
     <nav className={classes["status-list-wrapper"]}>

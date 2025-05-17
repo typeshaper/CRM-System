@@ -32,7 +32,8 @@ export default function EditTodo({
       | React.SyntheticEvent<HTMLFormElement>
       | React.SyntheticEvent<HTMLImageElement>
   ) {
-    if (event) event.preventDefault();
+    event.preventDefault();
+
     (async () => {
       await editTodo(id, { title: titleValue });
       const fetchedData = await fetchTodoList(status);

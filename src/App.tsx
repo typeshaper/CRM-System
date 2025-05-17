@@ -44,6 +44,7 @@ function App() {
       <StatusNavigation
         status={status}
         setStatus={setStatus}
+        todoList={todoList}
         setTodoList={setTodoList}
       />
       <TodoList
