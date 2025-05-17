@@ -26,9 +26,6 @@ export default function StatusNavigation({
 
   useEffect(() => {
     (async () => {
-      const fetchedData = await fetchTodoList("all");
-      const todoList = fetchedData.data;
-
       const allTasksQuantity = todoList.length;
       const inWorkTasksQuantity = todoList.filter(
         (item) => !item.isDone

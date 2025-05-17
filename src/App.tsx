@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const timerId = setInterval(() => {
       (async () => {
-        const fetchedData = await fetchTodoList(status);
+        const fetchedData = await fetchTodoList("all");
         setTodoList(fetchedData.data);
       })();
     }, 10000);
@@ -22,7 +22,7 @@ function App() {
     return () => {
       clearInterval(timerId);
     };
-  }, [status]);
+  }, []);
 
   useEffect(() => {
     async function getItems() {

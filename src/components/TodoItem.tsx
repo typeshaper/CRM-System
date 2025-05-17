@@ -29,7 +29,7 @@ export default function TodoItem({
 
     (async () => {
       await deleteTodoItem(id);
-      const fetchedData = await fetchTodoList(status);
+      const fetchedData = await fetchTodoList("all");
       setTodoList(fetchedData.data);
     })();
   }
