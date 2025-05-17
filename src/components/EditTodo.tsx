@@ -33,6 +33,7 @@ export default function EditTodo({
       | React.SyntheticEvent<HTMLButtonElement>
   ) {
     event.preventDefault();
+    if (titleHasError) return;
 
     setTodoList((prevTodoList) => {
       const index = prevTodoList.findIndex((item) => item.id === id);

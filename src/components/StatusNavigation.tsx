@@ -1,12 +1,10 @@
 import type { todoStatus, Todo } from "../types";
-import { fetchTodoList } from "../api/todo";
 import classes from "./StatusNavigation.module.css";
 import { useEffect, useState } from "react";
 
 export default function StatusNavigation({
   status,
   setStatus,
-  setTodoList,
   todoList,
 }: {
   setStatus: React.Dispatch<React.SetStateAction<todoStatus>>;
