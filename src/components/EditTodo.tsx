@@ -30,7 +30,7 @@ export default function EditTodo({
   function handleSubmit(
     event:
       | React.SyntheticEvent<HTMLFormElement>
-      | React.SyntheticEvent<HTMLImageElement>
+      | React.SyntheticEvent<HTMLButtonElement>
   ) {
     event.preventDefault();
 
@@ -62,17 +62,29 @@ export default function EditTodo({
 
       <div className={classes["icons-wrapper"]}>
         <div className={classes["save-icon-wrapper"]}>
-          <img
+          <button
+            type="button"
             onClick={handleSubmit}
-            src={saveIcon}
-          />
+            className={classes["undo-button"]}
+          >
+            <img
+              src={saveIcon}
+              className={classes["save-icon"]}
+            />
+          </button>
         </div>
 
         <div className={classes["undo-icon-wrapper"]}>
-          <img
+          <button
+            type="button"
             onClick={handleUndoButton}
-            src={undoIcon}
-          />
+            className={classes["undo-button"]}
+          >
+            <img
+              className={classes["undo-icon"]}
+              src={undoIcon}
+            />
+          </button>
         </div>
       </div>
       {titleHasError && (

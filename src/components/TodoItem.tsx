@@ -72,17 +72,29 @@ export default function TodoItem({
       {!isEditing && (
         <div className={classes["icons-wrapper"]}>
           <div className={classes["edit-icon-wrapper"]}>
-            <img
+            <button
+              type="button"
               onClick={handleEditButton}
-              src={editIcon}
-            />
+              className={classes["edit-button"]}
+            >
+              <img
+                src={editIcon}
+                className={classes["edit-icon"]}
+              />
+            </button>
           </div>
 
           <div className={classes["delete-icon-wrapper"]}>
-            <img
+            <button
+              type="button"
               onClick={handleDeleteButton}
-              src={deleteIcon}
-            />
+              className={classes["delete-button"]}
+            >
+              <img
+                className={classes["delete-icon"]}
+                src={deleteIcon}
+              />
+            </button>
           </div>
         </div>
       )}

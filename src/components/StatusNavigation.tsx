@@ -22,18 +22,6 @@ export default function StatusNavigation({
 
   function handleClick(status: todoStatus) {
     setStatus(status);
-    setTodoList(
-      todoList.filter((item) => {
-        switch (status) {
-          case "all":
-            return item;
-          case "inWork":
-            return !item.isDone;
-          case "completed":
-            return item.isDone;
-        }
-      })
-    );
 
     (async () => {
       const fetchedData = await fetchTodoList(status);
@@ -43,13 +31,13 @@ export default function StatusNavigation({
 
   useEffect(() => {
     (async () => {
-      const fetchedTodoList = await fetchTodoList("all");
-      const todoItems = fetchedTodoList.data;
-      const allTasksQuantity = todoItems.length;
-      const inWorkTasksQuantity = todoItems.filter(
+      const fetchedData = await fetchTodoList("all");
+      const todoList = fetchedData.data;
+      const allTasksQuantity = todoList.length;
+      const inWorkTasksQuantity = todoList.filter(
         (item) => !item.isDone
       ).length;
-      const completedTasksQuantity = todoItems.filter(
+      const completedTasksQuantity = todoList.filter(
         (item) => item.isDone
       ).length;
 
@@ -59,7 +47,7 @@ export default function StatusNavigation({
         completedTasksQuantity,
       }));
     })();
-  }, []);
+  }, [todoList]);
 
   return (
     <nav className={classes["status-list-wrapper"]}>
