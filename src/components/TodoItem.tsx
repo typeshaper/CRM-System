@@ -35,6 +35,7 @@ export default function TodoItem({
   }
 
   function handleStatusButton() {
+    setIsEditing(false);
     setTodoList((prevTodoList) => {
       const newTodoList = structuredClone(prevTodoList);
       const index = newTodoList.findIndex((item) => item.id === id);
@@ -64,7 +65,7 @@ export default function TodoItem({
         <p className={isDone ? classes["text-done"] : ""}>{title}</p>
       )}
 
-      {isEditing && (
+      {isEditing && !isDone && (
         <EditTodo
           status={status}
           title={title}
@@ -76,18 +77,21 @@ export default function TodoItem({
 
       {!isEditing && (
         <div className={classes["icons-wrapper"]}>
-          <div className={classes["edit-icon-wrapper"]}>
-            <button
-              type="button"
-              onClick={handleEditButton}
-              className={classes["edit-button"]}
-            >
-              <img
-                src={editIcon}
-                className={classes["edit-icon"]}
-              />
-            </button>
-          </div>
+          {!isDone && (
+            <div className={classes["edit-icon-wrapper"]}>
+              <button
+                type="button"
+                onClick={handleEditButton}
+                className={classes["edit-button"]}
+                disabled={isDone}
+              >
+                <img
+                  src={editIcon}
+                  className={classes["edit-icon"]}
+                />
+              </button>
+            </div>
+          )}
 
           <div className={classes["delete-icon-wrapper"]}>
             <button
