@@ -45,7 +45,7 @@ export default function TodoItem({
 
     (async () => {
       await editTodo(id, { isDone: !isDone });
-      const fetchedData = await fetchTodoList(status);
+      const fetchedData = await fetchTodoList("all");
       setTodoList(fetchedData.data);
     })();
   }
