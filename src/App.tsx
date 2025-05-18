@@ -25,14 +25,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    async function getItems() {
+    (async () => {
       setIsFetching(true);
 
       const fetchedData = await fetchTodoList("all");
       setTodoList(fetchedData.data);
       setIsFetching(false);
-    }
-    getItems();
+    })();
   }, []);
 
   return (
