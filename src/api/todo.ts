@@ -4,7 +4,7 @@ import type {
   TodoInfo,
   TodoRequest,
   todoStatus,
-} from "../types";
+} from "../types/types";
 const BASE_URL = "https://easydev.club/api/v1/";
 
 export async function fetchTodoList(status: todoStatus) {

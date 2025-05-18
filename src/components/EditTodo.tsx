@@ -1,7 +1,7 @@
 import { isValidLength } from "../utility/validation";
 import useInput from "../hooks/useInput";
 import { editTodo } from "../api/todo";
-import type { Todo, todoStatus } from "../types";
+import type { Todo, todoStatus } from "../types/types";
 import { fetchTodoList } from "../api/todo";
 import classes from "./EditTodo.module.css";
 import saveIcon from "../assets/save.svg";

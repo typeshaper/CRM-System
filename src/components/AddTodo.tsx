@@ -1,5 +1,5 @@
 import classes from "./AddTodo.module.css";
-import type { Todo, todoStatus } from "../types";
+import type { Todo, todoStatus } from "../types/types";
 import { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import useInput from "../hooks/useInput";

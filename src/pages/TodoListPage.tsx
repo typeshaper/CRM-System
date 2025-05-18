@@ -1,7 +1,7 @@
 import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
 import { useEffect, useState } from "react";
-import type { Todo, todoStatus } from "../types";
+import type { Todo, todoStatus } from "../types/types";
 import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
 

@@ -1,4 +1,4 @@
-import type { Todo, todoStatus } from "../types";
+import type { Todo, todoStatus } from "../types/types";
 import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.svg";
 import isNotDone from "../assets/checkbox-undone.svg";

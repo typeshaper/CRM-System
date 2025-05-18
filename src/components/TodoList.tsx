@@ -1,6 +1,6 @@
 import TodoItem from "./TodoItem";
 import classes from "./TodoList.module.css";
-import type { Todo, todoStatus } from "../types";
+import type { Todo, todoStatus } from "../types/types";
 
 export default function TodoList({
   todoList,

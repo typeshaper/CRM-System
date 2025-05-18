@@ -1,4 +1,4 @@
-import type { todoStatus, Todo } from "../types";
+import type { todoStatus, Todo } from "../types/types";
 import classes from "./StatusNavigation.module.css";
 import { useEffect, useState } from "react";
 
