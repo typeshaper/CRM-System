@@ -1,0 +1,56 @@
+import AddTodo from "../components/AddTodo";
+import TodoList from "../components/TodoList";
+import { useEffect, useState } from "react";
+import type { Todo, todoStatus } from "../types";
+import { fetchTodoList } from "../api/todo";
+import StatusNavigation from "../components/StatusNavigation";
+
+export default function TodoListPage() {
+  const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [status, setStatus] = useState("all" as todoStatus);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      (async () => {
+        const fetchedData = await fetchTodoList("all");
+        setTodoList(fetchedData.data);
+      })();
+    }, 10000);
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      setIsFetching(true);
+
+      const fetchedData = await fetchTodoList("all");
+      setTodoList(fetchedData.data);
+      setIsFetching(false);
+    })();
+  }, []);
+
+  return (
+    <>
+      <AddTodo
+        status={status}
+        setTodoList={setTodoList}
+      />
+      <StatusNavigation
+        status={status}
+        setStatus={setStatus}
+        todoList={todoList}
+        setTodoList={setTodoList}
+      />
+      <TodoList
+        status={status}
+        todoList={todoList}
+        setTodoList={setTodoList}
+        isFetching={isFetching}
+      />
+    </>
+  );
+}
