@@ -1,23 +1,22 @@
 import { isValidLength } from "../utility/validation";
 import useInput from "../hooks/useInput";
 import { editTodo } from "../api/todo";
-import type { Todo, todoStatus } from "../types/types";
-import { fetchTodoList } from "../api/todo";
 import classes from "./EditTodo.module.css";
 import saveIcon from "../assets/save.svg";
 import undoIcon from "../assets/undo.svg";
+import type { todoStatus } from "../types/types";
 
 export default function EditTodo({
   title,
   id,
-  setTodoList,
   setIsEditing,
+  updateTasks,
   status,
 }: {
   title: string;
   id: number;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  updateTasks: (status: todoStatus) => void;
   status: todoStatus;
 }) {
   const {
@@ -27,32 +26,22 @@ export default function EditTodo({
     hasError: titleHasError,
   } = useInput(title, (value) => isValidLength(value));
 
-  function handleSubmit(
+  const handleSubmit = async (
     event:
       | React.SyntheticEvent<HTMLFormElement>
       | React.SyntheticEvent<HTMLButtonElement>
-  ) {
+  ) => {
     event.preventDefault();
     if (titleHasError) return;
 
-    setTodoList((prevTodoList) => {
-      const index = prevTodoList.findIndex((item) => item.id === id);
-      const newTodoList = structuredClone(prevTodoList);
-      newTodoList[index].title = titleValue;
-      return newTodoList;
-    });
-
+    await editTodo(id, { title: titleValue });
+    updateTasks(status);
     setIsEditing(false);
-    (async () => {
-      await editTodo(id, { title: titleValue });
-      const fetchedData = await fetchTodoList(status);
-      setTodoList(fetchedData.data);
-    })();
-  }
+  };
 
-  function handleUndoButton() {
+  const handleUndoButton = () => {
     setIsEditing(false);
-  }
+  };
 
   return (
     <form

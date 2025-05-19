@@ -1,16 +1,15 @@
 import classes from "./AddTodo.module.css";
-import type { Todo, todoStatus } from "../types/types";
 import { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import useInput from "../hooks/useInput";
 import { isValidLength } from "../utility/validation";
-import { fetchTodoList } from "../api/todo";
+import type { todoStatus } from "../types/types";
 
 export default function AddTodo({
-  setTodoList,
+  updateTasks,
   status,
 }: {
-  setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  updateTasks: (status: todoStatus) => void;
   status: todoStatus;
 }) {
   const [isUploadingTask, setIsUploadingTask] = useState(false);
@@ -23,33 +22,16 @@ export default function AddTodo({
     resetInput: resetTitle,
   } = useInput("", (value) => isValidLength(value));
 
-  function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (titleHasError || titleValue.length === 0) return;
+    setIsUploadingTask(true);
 
-    const title = titleValue;
-    (async () => {
-      setIsUploadingTask(true);
-      // Создает временную дамми тудушку чтобы был инста отклик
-      setTodoList((prev) => {
-        const newTodoList = structuredClone(prev);
-        newTodoList.push({
-          title: title,
-          id: 0,
-          isDone: false,
-          created: "",
-        });
-
-        return newTodoList;
-      });
-      resetTitle();
-      await createTodoItem(title);
-      // Подгружает уже реальные данные в стейт
-      const fetchedData = await fetchTodoList(status);
-      setTodoList(fetchedData.data);
-      setIsUploadingTask(false);
-    })();
-  }
+    resetTitle();
+    await createTodoItem(titleValue);
+    updateTasks(status);
+    setIsUploadingTask(false);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
