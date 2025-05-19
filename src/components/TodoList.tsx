@@ -6,21 +6,25 @@ export default function TodoList({
   status,
   updateTasks,
   todoList,
+  fetchingError,
 }: {
   status: todoStatus;
   updateTasks: (status: todoStatus) => void;
   todoList: Todo[];
+  fetchingError: string;
 }) {
   return (
     <ul className={classes.list}>
-      {todoList.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          updateTasks={updateTasks}
-          status={status}
-        />
-      ))}
+      {!fetchingError &&
+        todoList.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            updateTasks={updateTasks}
+            status={status}
+          />
+        ))}
+      {fetchingError && <p>{fetchingError}</p>}
     </ul>
   );
 }

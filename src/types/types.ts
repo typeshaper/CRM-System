@@ -1,8 +1,7 @@
 export interface TodoRequest {
   title?: string;
-  isDone?: boolean; // изменение статуса задачи происходит через этот флаг
+  isDone?: boolean;
 }
-// или так type TodoRequest = Partial<Omit<Todo, "id" | "created">>;
 
 export type todoStatus = "all" | "completed" | "inWork";
 

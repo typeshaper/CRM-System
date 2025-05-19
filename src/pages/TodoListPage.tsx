@@ -6,6 +6,7 @@ import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
 
 export default function TodoListPage() {
+  const [fetchingError, setFetchingError] = useState("");
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [status, setStatus] = useState("all" as todoStatus);
   const [tasksCounter, setTasksCounter] = useState({
@@ -15,12 +16,12 @@ export default function TodoListPage() {
   });
 
   const updateTaskCounter = async () => {
-    const allTasks = await fetchTodoList("all");
-    const allTasksCounter = allTasks.data.length;
-    const inWorkTasks = await fetchTodoList("inWork");
-    const inWorkTasksCounter = inWorkTasks.data.length;
-    const completedTasks = await fetchTodoList("completed");
-    const completedTasksCounter = completedTasks.data.length;
+    const taskCounters = await fetchTodoList("all");
+    if (taskCounters instanceof Error) return;
+    const allTasksCounter = taskCounters!.info!.all;
+    const inWorkTasksCounter = taskCounters!.info!.inWork;
+    const completedTasksCounter = taskCounters!.info!.completed;
+
     setTasksCounter(() => ({
       allTasksCounter,
       inWorkTasksCounter,
@@ -30,6 +31,11 @@ export default function TodoListPage() {
 
   const updateTasks = async (status: todoStatus) => {
     const fetchedData = await fetchTodoList(status);
+
+    if (fetchedData instanceof Error) {
+      setFetchingError(fetchedData.message);
+      return;
+    }
     setTodoList(fetchedData.data);
     updateTaskCounter();
   };
@@ -63,6 +69,7 @@ export default function TodoListPage() {
         status={status}
         todoList={todoList}
         updateTasks={updateTasks}
+        fetchingError={fetchingError}
       />
     </>
   );
