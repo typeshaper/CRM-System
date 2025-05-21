@@ -6,19 +6,21 @@ import saveIcon from "../assets/save.svg";
 import undoIcon from "../assets/undo.svg";
 import type { todoStatus } from "../types/types";
 
-export default function EditTodo({
-  title,
-  id,
-  setIsEditing,
-  updateTasks,
-  status,
-}: {
+interface EditTodoProps {
   title: string;
   id: number;
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  updateTasks: (status: todoStatus) => void;
   status: todoStatus;
-}) {
+  updateTasks: (status: todoStatus) => void;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const EditTodo = ({
+  title,
+  id,
+  status,
+  updateTasks,
+  setIsEditing,
+}: EditTodoProps) => {
   const {
     value: titleValue,
     handleInputBlur: handleTitleBlur,
@@ -26,11 +28,7 @@ export default function EditTodo({
     hasError: titleHasError,
   } = useInput(title, (value) => isValidLength(value));
 
-  const handleSubmit = async (
-    event:
-      | React.SyntheticEvent<HTMLFormElement>
-      | React.SyntheticEvent<HTMLButtonElement>
-  ) => {
+  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (titleHasError) return;
 
@@ -60,9 +58,8 @@ export default function EditTodo({
       <div className={classes["icons-wrapper"]}>
         <div className={classes["save-icon-wrapper"]}>
           <button
-            type="button"
-            onClick={handleSubmit}
-            className={classes["undo-button"]}
+            type="submit"
+            className={classes["save-button"]}
           >
             <img
               src={saveIcon}
@@ -91,4 +88,6 @@ export default function EditTodo({
       )}
     </form>
   );
-}
+};
+
+export default EditTodo;

@@ -5,7 +5,7 @@ import type { Todo, todoStatus } from "../types/types";
 import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
 
-export default function TodoListPage() {
+const TodoListPage = () => {
   const [fetchingError, setFetchingError] = useState("");
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [status, setStatus] = useState("all" as todoStatus);
@@ -73,4 +73,6 @@ export default function TodoListPage() {
       />
     </>
   );
-}
+};
+
+export default TodoListPage;

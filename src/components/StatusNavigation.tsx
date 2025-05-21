@@ -1,17 +1,19 @@
 import type { todoStatus, TasksCounter } from "../types/types";
 import classes from "./StatusNavigation.module.css";
 
-export default function StatusNavigation({
-  status,
-  setStatus,
-  tasksCounter,
-  updateTasks,
-}: {
-  setStatus: React.Dispatch<React.SetStateAction<todoStatus>>;
+interface StatusNavigationProps {
   status: todoStatus;
-  updateTasks: (status: todoStatus) => void;
   tasksCounter: TasksCounter;
-}) {
+  setStatus: React.Dispatch<React.SetStateAction<todoStatus>>;
+  updateTasks: (status: todoStatus) => void;
+}
+
+const StatusNavigation = ({
+  status,
+  tasksCounter,
+  setStatus,
+  updateTasks,
+}: StatusNavigationProps) => {
   const handleClick = (newStatus: todoStatus) => {
     setStatus(newStatus);
     updateTasks(newStatus);
@@ -44,4 +46,6 @@ export default function StatusNavigation({
       </ul>
     </nav>
   );
-}
+};
+
+export default StatusNavigation;

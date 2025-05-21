@@ -1,8 +1,8 @@
 import "./App.css";
 import TodoListPage from "./pages/TodoListPage";
 
-function App() {
+const App = () => {
   return <TodoListPage />;
-}
+};
 
 export default App;

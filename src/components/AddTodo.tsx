@@ -5,13 +5,12 @@ import useInput from "../hooks/useInput";
 import { isValidLength } from "../utility/validation";
 import type { todoStatus } from "../types/types";
 
-export default function AddTodo({
-  updateTasks,
-  status,
-}: {
+interface AddTodoProps {
   updateTasks: (status: todoStatus) => void;
   status: todoStatus;
-}) {
+}
+
+const AddTodo = ({ updateTasks, status }: AddTodoProps) => {
   const [isUploadingTask, setIsUploadingTask] = useState(false);
 
   const {
@@ -59,4 +58,6 @@ export default function AddTodo({
       </button>
     </form>
   );
-}
+};
+
+export default AddTodo;

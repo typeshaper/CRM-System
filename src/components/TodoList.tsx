@@ -2,29 +2,25 @@ import TodoItem from "./TodoItem";
 import classes from "./TodoList.module.css";
 import type { Todo, todoStatus } from "../types/types";
 
-export default function TodoList({
-  status,
-  updateTasks,
-  todoList,
-  fetchingError,
-}: {
+interface TodoListProps {
   status: todoStatus;
-  updateTasks: (status: todoStatus) => void;
   todoList: Todo[];
-  fetchingError: string;
-}) {
+  updateTasks: (status: todoStatus) => void;
+}
+
+const TodoList = ({ status, todoList, updateTasks }: TodoListProps) => {
   return (
     <ul className={classes.list}>
-      {!fetchingError &&
-        todoList.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            updateTasks={updateTasks}
-            status={status}
-          />
-        ))}
-      {fetchingError && <p>{fetchingError}</p>}
+      {todoList.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          updateTasks={updateTasks}
+          status={status}
+        />
+      ))}
     </ul>
   );
-}
+};
+
+export default TodoList;

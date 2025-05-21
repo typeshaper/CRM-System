@@ -8,15 +8,13 @@ import { deleteTodoItem, editTodo } from "../api/todo";
 import EditTodo from "./EditTodo";
 import { useState } from "react";
 
-export default function TodoItem({
-  todo,
-  updateTasks,
-  status,
-}: {
+interface TodoItemProps {
   todo: Todo;
   status: todoStatus;
   updateTasks: (status: todoStatus) => void;
-}) {
+}
+
+const TodoItem = ({ todo, status, updateTasks }: TodoItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const { title, isDone, id } = todo;
@@ -92,4 +90,6 @@ export default function TodoItem({
       )}
     </li>
   );
-}
+};
+
+export default TodoItem;
