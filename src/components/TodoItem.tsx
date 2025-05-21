@@ -46,7 +46,7 @@ const TodoItem = ({ todo, status, updateTasks }: TodoItemProps) => {
         <p className={isDone ? classes["text-done"] : ""}>{title}</p>
       )}
 
-      {isEditing && !isDone && (
+      {isEditing && (
         <EditTodo
           status={status}
           title={title}
@@ -58,21 +58,18 @@ const TodoItem = ({ todo, status, updateTasks }: TodoItemProps) => {
 
       {!isEditing && (
         <div className={classes["icons-wrapper"]}>
-          {!isDone && (
-            <div className={classes["edit-icon-wrapper"]}>
-              <button
-                type="button"
-                onClick={handleEditButton}
-                className={classes["edit-button"]}
-                disabled={isDone}
-              >
-                <img
-                  src={editIcon}
-                  className={classes["edit-icon"]}
-                />
-              </button>
-            </div>
-          )}
+          <div className={classes["edit-icon-wrapper"]}>
+            <button
+              type="button"
+              onClick={handleEditButton}
+              className={classes["edit-button"]}
+            >
+              <img
+                src={editIcon}
+                className={classes["edit-icon"]}
+              />
+            </button>
+          </div>
 
           <div className={classes["delete-icon-wrapper"]}>
             <button
