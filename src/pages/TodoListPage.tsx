@@ -6,7 +6,6 @@ import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
 
 const TodoListPage = () => {
-  const [fetchingError, setFetchingError] = useState("");
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [status, setStatus] = useState("all" as todoStatus);
   const [tasksCounter, setTasksCounter] = useState({
@@ -32,12 +31,10 @@ const TodoListPage = () => {
   const updateTasks = async (status: todoStatus) => {
     const fetchedData = await fetchTodoList(status);
 
-    if (fetchedData instanceof Error) {
-      setFetchingError(fetchedData.message);
-      return;
+    if (fetchedData instanceof Error === false) {
+      setTodoList(fetchedData.data);
+      updateTaskCounter();
     }
-    setTodoList(fetchedData.data);
-    updateTaskCounter();
   };
 
   useEffect(() => {
@@ -69,7 +66,6 @@ const TodoListPage = () => {
         status={status}
         todoList={todoList}
         updateTasks={updateTasks}
-        fetchingError={fetchingError}
       />
     </>
   );
