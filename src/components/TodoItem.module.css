@@ -1,0 +1,69 @@
+.text-done {
+  text-decoration: line-through;
+}
+
+.todo-item {
+  background-color: #fff;
+
+  border: 2px solid var(--main-color);
+  border-radius: var(--main-border-radius);
+
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  padding: 0.7rem;
+  max-width: 100%;
+}
+
+.task-status-icon {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+.icons-wrapper {
+  display: flex;
+  margin-left: auto;
+  gap: 0.5rem;
+  flex: 0 0 fit-content;
+}
+
+.delete-icon-wrapper,
+.edit-icon-wrapper {
+  border-radius: 8px;
+  padding: 0;
+  margin: 0;
+  height: fit-content;
+  width: fit-content;
+  cursor: pointer;
+  display: flex;
+}
+
+.delete-button,
+.edit-button {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.delete-icon,
+.edit-icon {
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.delete-icon-wrapper {
+  background-color: #ff665c;
+}
+
+.delete-icon-wrapper:hover {
+  background-color: #e85e54;
+}
+
+.edit-icon-wrapper {
+  background-color: #5693ff;
+}
+.edit-icon-wrapper:hover {
+  background-color: #4d85e6;
+}

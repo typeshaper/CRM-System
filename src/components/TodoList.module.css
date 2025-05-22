@@ -1,0 +1,13 @@
+.list {
+  min-width: 65ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.fetching-message {
+  position: absolute;
+  top: -15px;
+}
