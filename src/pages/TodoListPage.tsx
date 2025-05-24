@@ -31,7 +31,7 @@ const TodoListPage = () => {
 
   useEffect(() => {
     updateTasks(status);
-  }, [status]);
+  }, []);
 
   return (
     <>
