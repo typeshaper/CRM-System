@@ -38,15 +38,6 @@ const TodoListPage = () => {
   };
 
   useEffect(() => {
-    const timerId = setInterval(() => {
-      updateTasks(status);
-    }, 5000);
-    return () => {
-      clearInterval(timerId);
-    };
-  }, [status]);
-
-  useEffect(() => {
     updateTasks(status);
   }, [status]);
 
