@@ -17,8 +17,10 @@ const TodoListPage = () => {
   const updateTasks = async (status: TodoStatus) => {
     try {
       const fetchedData = await fetchTodoList(status);
-      if (fetchedData instanceof Error === false && fetchedData.info) {
+      if (fetchedData instanceof Error === false) {
         setTodoList(fetchedData.data);
+      }
+      if (fetchedData instanceof Error === false && fetchedData.info) {
         setTodoListInfo(fetchedData.info);
       }
     } catch (error) {
