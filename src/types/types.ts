@@ -3,7 +3,7 @@ export interface TodoRequest {
   isDone?: boolean;
 }
 
-export type todoStatus = "all" | "completed" | "inWork";
+export type TodoStatus = "all" | "completed" | "inWork";
 
 export interface Todo {
   id: number;

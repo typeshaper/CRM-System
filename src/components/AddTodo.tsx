@@ -3,11 +3,11 @@ import { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import useInput from "../hooks/useInput";
 import { isValidLength } from "../utility/validation";
-import type { todoStatus } from "../types/types";
+import type { TodoStatus } from "../types/types";
 
 interface AddTodoProps {
-  updateTasks: (status: todoStatus) => void;
-  status: todoStatus;
+  updateTasks: (status: TodoStatus) => void;
+  status: TodoStatus;
 }
 
 const AddTodo = ({ updateTasks, status }: AddTodoProps) => {

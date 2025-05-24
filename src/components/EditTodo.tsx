@@ -4,13 +4,13 @@ import { editTodo } from "../api/todo";
 import classes from "./EditTodo.module.css";
 import saveIcon from "../assets/save.svg";
 import undoIcon from "../assets/undo.svg";
-import type { todoStatus } from "../types/types";
+import type { TodoStatus } from "../types/types";
 
 interface EditTodoProps {
   title: string;
   id: number;
-  status: todoStatus;
-  updateTasks: (status: todoStatus) => void;
+  status: TodoStatus;
+  updateTasks: (status: TodoStatus) => void;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

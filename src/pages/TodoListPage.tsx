@@ -1,13 +1,13 @@
 import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
 import { useEffect, useState } from "react";
-import type { Todo, todoStatus } from "../types/types";
+import type { Todo, TodoStatus } from "../types/types";
 import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
 
 const TodoListPage = () => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
-  const [status, setStatus] = useState("all" as todoStatus);
+  const [status, setStatus] = useState<TodoStatus>("all");
   const [tasksCounter, setTasksCounter] = useState({
     allTasksCounter: 0,
     inWorkTasksCounter: 0,
@@ -28,7 +28,7 @@ const TodoListPage = () => {
     }));
   };
 
-  const updateTasks = async (status: todoStatus) => {
+  const updateTasks = async (status: TodoStatus) => {
     const fetchedData = await fetchTodoList(status);
 
     if (fetchedData instanceof Error === false) {

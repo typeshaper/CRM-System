@@ -1,4 +1,4 @@
-import type { Todo, todoStatus } from "../types/types";
+import type { Todo, TodoStatus } from "../types/types";
 import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.svg";
 import isNotDone from "../assets/checkbox-undone.svg";
@@ -10,8 +10,8 @@ import { useState } from "react";
 
 interface TodoItemProps {
   todo: Todo;
-  status: todoStatus;
-  updateTasks: (status: todoStatus) => void;
+  status: TodoStatus;
+  updateTasks: (status: TodoStatus) => void;
 }
 
 const TodoItem = ({ todo, status, updateTasks }: TodoItemProps) => {

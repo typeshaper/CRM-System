@@ -1,11 +1,11 @@
 import TodoItem from "./TodoItem";
 import classes from "./TodoList.module.css";
-import type { Todo, todoStatus } from "../types/types";
+import type { Todo, TodoStatus } from "../types/types";
 
 interface TodoListProps {
-  status: todoStatus;
+  status: TodoStatus;
   todoList: Todo[];
-  updateTasks: (status: todoStatus) => void;
+  updateTasks: (status: TodoStatus) => void;
 }
 
 const TodoList = ({ status, todoList, updateTasks }: TodoListProps) => {
