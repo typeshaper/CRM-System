@@ -25,9 +25,3 @@ export interface MetaResponse<T, N> {
     totalAmount: number;
   };
 }
-
-export interface TasksCounter {
-  allTasksCounter: number;
-  inWorkTasksCounter: number;
-  completedTasksCounter: number;
-}

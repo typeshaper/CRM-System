@@ -1,16 +1,16 @@
-import type { TodoStatus, TasksCounter } from "../types/types";
+import type { TodoInfo, TodoStatus } from "../types/types";
 import classes from "./StatusNavigation.module.css";
 
 interface StatusNavigationProps {
   status: TodoStatus;
-  tasksCounter: TasksCounter;
+  todoListInfo: TodoInfo;
   setStatus: React.Dispatch<React.SetStateAction<TodoStatus>>;
   updateTasks: (status: TodoStatus) => void;
 }
 
 const StatusNavigation = ({
   status,
-  tasksCounter,
+  todoListInfo,
   setStatus,
   updateTasks,
 }: StatusNavigationProps) => {
@@ -27,21 +27,21 @@ const StatusNavigation = ({
           ${status === "all" && classes["active"]}`}
           onClick={() => handleClick("all")}
         >
-          All ({tasksCounter.allTasksCounter})
+          All ({todoListInfo.all})
         </li>
         <li
           className={`${classes["status-list-item"]} 
           ${status === "inWork" && classes["active"]}`}
           onClick={() => handleClick("inWork")}
         >
-          In work ({tasksCounter.inWorkTasksCounter})
+          In work ({todoListInfo.inWork})
         </li>
         <li
           className={`${classes["status-list-item"]} 
           ${status === "completed" && classes["active"]}`}
           onClick={() => handleClick("completed")}
         >
-          Completed ({tasksCounter.completedTasksCounter})
+          Completed ({todoListInfo.completed})
         </li>
       </ul>
     </nav>

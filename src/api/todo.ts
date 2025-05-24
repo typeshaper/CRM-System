@@ -3,13 +3,13 @@ import type {
   Todo,
   TodoInfo,
   TodoRequest,
-  TodoStatus,
+  todoStatus,
 } from "../types/types";
 
 const BASE_URL = "https://easydev.club/api/v1/";
 
 export async function fetchTodoList(
-  status: TodoStatus
+  status: todoStatus
 ): Promise<MetaResponse<Todo, TodoInfo> | Error> {
   try {
     const response: Response = await fetch(
