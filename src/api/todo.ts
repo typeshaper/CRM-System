@@ -9,7 +9,7 @@ import type {
 const BASE_URL = "https://easydev.club/api/v1/";
 
 export async function fetchTodoList(
-  status: TodoStatus = "all"
+  status: TodoStatus
 ): Promise<MetaResponse<Todo, TodoInfo> | Error> {
   try {
     const response: Response = await fetch(
