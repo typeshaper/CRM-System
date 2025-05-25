@@ -67,3 +67,74 @@
 .edit-icon-wrapper:hover {
   background-color: #4d85e6;
 }
+
+.validation-error {
+  position: absolute;
+  color: red;
+  bottom: 5px;
+  font-size: 12px;
+}
+
+.edit-form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-width: 5px;
+  /* padding: 0 0 2rem 0; */
+  position: relative;
+  display: flex;
+}
+
+.edit-input:focus,
+.edit-input {
+  width: 90%;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+
+.icons-wrapper {
+  display: flex;
+  margin-left: auto;
+  gap: 0.5rem;
+  flex: 0 0 fit-content;
+}
+
+.undo-icon-wrapper,
+.save-icon-wrapper {
+  border-radius: 8px;
+  padding: 0;
+  margin: 0;
+  height: fit-content;
+  width: fit-content;
+  cursor: pointer;
+  display: flex;
+}
+
+.undo-button,
+.save-button {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.undo-icon,
+.save-icon {
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.undo-icon-wrapper {
+  background-color: #aa2f26;
+}
+
+.undo-icon-wrapper:hover {
+  background-color: #84251e;
+}
+
+.save-icon-wrapper {
+  background-color: #338876;
+}
+.save-icon-wrapper:hover {
+  background-color: #286c5d;
+}

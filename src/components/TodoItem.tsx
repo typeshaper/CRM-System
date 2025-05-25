@@ -1,11 +1,13 @@
 import type { Todo } from "../types/types";
+import saveIcon from "../assets/save.svg";
+import undoIcon from "../assets/undo.svg";
 import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.svg";
 import isNotDone from "../assets/checkbox-undone.svg";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
 import { deleteTodoItem, editTodo } from "../api/todo";
-import EditTodo from "./EditTodo";
+import { hasValidTodoTitle } from "../utility/validation";
 import { useState } from "react";
 
 interface TodoItemProps {
@@ -14,13 +16,24 @@ interface TodoItemProps {
 }
 
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-
   const { title, isDone, id } = todo;
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTitleValue, setNewTitleValue] = useState<string>(title);
+  const [didEdit, setDidEdit] = useState<boolean>(false);
+  const isValidTitle = hasValidTodoTitle(newTitleValue);
 
   const handleDeleteButton = async () => {
     await deleteTodoItem(id);
     updateTasks();
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitleValue(event.target.value);
+    setDidEdit(false);
+  };
+
+  const handleBlur = () => {
+    setDidEdit(true);
   };
 
   const handleStatusButton = async () => {
@@ -30,28 +43,82 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   const handleEditButton = () => {
-    setIsEditing((isEditing) => !isEditing);
+    setIsEditing(true);
+  };
+
+  const handleSave = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!isValidTitle) return;
+
+    await editTodo(id, { title: newTitleValue });
+    updateTasks();
+    setIsEditing(false);
+  };
+
+  const handleUndoButton = () => {
+    setIsEditing(false);
   };
 
   return (
     <li className={classes["todo-item"]}>
-      <img
-        onClick={handleStatusButton}
-        className={classes["task-status-icon"]}
-        src={isDone ? isDoneIcon : isNotDone}
-      />
+      <button>
+        <img
+          onClick={handleStatusButton}
+          className={classes["task-status-icon"]}
+          src={isDone ? isDoneIcon : isNotDone}
+        />
+      </button>
 
       {!isEditing && (
         <p className={isDone ? classes["text-done"] : ""}>{title}</p>
       )}
 
       {isEditing && (
-        <EditTodo
-          title={title}
-          id={id}
-          setIsEditing={setIsEditing}
-          updateTasks={updateTasks}
-        />
+        <form
+          onSubmit={handleSave}
+          className={classes["edit-form"]}
+        >
+          <input
+            className={classes["edit-input"]}
+            type="text"
+            name="title"
+            value={newTitleValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+
+          <div className={classes["icons-wrapper"]}>
+            <div className={classes["save-icon-wrapper"]}>
+              <button
+                type="submit"
+                className={classes["save-button"]}
+              >
+                <img
+                  src={saveIcon}
+                  className={classes["save-icon"]}
+                />
+              </button>
+            </div>
+
+            <div className={classes["undo-icon-wrapper"]}>
+              <button
+                type="button"
+                onClick={handleUndoButton}
+                className={classes["undo-button"]}
+              >
+                <img
+                  className={classes["undo-icon"]}
+                  src={undoIcon}
+                />
+              </button>
+            </div>
+          </div>
+          {!isValidTitle && didEdit && (
+            <p className={classes["validation-error"]}>
+              Title must be between 2 and 64 characters long!
+            </p>
+          )}
+        </form>
       )}
 
       {!isEditing && (
