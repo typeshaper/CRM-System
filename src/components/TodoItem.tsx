@@ -1,14 +1,14 @@
 import type { Todo } from "../types/types";
+import { deleteTodoItem, editTodo } from "../api/todo";
+import { hasValidTodoTitle } from "../utility/validation";
+import { useState } from "react";
+import classes from "./TodoItem.module.css";
 import saveIcon from "../assets/save.svg";
 import undoIcon from "../assets/undo.svg";
-import classes from "./TodoItem.module.css";
 import isDoneIcon from "../assets/checkbox-done.svg";
 import isNotDone from "../assets/checkbox-undone.svg";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/edit.svg";
-import { deleteTodoItem, editTodo } from "../api/todo";
-import { hasValidTodoTitle } from "../utility/validation";
-import { useState } from "react";
 
 interface TodoItemProps {
   todo: Todo;
@@ -18,8 +18,8 @@ interface TodoItemProps {
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { title, isDone, id } = todo;
   const [isEditing, setIsEditing] = useState(false);
-  const [newTitleValue, setNewTitleValue] = useState<string>(title);
   const [didEdit, setDidEdit] = useState<boolean>(false);
+  const [newTitleValue, setNewTitleValue] = useState<string>(title);
   const isValidTitle = hasValidTodoTitle(newTitleValue);
 
   const handleDeleteButton = async () => {
@@ -61,7 +61,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
 
   return (
     <li className={classes["todo-item"]}>
-      <button>
+      <button className={classes["task-status-button"]}>
         <img
           onClick={handleStatusButton}
           className={classes["task-status-icon"]}

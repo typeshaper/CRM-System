@@ -21,6 +21,7 @@
   width: 24px;
   cursor: pointer;
 }
+
 .icons-wrapper {
   display: flex;
   margin-left: auto;
@@ -28,6 +29,8 @@
   flex: 0 0 fit-content;
 }
 
+.undo-icon-wrapper,
+.save-icon-wrapper,
 .delete-icon-wrapper,
 .edit-icon-wrapper {
   border-radius: 8px;
@@ -39,15 +42,20 @@
   display: flex;
 }
 
+.undo-button,
+.save-button,
 .delete-button,
-.edit-button {
+.edit-button,
+.task-status-button {
   background: none;
   border: none;
   padding: 0;
 }
 
 .delete-icon,
-.edit-icon {
+.edit-icon,
+.undo-icon,
+.save-icon {
   border: none;
   padding: 0.3rem;
   cursor: pointer;
@@ -66,6 +74,21 @@
 }
 .edit-icon-wrapper:hover {
   background-color: #4d85e6;
+}
+
+.undo-icon-wrapper {
+  background-color: #aa2f26;
+}
+
+.undo-icon-wrapper:hover {
+  background-color: #84251e;
+}
+
+.save-icon-wrapper {
+  background-color: #338876;
+}
+.save-icon-wrapper:hover {
+  background-color: #286c5d;
 }
 
 .validation-error {
@@ -90,51 +113,4 @@
   width: 90%;
   outline: none;
   border-bottom: 1px solid black;
-}
-
-.icons-wrapper {
-  display: flex;
-  margin-left: auto;
-  gap: 0.5rem;
-  flex: 0 0 fit-content;
-}
-
-.undo-icon-wrapper,
-.save-icon-wrapper {
-  border-radius: 8px;
-  padding: 0;
-  margin: 0;
-  height: fit-content;
-  width: fit-content;
-  cursor: pointer;
-  display: flex;
-}
-
-.undo-button,
-.save-button {
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-.undo-icon,
-.save-icon {
-  border: none;
-  padding: 0.3rem;
-  cursor: pointer;
-}
-
-.undo-icon-wrapper {
-  background-color: #aa2f26;
-}
-
-.undo-icon-wrapper:hover {
-  background-color: #84251e;
-}
-
-.save-icon-wrapper {
-  background-color: #338876;
-}
-.save-icon-wrapper:hover {
-  background-color: #286c5d;
 }
