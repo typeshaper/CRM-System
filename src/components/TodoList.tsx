@@ -1,14 +1,13 @@
 import TodoItem from "./TodoItem";
 import classes from "./TodoList.module.css";
-import type { Todo, TodoStatus } from "../types/types";
+import type { Todo } from "../types/types";
 
 interface TodoListProps {
-  status: TodoStatus;
   todoList: Todo[];
-  updateTasks: (status: TodoStatus) => void;
+  updateTasks: () => void;
 }
 
-const TodoList = ({ status, todoList, updateTasks }: TodoListProps) => {
+const TodoList = ({ todoList, updateTasks }: TodoListProps) => {
   return (
     <ul className={classes.list}>
       {todoList.map((todo) => (
@@ -16,7 +15,6 @@ const TodoList = ({ status, todoList, updateTasks }: TodoListProps) => {
           key={todo.id}
           todo={todo}
           updateTasks={updateTasks}
-          status={status}
         />
       ))}
     </ul>

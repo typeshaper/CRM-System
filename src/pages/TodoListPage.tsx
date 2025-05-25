@@ -14,7 +14,7 @@ const TodoListPage = () => {
     inWork: 0,
   });
 
-  const updateTasks = async (status: TodoStatus) => {
+  const updateTasks = async () => {
     try {
       const fetchedData = await fetchTodoList(status);
       if (fetchedData instanceof Error === false) {
@@ -29,20 +29,18 @@ const TodoListPage = () => {
   };
 
   useEffect(() => {
-    updateTasks(status);
-  }, []);
+    updateTasks();
+  }, [status]);
 
   return (
     <>
-      <AddTodo updateTasks={() => updateTasks(status)} />
+      <AddTodo updateTasks={updateTasks} />
       <StatusNavigation
-        status={status}
         setStatus={setStatus}
-        updateTasks={updateTasks}
         todoListInfo={todoListInfo}
+        status={status}
       />
       <TodoList
-        status={status}
         todoList={todoList}
         updateTasks={updateTasks}
       />

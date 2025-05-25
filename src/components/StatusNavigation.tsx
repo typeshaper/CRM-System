@@ -2,21 +2,18 @@ import type { TodoInfo, TodoStatus } from "../types/types";
 import classes from "./StatusNavigation.module.css";
 
 interface StatusNavigationProps {
-  status: TodoStatus;
   todoListInfo: TodoInfo;
   setStatus: React.Dispatch<React.SetStateAction<TodoStatus>>;
-  updateTasks: (status: TodoStatus) => void;
+  status: TodoStatus;
 }
 
 const StatusNavigation = ({
-  status,
   todoListInfo,
   setStatus,
-  updateTasks,
+  status,
 }: StatusNavigationProps) => {
   const handleClick = (newStatus: TodoStatus) => {
     setStatus(newStatus);
-    updateTasks(newStatus);
   };
 
   return (

@@ -8,18 +8,11 @@ import type { TodoStatus } from "../types/types";
 interface EditTodoProps {
   title: string;
   id: number;
-  status: TodoStatus;
-  updateTasks: (status: TodoStatus) => void;
+  updateTasks: () => void;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EditTodo = ({
-  title,
-  id,
-  status,
-  updateTasks,
-  setIsEditing,
-}: EditTodoProps) => {
+const EditTodo = ({ title, id, updateTasks, setIsEditing }: EditTodoProps) => {
   // const {
   //   value: titleValue,
   //   handleInputBlur: handleTitleBlur,
@@ -32,7 +25,7 @@ const EditTodo = ({
     // if (titleHasError) return;
 
     // await editTodo(id, { title: titleValue });
-    updateTasks(status);
+    updateTasks();
     setIsEditing(false);
   };
 
