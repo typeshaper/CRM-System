@@ -3,7 +3,6 @@ import { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import useInput from "../hooks/useInput";
 import { isValidLength } from "../utility/validation";
-import type { TodoStatus } from "../types/types";
 
 interface AddTodoProps {
   updateTasks: () => void;
