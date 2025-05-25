@@ -1,7 +1,6 @@
 import classes from "./AddTodo.module.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { createTodoItem } from "../api/todo";
-import useInput from "../hooks/useInput";
 import { hasValidTodoTitle } from "../utility/validation";
 
 interface AddTodoProps {
@@ -9,25 +8,32 @@ interface AddTodoProps {
 }
 
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
-  const [isUploadingTask, setIsUploadingTask] = useState(false);
+  const [isUploadingTask, setIsUploadingTask] = useState<boolean>(false);
+  const [titleValue, setTitleValue] = useState<string>("");
+  const [didEdit, setDidEdit] = useState<boolean>(false);
+  const isValidTitle = hasValidTodoTitle(titleValue);
 
-  const {
-    value: titleValue,
-    handleInputBlur: handleTitleBlur,
-    handleInputChange: handleTitleChange,
-    hasError: titleHasError,
-    resetInput: resetTitle,
-  } = useInput("", (value) => hasValidTodoTitle(value));
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleValue(event.target.value);
+    setDidEdit(false);
+  };
+
+  const handleBlur = () => {
+    setDidEdit(true);
+  };
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (titleHasError || titleValue.length === 0) return;
+    if (!isValidTitle) {
+      return;
+    }
+    setDidEdit(false);
     setIsUploadingTask(true);
 
     try {
       await createTodoItem(titleValue);
-      resetTitle();
       updateTasks();
+      setTitleValue("");
     } catch (error) {
       //
     }
@@ -41,10 +47,10 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
         placeholder="Enter your task..."
         name="title"
         value={titleValue}
-        onChange={handleTitleChange}
-        onBlur={handleTitleBlur}
+        onChange={handleChange}
+        onBlur={handleBlur}
       />
-      {titleHasError && (
+      {!isValidTitle && didEdit && (
         <p className={classes["validation-error"]}>
           Title must be between 2 and 64 characters long!
         </p>

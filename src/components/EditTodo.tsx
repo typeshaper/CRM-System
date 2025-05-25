@@ -1,5 +1,4 @@
 import { hasValidTodoTitle } from "../utility/validation";
-import useInput from "../hooks/useInput";
 import { editTodo } from "../api/todo";
 import classes from "./EditTodo.module.css";
 import saveIcon from "../assets/save.svg";
@@ -21,18 +20,18 @@ const EditTodo = ({
   updateTasks,
   setIsEditing,
 }: EditTodoProps) => {
-  const {
-    value: titleValue,
-    handleInputBlur: handleTitleBlur,
-    handleInputChange: handleTitleChange,
-    hasError: titleHasError,
-  } = useInput(title, (value) => hasValidTodoTitle(value));
+  // const {
+  //   value: titleValue,
+  //   handleInputBlur: handleTitleBlur,
+  //   handleInputChange: handleTitleChange,
+  //   hasError: titleHasError,
+  // } = useInput(title, (value) => hasValidTodoTitle(value));
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (titleHasError) return;
+    // if (titleHasError) return;
 
-    await editTodo(id, { title: titleValue });
+    // await editTodo(id, { title: titleValue });
     updateTasks(status);
     setIsEditing(false);
   };
@@ -50,9 +49,9 @@ const EditTodo = ({
         className={classes["edit-input"]}
         type="text"
         name="title"
-        value={titleValue}
-        onChange={handleTitleChange}
-        onBlur={handleTitleBlur}
+        // value={titleValue}
+        // onChange={handleTitleChange}
+        // onBlur={handleTitleBlur}
       />
 
       <div className={classes["icons-wrapper"]}>
@@ -81,11 +80,11 @@ const EditTodo = ({
           </button>
         </div>
       </div>
-      {titleHasError && (
-        <p className={classes["validation-error"]}>
-          Title must be between 2 and 64 characters long!
-        </p>
-      )}
+      {/* {titleHasError && ( */}
+      <p className={classes["validation-error"]}>
+        Title must be between 2 and 64 characters long!
+      </p>
+      {/* )} */}
     </form>
   );
 };
