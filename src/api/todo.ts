@@ -10,7 +10,7 @@ const BASE_URL = "https://easydev.club/api/v1/";
 
 export async function fetchTodoList(
   status: TodoStatus
-): Promise<MetaResponse<Todo, TodoInfo> | Error> {
+): Promise<MetaResponse<Todo, TodoInfo>> {
   try {
     const response: Response = await fetch(
       `${BASE_URL}todos?filter=${status}`,
@@ -41,6 +41,14 @@ export async function createTodoItem(title: string) {
       },
     });
 
+    if (response.status === 400) {
+      throw new Error("Invalid request body or missing/incorrect fields.");
+    }
+
+    if (response.status === 500) {
+      throw new Error("Internal server error.");
+    }
+
     const resData: Todo = await response.json();
     return resData;
   } catch (error: unknown) {
@@ -53,6 +61,17 @@ export async function deleteTodoItem(id: number) {
     const response: Response = await fetch(`${BASE_URL}todos/${id}`, {
       method: "DELETE",
     });
+    if (response.status === 404) {
+      throw new Error("Could not find task");
+    }
+
+    if (response.status === 400) {
+      throw new Error("Invalid or missing task id");
+    }
+
+    if (response.status === 500) {
+      throw new Error("Internal server error");
+    }
 
     return response;
   } catch (error: unknown) {
@@ -69,8 +88,22 @@ export async function editTodo(id: number, taskData: TodoRequest) {
         "Content-Type": "application/json",
       },
     });
-    const resData: Todo = await response.json();
 
+    if (response.status === 400) {
+      throw new Error(
+        "Invalid request body, missing/incorrect fields, or invalid ID."
+      );
+    }
+
+    if (response.status === 404) {
+      throw new Error("Task not found.");
+    }
+
+    if (response.status === 500) {
+      throw new Error("Internal server error");
+    }
+
+    const resData: Todo = await response.json();
     return resData;
   } catch (error: unknown) {
     throw error as Error;

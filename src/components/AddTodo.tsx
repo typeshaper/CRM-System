@@ -8,6 +8,7 @@ interface AddTodoProps {
 }
 
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
+  const [addingTaskError, setAddingTaskError] = useState<Error>();
   const [isUploadingTask, setIsUploadingTask] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useState<string>("");
   const [didEdit, setDidEdit] = useState<boolean>(false);
@@ -35,7 +36,9 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       updateTasks();
       setTitleValue("");
     } catch (error) {
-      //
+      if (error instanceof Error) {
+        setAddingTaskError(error);
+      }
     }
     setIsUploadingTask(false);
   };
@@ -51,7 +54,10 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
         onBlur={handleBlur}
         disabled={isUploadingTask}
       />
-      {!isValidTitle && didEdit && (
+      {addingTaskError && (
+        <p className={classes["validation-error"]}>{addingTaskError.message}</p>
+      )}
+      {!isValidTitle && didEdit && addingTaskError && (
         <p className={classes["validation-error"]}>
           Title must be between 2 and 64 characters long!
         </p>

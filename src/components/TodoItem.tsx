@@ -17,14 +17,22 @@ interface TodoItemProps {
 
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { title, isDone, id } = todo;
+  const [editingError, setEditingError] = useState<Error>();
   const [isEditing, setIsEditing] = useState(false);
   const [didEdit, setDidEdit] = useState<boolean>(false);
   const [newTitleValue, setNewTitleValue] = useState<string>(title);
   const isValidTitle = hasValidTodoTitle(newTitleValue);
 
   const handleDeleteButton = async () => {
-    await deleteTodoItem(id);
-    updateTasks();
+    try {
+      await deleteTodoItem(id);
+      updateTasks();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+      updateTasks();
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,9 +45,15 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   const handleStatusButton = async () => {
-    await editTodo(id, { isDone: !isDone });
-    setIsEditing(false);
-    updateTasks();
+    try {
+      await editTodo(id, { isDone: !isDone });
+      setIsEditing(false);
+      updateTasks();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
   };
 
   const handleEditButton = () => {
@@ -49,10 +63,15 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const handleSave = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isValidTitle) return;
-
-    await editTodo(id, { title: newTitleValue });
-    updateTasks();
-    setIsEditing(false);
+    try {
+      await editTodo(id, { title: newTitleValue });
+      updateTasks();
+      setIsEditing(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        setEditingError(error);
+      }
+    }
   };
 
   const handleUndoButton = () => {
@@ -69,6 +88,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
         />
       </button>
 
+      {editingError && <p>{editingError.message}</p>}
       {!isEditing && (
         <p className={isDone ? classes["text-done"] : ""}>{title}</p>
       )}
