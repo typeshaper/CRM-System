@@ -6,6 +6,7 @@ import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
 
 const TodoListPage = () => {
+  const [fetchingError, setFetchingError] = useState<Error>();
   const [status, setStatus] = useState<TodoStatus>("all");
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [todoListInfo, setTodoListInfo] = useState<TodoInfo>({
@@ -24,7 +25,9 @@ const TodoListPage = () => {
         setTodoListInfo(fetchedData.info);
       }
     } catch (error) {
-      //
+      if (error instanceof Error) {
+        setFetchingError(error);
+      }
     }
   };
 
@@ -44,6 +47,7 @@ const TodoListPage = () => {
         todoList={todoList}
         updateTasks={updateTasks}
       />
+      {fetchingError && <p>Failed to fetch to-do list...</p>}
     </>
   );
 };
