@@ -1,4 +1,4 @@
-import { isValidLength } from "../utility/validation";
+import { hasValidTodoTitle } from "../utility/validation";
 import useInput from "../hooks/useInput";
 import { editTodo } from "../api/todo";
 import classes from "./EditTodo.module.css";
@@ -26,7 +26,7 @@ const EditTodo = ({
     handleInputBlur: handleTitleBlur,
     handleInputChange: handleTitleChange,
     hasError: titleHasError,
-  } = useInput(title, (value) => isValidLength(value));
+  } = useInput(title, (value) => hasValidTodoTitle(value));
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();

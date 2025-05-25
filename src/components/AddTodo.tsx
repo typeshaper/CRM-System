@@ -2,7 +2,7 @@ import classes from "./AddTodo.module.css";
 import { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import useInput from "../hooks/useInput";
-import { isValidLength } from "../utility/validation";
+import { hasValidTodoTitle } from "../utility/validation";
 
 interface AddTodoProps {
   updateTasks: () => void;
@@ -17,7 +17,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
     handleInputChange: handleTitleChange,
     hasError: titleHasError,
     resetInput: resetTitle,
-  } = useInput("", (value) => isValidLength(value));
+  } = useInput("", (value) => hasValidTodoTitle(value));
 
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
