@@ -49,6 +49,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
         value={titleValue}
         onChange={handleChange}
         onBlur={handleBlur}
+        disabled={isUploadingTask}
       />
       {!isValidTitle && didEdit && (
         <p className={classes["validation-error"]}>
@@ -61,6 +62,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       <button
         className={classes["add-task-button"]}
         type="submit"
+        disabled={isUploadingTask}
       >
         Add
       </button>
