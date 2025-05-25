@@ -57,7 +57,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       {addingTaskError && (
         <p className={classes["validation-error"]}>{addingTaskError.message}</p>
       )}
-      {!isValidTitle && didEdit && addingTaskError && (
+      {!isValidTitle && didEdit && (
         <p className={classes["validation-error"]}>
           Title must be between 2 and 64 characters long!
         </p>
