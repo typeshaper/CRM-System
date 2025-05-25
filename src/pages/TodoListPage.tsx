@@ -34,10 +34,7 @@ const TodoListPage = () => {
 
   return (
     <>
-      <AddTodo
-        status={status}
-        updateTasks={updateTasks}
-      />
+      <AddTodo updateTasks={() => updateTasks(status)} />
       <StatusNavigation
         status={status}
         setStatus={setStatus}

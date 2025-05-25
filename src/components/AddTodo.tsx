@@ -6,11 +6,10 @@ import { isValidLength } from "../utility/validation";
 import type { TodoStatus } from "../types/types";
 
 interface AddTodoProps {
-  updateTasks: (status: TodoStatus) => void;
-  status: TodoStatus;
+  updateTasks: () => void;
 }
 
-const AddTodo = ({ updateTasks, status }: AddTodoProps) => {
+const AddTodo = ({ updateTasks }: AddTodoProps) => {
   const [isUploadingTask, setIsUploadingTask] = useState(false);
 
   const {
@@ -28,7 +27,7 @@ const AddTodo = ({ updateTasks, status }: AddTodoProps) => {
 
     resetTitle();
     await createTodoItem(titleValue);
-    updateTasks(status);
+    updateTasks();
     setIsUploadingTask(false);
   };
 
