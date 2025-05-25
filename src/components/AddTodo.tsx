@@ -24,9 +24,13 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
     if (titleHasError || titleValue.length === 0) return;
     setIsUploadingTask(true);
 
-    resetTitle();
-    await createTodoItem(titleValue);
-    updateTasks();
+    try {
+      await createTodoItem(titleValue);
+      resetTitle();
+      updateTasks();
+    } catch (error) {
+      //
+    }
     setIsUploadingTask(false);
   };
 
