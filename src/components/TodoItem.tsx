@@ -75,6 +75,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   const handleUndoButton = () => {
+    setNewTitleValue(title);
     setIsEditing(false);
   };
 
