@@ -13,19 +13,16 @@ export async function fetchTodoList(
 ): Promise<MetaResponse<Todo, TodoInfo> | Error> {
   try {
     const response: Response = await fetch(
-      BASE_URL + "todos?filter=" + status,
+      `${BASE_URL}todos?filter=${status}`,
       {
         method: "GET",
       }
     );
     const resData: MetaResponse<Todo, TodoInfo> = await response.json();
 
-    if (!response.ok) {
-      throw new Error();
-    }
     return resData;
-  } catch (error) {
-    return error as Error;
+  } catch (error: unknown) {
+    throw error as Error;
   }
 }
 
@@ -36,7 +33,7 @@ export async function createTodoItem(title: string) {
   };
 
   try {
-    const response: Response = await fetch(BASE_URL + "todos", {
+    const response: Response = await fetch(`${BASE_URL}todos`, {
       method: "POST",
       body: JSON.stringify(todo),
       headers: {
@@ -45,45 +42,27 @@ export async function createTodoItem(title: string) {
     });
 
     const resData: Todo = await response.json();
-    if (response.status === 400) {
-      throw new Error("Missing or incorrect fields");
-    }
-    if (response.status === 500) {
-      throw new Error("Internal server error");
-    }
-
     return resData;
-  } catch (error) {
-    return error as Error;
+  } catch (error: unknown) {
+    throw error as Error;
   }
 }
 
 export async function deleteTodoItem(id: number) {
   try {
-    const response: Response = await fetch(BASE_URL + "todos/" + id, {
+    const response: Response = await fetch(`${BASE_URL}todos/${id}`, {
       method: "DELETE",
     });
 
-    if (response.status === 400) {
-      throw new Error("Invalid or missing task ID");
-    }
-
-    if (response.status === 404) {
-      throw new Error("Task not found");
-    }
-
-    if (response.status === 500) {
-      throw new Error("Internal server error");
-    }
     return response;
-  } catch (error) {
-    return error as Error;
+  } catch (error: unknown) {
+    throw error as Error;
   }
 }
 
 export async function editTodo(id: number, taskData: TodoRequest) {
   try {
-    const response: Response = await fetch(BASE_URL + "todos/" + id, {
+    const response: Response = await fetch(`${BASE_URL}todos/${id}`, {
       method: "PUT",
       body: JSON.stringify(taskData),
       headers: {
@@ -92,20 +71,8 @@ export async function editTodo(id: number, taskData: TodoRequest) {
     });
     const resData: Todo = await response.json();
 
-    if (response.status === 400) {
-      throw new Error("Invalid fields or id");
-    }
-
-    if (response.status === 404) {
-      throw new Error("Task not found");
-    }
-
-    if (response.status === 500) {
-      throw new Error("Internal server error");
-    }
-
     return resData;
-  } catch (error) {
-    return error as Error;
+  } catch (error: unknown) {
+    throw error as Error;
   }
 }
