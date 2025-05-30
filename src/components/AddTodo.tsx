@@ -1,4 +1,3 @@
-import classes from "./AddTodo.module.css";
 import React, { useState } from "react";
 import { createTodoItem } from "../api/todo";
 import { hasValidTodoTitle } from "../utility/validation";
@@ -54,19 +53,12 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
         onBlur={handleBlur}
         disabled={isUploadingTask}
       />
-      {addingTaskError && (
-        <p className={classes["validation-error"]}>{addingTaskError.message}</p>
-      )}
+      {addingTaskError && <p>{addingTaskError.message}</p>}
       {!isValidTitle && didEdit && (
-        <p className={classes["validation-error"]}>
-          Title must be between 2 and 64 characters long!
-        </p>
+        <p>Title must be between 2 and 64 characters long!</p>
       )}
-      {isUploadingTask && (
-        <p className={classes["saving-status"]}>Saving task...</p>
-      )}
+      {isUploadingTask && <p>Saving task...</p>}
       <button
-        className={classes["add-task-button"]}
         type="submit"
         disabled={isUploadingTask}
       >

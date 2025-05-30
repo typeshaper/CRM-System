@@ -2,7 +2,6 @@ import type { Todo } from "../types/types";
 import { deleteTodoItem, editTodo } from "../api/todo";
 import { hasValidTodoTitle } from "../utility/validation";
 import { useState } from "react";
-import classes from "./TodoItem.module.css";
 import saveIcon from "../assets/save.svg";
 import undoIcon from "../assets/undo.svg";
 import isDoneIcon from "../assets/checkbox-done.svg";
@@ -80,27 +79,20 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   return (
-    <li className={classes["todo-item"]}>
-      <button className={classes["task-status-button"]}>
+    <li>
+      <button>
         <img
           onClick={handleStatusButton}
-          className={classes["task-status-icon"]}
           src={isDone ? isDoneIcon : isNotDone}
         />
       </button>
 
       {editingError && <p>{editingError.message}</p>}
-      {!isEditing && (
-        <p className={isDone ? classes["text-done"] : ""}>{title}</p>
-      )}
+      {!isEditing && <p>{title}</p>}
 
       {isEditing && (
-        <form
-          onSubmit={handleSave}
-          className={classes["edit-form"]}
-        >
+        <form onSubmit={handleSave}>
           <input
-            className={classes["edit-input"]}
             type="text"
             name="title"
             value={newTitleValue}
@@ -108,65 +100,45 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
             onBlur={handleBlur}
           />
 
-          <div className={classes["icons-wrapper"]}>
-            <div className={classes["save-icon-wrapper"]}>
-              <button
-                type="submit"
-                className={classes["save-button"]}
-              >
-                <img
-                  src={saveIcon}
-                  className={classes["save-icon"]}
-                />
+          <div>
+            <div>
+              <button type="submit">
+                <img src={saveIcon} />
               </button>
             </div>
 
-            <div className={classes["undo-icon-wrapper"]}>
+            <div>
               <button
                 type="button"
                 onClick={handleUndoButton}
-                className={classes["undo-button"]}
               >
-                <img
-                  className={classes["undo-icon"]}
-                  src={undoIcon}
-                />
+                <img src={undoIcon} />
               </button>
             </div>
           </div>
           {!isValidTitle && didEdit && (
-            <p className={classes["validation-error"]}>
-              Title must be between 2 and 64 characters long!
-            </p>
+            <p>Title must be between 2 and 64 characters long!</p>
           )}
         </form>
       )}
 
       {!isEditing && (
-        <div className={classes["icons-wrapper"]}>
-          <div className={classes["edit-icon-wrapper"]}>
+        <div>
+          <div>
             <button
               type="button"
               onClick={handleEditButton}
-              className={classes["edit-button"]}
             >
-              <img
-                src={editIcon}
-                className={classes["edit-icon"]}
-              />
+              <img src={editIcon} />
             </button>
           </div>
 
-          <div className={classes["delete-icon-wrapper"]}>
+          <div>
             <button
               type="button"
               onClick={handleDeleteButton}
-              className={classes["delete-button"]}
             >
-              <img
-                className={classes["delete-icon"]}
-                src={deleteIcon}
-              />
+              <img src={deleteIcon} />
             </button>
           </div>
         </div>
