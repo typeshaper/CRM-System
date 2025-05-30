@@ -1,70 +1,71 @@
-import React, { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { createTodoItem } from "../api/todo";
-import { hasValidTodoTitle } from "../utility/validation";
+import { Form, Input, Button, Row, Col } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface AddTodoProps {
   updateTasks: () => void;
 }
 
+const formStyle: CSSProperties = {
+  width: "100%",
+  height: "48px",
+};
+
+const buttonStyle: CSSProperties = {
+  padding: "1rem 2rem",
+};
+
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
-  const [addingTaskError, setAddingTaskError] = useState<Error>();
   const [isUploadingTask, setIsUploadingTask] = useState<boolean>(false);
-  const [titleValue, setTitleValue] = useState<string>("");
-  const [didEdit, setDidEdit] = useState<boolean>(false);
-  const isValidTitle = hasValidTodoTitle(titleValue);
+  const [taskForm] = Form.useForm();
+  const titleName = Form.useWatch("taskTitle", taskForm);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitleValue(event.target.value);
-    setDidEdit(false);
-  };
-
-  const handleBlur = () => {
-    setDidEdit(true);
-  };
-
-  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!isValidTitle) {
-      return;
-    }
-    setDidEdit(false);
+  const handleSubmit = async () => {
     setIsUploadingTask(true);
 
     try {
-      await createTodoItem(titleValue);
+      await createTodoItem(titleName);
+      taskForm.resetFields();
       updateTasks();
-      setTitleValue("");
     } catch (error) {
       if (error instanceof Error) {
-        setAddingTaskError(error);
+        //
       }
     }
     setIsUploadingTask(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Enter your task..."
-        name="title"
-        value={titleValue}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        disabled={isUploadingTask}
-      />
-      {addingTaskError && <p>{addingTaskError.message}</p>}
-      {!isValidTitle && didEdit && (
-        <p>Title must be between 2 and 64 characters long!</p>
-      )}
-      {isUploadingTask && <p>Saving task...</p>}
-      <button
-        type="submit"
-        disabled={isUploadingTask}
-      >
-        Add
-      </button>
-    </form>
+    <Form
+      style={formStyle}
+      onFinish={handleSubmit}
+      form={taskForm}
+      autoComplete="off"
+      size="large"
+    >
+      <Row gutter={16}>
+        <Col span={18}>
+          <Form.Item name="taskTitle">
+            <Input placeholder="Enter your task name..." />
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item name="button">
+            <Button
+              style={buttonStyle}
+              htmlType="submit"
+              type="primary"
+              loading={isUploadingTask}
+              icon={isUploadingTask && <LoadingOutlined />}
+              iconPosition="end"
+            >
+              Add
+            </Button>
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
   );
 };
 
