@@ -8,7 +8,7 @@ import { Layout } from "antd";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
-  height: "100%",
+  height: "100vh",
   display: "flex",
   alignItems: "center",
 };
