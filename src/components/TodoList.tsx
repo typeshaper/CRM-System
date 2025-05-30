@@ -1,14 +1,20 @@
 import TodoItem from "./TodoItem";
 import type { Todo } from "../types/types";
+import { List } from "antd";
+import type { CSSProperties } from "react";
 
 interface TodoListProps {
   todoList: Todo[];
   updateTasks: () => void;
 }
 
+const listStyle: CSSProperties = {
+  width: "100%",
+};
+
 const TodoList = ({ todoList, updateTasks }: TodoListProps) => {
   return (
-    <ul>
+    <List style={listStyle}>
       {todoList.map((todo) => (
         <TodoItem
           key={todo.id}
@@ -16,7 +22,7 @@ const TodoList = ({ todoList, updateTasks }: TodoListProps) => {
           updateTasks={updateTasks}
         />
       ))}
-    </ul>
+    </List>
   );
 };
 

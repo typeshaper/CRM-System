@@ -1,18 +1,29 @@
 import type { Todo } from "../types/types";
 import { deleteTodoItem, editTodo } from "../api/todo";
 import { hasValidTodoTitle } from "../utility/validation";
-import { useState } from "react";
-import saveIcon from "../assets/save.svg";
-import undoIcon from "../assets/undo.svg";
-import isDoneIcon from "../assets/checkbox-done.svg";
-import isNotDone from "../assets/checkbox-undone.svg";
-import deleteIcon from "../assets/delete.svg";
-import editIcon from "../assets/edit.svg";
+import { useState, type CSSProperties } from "react";
+import { Row, Col, List, Space, Form, Input, Button } from "antd";
+import {
+  SaveOutlined,
+  UndoOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  CloseSquareOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
 
 interface TodoItemProps {
   todo: Todo;
   updateTasks: () => void;
 }
+
+const listStyle: CSSProperties = {
+  width: "100%",
+};
+
+const rowStyle: CSSProperties = {
+  width: "100%",
+};
 
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { title, isDone, id } = todo;
@@ -59,8 +70,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
     setIsEditing(true);
   };
 
-  const handleSave = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSave = async () => {
     if (!isValidTitle) return;
     try {
       await editTodo(id, { title: newTitleValue });
@@ -79,71 +89,70 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   return (
-    <li>
-      <button>
-        <img
-          onClick={handleStatusButton}
-          src={isDone ? isDoneIcon : isNotDone}
-        />
-      </button>
-
-      {editingError && <p>{editingError.message}</p>}
-      {!isEditing && <p>{title}</p>}
-
-      {isEditing && (
-        <form onSubmit={handleSave}>
-          <input
-            type="text"
-            name="title"
-            value={newTitleValue}
-            onChange={handleChange}
-            onBlur={handleBlur}
+    <List.Item style={listStyle}>
+      <Row style={rowStyle}>
+        <Col span={2}>
+          <Button
+            shape="default"
+            onClick={handleStatusButton}
+            icon={isDone ? <CheckOutlined /> : <></>}
           />
+        </Col>
 
-          <div>
-            <div>
-              <button type="submit">
-                <img src={saveIcon} />
-              </button>
-            </div>
-
-            <div>
-              <button
-                type="button"
-                onClick={handleUndoButton}
+        <Col span={18}>{!isEditing && <p>{title}</p>}</Col>
+        <Col span={4}>
+          <Space>
+            {isEditing && (
+              <Form onFinish={handleSave}>
+                <Input
+                  type="text"
+                  name="title"
+                  value={newTitleValue}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <Space
+                  direction="horizontal"
+                  size="small"
+                >
+                  <Button
+                    icon={<SaveOutlined />}
+                    name="save"
+                    onClick={handleSave}
+                  />
+                  <Button
+                    icon={<UndoOutlined />}
+                    name="undo"
+                    onClick={handleUndoButton}
+                  />
+                </Space>
+              </Form>
+            )}
+            {!isEditing && (
+              <Space
+                direction="horizontal"
+                size="small"
               >
-                <img src={undoIcon} />
-              </button>
-            </div>
-          </div>
-          {!isValidTitle && didEdit && (
-            <p>Title must be between 2 and 64 characters long!</p>
-          )}
-        </form>
-      )}
-
-      {!isEditing && (
-        <div>
-          <div>
-            <button
-              type="button"
-              onClick={handleEditButton}
-            >
-              <img src={editIcon} />
-            </button>
-          </div>
-
-          <div>
-            <button
-              type="button"
-              onClick={handleDeleteButton}
-            >
-              <img src={deleteIcon} />
-            </button>
-          </div>
-        </div>
-      )}
-    </li>
+                <Button
+                  icon={<EditOutlined />}
+                  name="edit"
+                  onClick={handleEditButton}
+                  variant="solid"
+                  color="blue"
+                />
+                <Button
+                  icon={<DeleteOutlined />}
+                  name="delete"
+                  onClick={handleDeleteButton}
+                  variant="solid"
+                  color="red"
+                />
+              </Space>
+            )}
+          </Space>
+        </Col>
+      </Row>
+    </List.Item>
   );
 };
 
