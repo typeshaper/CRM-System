@@ -9,7 +9,6 @@ interface StatusNavigationProps {
 const StatusNavigation = ({
   todoListInfo,
   setStatus,
-  status,
 }: StatusNavigationProps) => {
   const handleClick = (newStatus: TodoStatus) => {
     setStatus(newStatus);

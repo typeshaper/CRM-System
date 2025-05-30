@@ -1,11 +1,28 @@
 import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import type { Todo, TodoStatus, TodoInfo } from "../types/types";
 import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
+import { Layout } from "antd";
+
+const layoutStyle: CSSProperties = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+};
+
+const contentStyle: CSSProperties = {
+  width: "65ch",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "1rem",
+};
 
 const TodoListPage = () => {
+  const { Content } = Layout;
   const [hasFetchingError, setHasFetchingError] = useState<boolean>(false);
   const [status, setStatus] = useState<TodoStatus>("all");
   const [todoList, setTodoList] = useState<Todo[]>([]);
@@ -32,19 +49,21 @@ const TodoListPage = () => {
   }, [status]);
 
   return (
-    <>
-      <AddTodo updateTasks={updateTasks} />
-      <StatusNavigation
-        setStatus={setStatus}
-        todoListInfo={todoListInfo}
-        status={status}
-      />
-      <TodoList
-        todoList={todoList}
-        updateTasks={updateTasks}
-      />
-      {hasFetchingError && <p>Failed to fetch to-do list...</p>}
-    </>
+    <Layout style={layoutStyle}>
+      <Content style={contentStyle}>
+        <AddTodo updateTasks={updateTasks} />
+        <StatusNavigation
+          setStatus={setStatus}
+          todoListInfo={todoListInfo}
+          status={status}
+        />
+        <TodoList
+          todoList={todoList}
+          updateTasks={updateTasks}
+        />
+        {hasFetchingError && <p>Failed to fetch to-do list...</p>}
+      </Content>
+    </Layout>
   );
 };
 
