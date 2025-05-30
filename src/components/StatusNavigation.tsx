@@ -1,4 +1,6 @@
+import type { CSSProperties } from "react";
 import type { TodoInfo, TodoStatus } from "../types/types";
+import { Tabs, Flex, type TabsProps } from "antd";
 
 interface StatusNavigationProps {
   todoListInfo: TodoInfo;
@@ -6,26 +8,43 @@ interface StatusNavigationProps {
   status: TodoStatus;
 }
 
+const flexStyle: CSSProperties = {
+  width: "100%",
+};
+
+const tabsStyle: CSSProperties = {
+  width: "100%",
+};
+
 const StatusNavigation = ({
   todoListInfo,
   setStatus,
 }: StatusNavigationProps) => {
-  const handleClick = (newStatus: TodoStatus) => {
-    setStatus(newStatus);
-  };
+  function handleClick(newStatus: string) {
+    if (
+      newStatus === "all" ||
+      newStatus === "inWork" ||
+      newStatus === "completed"
+    ) {
+      setStatus(newStatus);
+    }
+  }
 
   return (
-    <nav>
-      <ul>
-        <li onClick={() => handleClick("all")}>All ({todoListInfo.all})</li>
-        <li onClick={() => handleClick("inWork")}>
-          In work ({todoListInfo.inWork})
-        </li>
-        <li onClick={() => handleClick("completed")}>
-          Completed ({todoListInfo.completed})
-        </li>
-      </ul>
-    </nav>
+    <Flex style={flexStyle}>
+      <Tabs
+        size="large"
+        style={tabsStyle}
+        tabBarGutter={58}
+        centered
+        onChange={(key) => handleClick(key)}
+        items={[
+          { label: `All (${todoListInfo.all})`, key: "all" },
+          { label: `In work (${todoListInfo.inWork})`, key: "inWork" },
+          { label: `Completed (${todoListInfo.completed})`, key: "completed" },
+        ]}
+      />
+    </Flex>
   );
 };
 
