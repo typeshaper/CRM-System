@@ -1,14 +1,12 @@
 import type { Todo } from "../types/types";
 import { deleteTodoItem, editTodo } from "../api/todo";
-import { hasValidTodoTitle } from "../utility/validation";
 import { useState, type CSSProperties } from "react";
-import { Row, Col, List, Space, Form, Input, Button } from "antd";
+import { Row, Col, List, Space, Input, Button, Typography, Form } from "antd";
 import {
   SaveOutlined,
   UndoOutlined,
   DeleteOutlined,
   EditOutlined,
-  CloseSquareOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
 
@@ -26,12 +24,13 @@ const rowStyle: CSSProperties = {
 };
 
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
+  const { Text } = Typography;
   const { title, isDone, id } = todo;
+  const [taskForm] = Form.useForm();
+  const titleName = Form.useWatch("taskTitle", taskForm);
+
   const [editingError, setEditingError] = useState<Error>();
   const [isEditing, setIsEditing] = useState(false);
-  const [didEdit, setDidEdit] = useState<boolean>(false);
-  const [newTitleValue, setNewTitleValue] = useState<string>(title);
-  const isValidTitle = hasValidTodoTitle(newTitleValue);
 
   const handleDeleteButton = async () => {
     try {
@@ -43,15 +42,6 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       }
       updateTasks();
     }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitleValue(event.target.value);
-    setDidEdit(false);
-  };
-
-  const handleBlur = () => {
-    setDidEdit(true);
   };
 
   const handleStatusButton = async () => {
@@ -71,9 +61,8 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   const handleSave = async () => {
-    if (!isValidTitle) return;
     try {
-      await editTodo(id, { title: newTitleValue });
+      await editTodo(id, { title: titleName });
       updateTasks();
       setIsEditing(false);
     } catch (error) {
@@ -84,7 +73,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   };
 
   const handleUndoButton = () => {
-    setNewTitleValue(title);
+    taskForm.resetFields();
     setIsEditing(false);
   };
 
@@ -102,57 +91,83 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
           />
         </Col>
 
-        <Col span={18}>{!isEditing && <p>{title}</p>}</Col>
-        <Col span={4}>
-          <Space>
-            {isEditing && (
-              <Form onFinish={handleSave}>
-                <Input
-                  type="text"
-                  name="title"
-                  value={newTitleValue}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
+        <Col span={22}>
+          {!isEditing && (
+            <Row gutter={16}>
+              <Col span={20}>
+                <Text ellipsis>{title}</Text>
+              </Col>
+              <Col span={4}>
                 <Space
                   direction="horizontal"
                   size="small"
                 >
                   <Button
-                    icon={<SaveOutlined />}
-                    name="save"
-                    onClick={handleSave}
+                    icon={<EditOutlined />}
+                    name="edit"
+                    onClick={handleEditButton}
+                    variant="solid"
+                    color="blue"
                   />
                   <Button
-                    icon={<UndoOutlined />}
-                    name="undo"
-                    onClick={handleUndoButton}
+                    icon={<DeleteOutlined />}
+                    name="delete"
+                    onClick={handleDeleteButton}
+                    variant="solid"
+                    color="red"
                   />
                 </Space>
-              </Form>
-            )}
-            {!isEditing && (
-              <Space
-                direction="horizontal"
-                size="small"
-              >
-                <Button
-                  icon={<EditOutlined />}
-                  name="edit"
-                  onClick={handleEditButton}
-                  variant="solid"
-                  color="blue"
-                />
-                <Button
-                  icon={<DeleteOutlined />}
-                  name="delete"
-                  onClick={handleDeleteButton}
-                  variant="solid"
-                  color="red"
-                />
-              </Space>
-            )}
-          </Space>
+              </Col>
+            </Row>
+          )}
+          {isEditing && (
+            <Form
+              form={taskForm}
+              initialValues={{ taskTitle: title }}
+            >
+              <Row gutter={16}>
+                <Col span={20}>
+                  <Form.Item
+                    style={{ height: "0" }}
+                    name="taskTitle"
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col span={4}>
+                  <Space
+                    direction="horizontal"
+                    size="small"
+                  >
+                    <Form.Item
+                      style={{ height: "0" }}
+                      name="saveButton"
+                    >
+                      <Button
+                        icon={<SaveOutlined />}
+                        name="save"
+                        onClick={handleSave}
+                        variant="solid"
+                        color="green"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      style={{ height: "0" }}
+                      name="undoButton"
+                    >
+                      <Button
+                        icon={<UndoOutlined />}
+                        name="undo"
+                        onClick={handleUndoButton}
+                        variant="solid"
+                        color="geekblue"
+                      />
+                    </Form.Item>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          )}
         </Col>
       </Row>
     </List.Item>
