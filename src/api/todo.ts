@@ -1,3 +1,4 @@
+import axios, { type AxiosResponse } from "axios";
 import type {
   MetaResponse,
   Todo,
@@ -6,20 +7,18 @@ import type {
   TodoStatus,
 } from "../types/types";
 
-const BASE_URL = "https://easydev.club/api/v1/";
+const BASE_URL = "https://easydev.club/api/v1";
+const api = axios.create({
+  baseURL: BASE_URL,
+});
 
 export async function fetchTodoList(
   status: TodoStatus
 ): Promise<MetaResponse<Todo, TodoInfo>> {
   try {
-    const response: Response = await fetch(
-      `${BASE_URL}todos?filter=${status}`,
-      {
-        method: "GET",
-      }
-    );
-    const resData: MetaResponse<Todo, TodoInfo> = await response.json();
+    const response: AxiosResponse = await api.get(`/todos?filter=${status}`);
 
+    const resData: MetaResponse<Todo, TodoInfo> = response.data;
     return resData;
   } catch (error: unknown) {
     throw error as Error;
@@ -33,12 +32,8 @@ export async function createTodoItem(title: string) {
   };
 
   try {
-    const response: Response = await fetch(`${BASE_URL}todos`, {
-      method: "POST",
-      body: JSON.stringify(todo),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response: AxiosResponse = await api.post(`/todos`, {
+      ...todo,
     });
 
     if (response.status === 400) {
@@ -49,7 +44,7 @@ export async function createTodoItem(title: string) {
       throw new Error("Internal server error.");
     }
 
-    const resData: Todo = await response.json();
+    const resData: Todo = await response.data;
     return resData;
   } catch (error: unknown) {
     throw error as Error;
@@ -58,9 +53,8 @@ export async function createTodoItem(title: string) {
 
 export async function deleteTodoItem(id: number) {
   try {
-    const response: Response = await fetch(`${BASE_URL}todos/${id}`, {
-      method: "DELETE",
-    });
+    const response: AxiosResponse = await api.delete(`/todos/${id}`);
+
     if (response.status === 404) {
       throw new Error("Could not find task");
     }
@@ -81,12 +75,8 @@ export async function deleteTodoItem(id: number) {
 
 export async function editTodo(id: number, taskData: TodoRequest) {
   try {
-    const response: Response = await fetch(`${BASE_URL}todos/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(taskData),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response: AxiosResponse = await api.put(`/todos/${id}`, {
+      ...taskData,
     });
 
     if (response.status === 400) {
@@ -103,7 +93,7 @@ export async function editTodo(id: number, taskData: TodoRequest) {
       throw new Error("Internal server error");
     }
 
-    const resData: Todo = await response.json();
+    const resData: Todo = await response.data;
     return resData;
   } catch (error: unknown) {
     throw error as Error;
