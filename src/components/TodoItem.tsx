@@ -90,7 +90,10 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
 
   return (
     <List.Item style={listStyle}>
-      <Row style={rowStyle}>
+      <Row
+        style={rowStyle}
+        gutter={16}
+      >
         <Col span={2}>
           <Button
             shape="default"
