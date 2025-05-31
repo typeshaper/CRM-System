@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { createTodoItem } from "../api/todo";
 import { Form, Input, Button, Row, Col } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { hasValidTodoTitle } from "../utility/validation";
 
 interface AddTodoProps {
   updateTasks: () => void;
@@ -46,8 +47,25 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
     >
       <Row gutter={16}>
         <Col span={18}>
-          <Form.Item name="taskTitle">
-            <Input placeholder="Enter your task name..." />
+          <Form.Item
+            name="taskTitle"
+            rules={[
+              {
+                message: "Title must be between 2 and 64 characters long!",
+                validator: (_, value) => {
+                  if (hasValidTodoTitle(value)) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject();
+                  }
+                },
+              },
+            ]}
+          >
+            <Input
+              count={{ show: true, max: 64 }}
+              placeholder="Enter your task name..."
+            />
           </Form.Item>
         </Col>
         <Col span={6}>
