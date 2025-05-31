@@ -1,4 +1,5 @@
 import type { Todo } from "../types/types";
+import { hasValidTodoTitle } from "../utility/validation";
 import { deleteTodoItem, editTodo } from "../api/todo";
 import { useState, type CSSProperties } from "react";
 import { Row, Col, List, Space, Input, Button, Typography, Form } from "antd";
@@ -17,6 +18,7 @@ interface TodoItemProps {
 
 const listStyle: CSSProperties = {
   width: "100%",
+  height: "5rem",
 };
 
 const rowStyle: CSSProperties = {
@@ -130,14 +132,33 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
             <Form
               form={taskForm}
               initialValues={{ taskTitle: title }}
+              onFinish={handleSave}
             >
               <Row gutter={16}>
                 <Col span={20}>
                   <Form.Item
                     style={{ height: "0" }}
                     name="taskTitle"
+                    rules={[
+                      {
+                        message:
+                          "Title must be between 2 and 64 characters long!",
+                        validator: (_, value) => {
+                          if (hasValidTodoTitle(value)) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject();
+                          }
+                        },
+                      },
+                    ]}
                   >
-                    <Input />
+                    <Input
+                      autoFocus
+                      variant="filled"
+                      count={{ show: true, max: 64 }}
+                      autoComplete=""
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={4}>
@@ -152,7 +173,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                       <Button
                         icon={<SaveOutlined />}
                         name="save"
-                        onClick={handleSave}
+                        htmlType="submit"
                         variant="solid"
                         color="green"
                       />
