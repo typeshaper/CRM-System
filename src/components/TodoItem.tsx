@@ -157,7 +157,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                       autoFocus
                       variant="filled"
                       count={{ show: true, max: 64 }}
-                      autoComplete=""
+                      autoComplete="off"
                     />
                   </Form.Item>
                 </Col>
