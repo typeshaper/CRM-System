@@ -94,7 +94,13 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
         <Col span={22}>
           {!isEditing && (
             <Row gutter={16}>
-              <Col span={20}>
+              <Col
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                span={20}
+              >
                 <Text ellipsis>{title}</Text>
               </Col>
               <Col span={4}>
