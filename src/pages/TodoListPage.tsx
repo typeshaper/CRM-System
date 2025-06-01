@@ -23,6 +23,7 @@ const contentStyle: CSSProperties = {
 const siderStyle: CSSProperties = {
   padding: "1rem 0",
   backgroundColor: "#FFF",
+  border: "none",
 };
 const TodoListPage = () => {
   const { Content, Sider } = Layout;
