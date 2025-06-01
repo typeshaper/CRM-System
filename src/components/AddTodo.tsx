@@ -1,7 +1,6 @@
-import { useState, type CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import { createTodoItem } from "../api/todo";
 import { Form, Input, Button, Row, Col } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 import { hasValidTodoTitle } from "../utility/validation";
 
 interface AddTodoProps {
@@ -18,13 +17,10 @@ const buttonStyle: CSSProperties = {
 };
 
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
-  const [isUploadingTask, setIsUploadingTask] = useState<boolean>(false);
   const [taskForm] = Form.useForm();
   const titleName = Form.useWatch("taskTitle", taskForm);
 
   const handleSubmit = async () => {
-    setIsUploadingTask(true);
-
     try {
       await createTodoItem(titleName);
       taskForm.resetFields();
@@ -34,7 +30,6 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
         //
       }
     }
-    setIsUploadingTask(false);
   };
 
   return (
@@ -74,8 +69,6 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
               style={buttonStyle}
               htmlType="submit"
               type="primary"
-              loading={isUploadingTask}
-              icon={isUploadingTask && <LoadingOutlined />}
               iconPosition="end"
             >
               Add

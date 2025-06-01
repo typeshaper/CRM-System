@@ -31,7 +31,6 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const [taskForm] = Form.useForm();
   const titleName = Form.useWatch("taskTitle", taskForm);
 
-  const [editingError, setEditingError] = useState<Error>();
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDeleteButton = async () => {
@@ -69,7 +68,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       setIsEditing(false);
     } catch (error) {
       if (error instanceof Error) {
-        setEditingError(error);
+        console.log(error);
       }
     }
   };
