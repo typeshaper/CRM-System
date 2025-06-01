@@ -22,11 +22,7 @@ const siderStyle: CSSProperties = {
   border: "none",
 };
 
-interface RootLayoutPageProps {
-  children?: ReactNode;
-}
-
-const RootLayoutPage = ({ children }: RootLayoutPageProps) => {
+const RootLayoutPage = () => {
   const { Content, Sider } = Layout;
 
   return (
