@@ -1,6 +1,6 @@
-import { useEffect, type CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import { Outlet } from "react-router";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Typography } from "antd";
 import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router";
 
@@ -18,9 +18,14 @@ const contentStyle: CSSProperties = {
   padding: "1rem 2rem",
 };
 const siderStyle: CSSProperties = {
-  padding: "1rem 0",
-  backgroundColor: "#FFF",
+  backgroundColor: "#F1F1F1",
   border: "none",
+};
+
+const headerStyle: CSSProperties = {
+  padding: "1rem",
+  color: "#A1A1A1",
+  fontSize: "22px",
 };
 
 const RootLayoutPage = () => {
@@ -35,6 +40,7 @@ const RootLayoutPage = () => {
         width={250}
         style={siderStyle}
       >
+        <Typography.Title style={headerStyle}>To-Do List!</Typography.Title>
         <Menu
           style={siderStyle}
           defaultSelectedKeys={[locationName]}
