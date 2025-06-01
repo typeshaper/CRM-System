@@ -25,6 +25,10 @@ const rowStyle: CSSProperties = {
   width: "100%",
 };
 
+const formItemStyle: CSSProperties = {
+  height: 0,
+};
+
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { Text } = Typography;
   const { title, isDone, id } = todo;
@@ -136,7 +140,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
               <Row gutter={16}>
                 <Col span={20}>
                   <Form.Item
-                    style={{ height: "0" }}
+                    style={formItemStyle}
                     name="taskTitle"
                     rules={[
                       {
@@ -166,7 +170,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                     size="small"
                   >
                     <Form.Item
-                      style={{ height: "0" }}
+                      style={formItemStyle}
                       name="saveButton"
                     >
                       <Button
@@ -178,7 +182,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                       />
                     </Form.Item>
                     <Form.Item
-                      style={{ height: "0" }}
+                      style={formItemStyle}
                       name="undoButton"
                     >
                       <Button

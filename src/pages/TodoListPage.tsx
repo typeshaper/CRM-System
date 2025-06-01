@@ -1,9 +1,9 @@
 import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
-import { useEffect, useState, type CSSProperties } from "react";
-import type { Todo, TodoStatus, TodoInfo } from "../types/types";
-import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
+import { fetchTodoList } from "../api/todo";
+import { useEffect, useState } from "react";
+import type { Todo, TodoStatus, TodoInfo } from "../types/types";
 
 const TodoListPage = () => {
   const [hasFetchingError, setHasFetchingError] = useState<boolean>(false);

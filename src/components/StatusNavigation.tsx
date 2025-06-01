@@ -1,6 +1,5 @@
-import type { CSSProperties } from "react";
-import type { TodoInfo, TodoStatus } from "../types/types";
 import { Tabs, Flex } from "antd";
+import type { TodoInfo, TodoStatus } from "../types/types";
 
 interface StatusNavigationProps {
   todoListInfo: TodoInfo;

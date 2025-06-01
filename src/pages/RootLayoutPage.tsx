@@ -1,7 +1,8 @@
-import { type CSSProperties } from "react";
 import { Layout, Menu, Typography } from "antd";
 import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation, Outlet } from "react-router";
+import { type CSSProperties } from "react";
+import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -16,6 +17,7 @@ const contentStyle: CSSProperties = {
   alignItems: "start",
   padding: "1rem 2rem",
 };
+
 const siderStyle: CSSProperties = {
   backgroundColor: "#F1F1F1",
   border: "none",
@@ -29,9 +31,22 @@ const headerStyle: CSSProperties = {
 
 const RootLayoutPage = () => {
   const { Content, Sider } = Layout;
+  const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
   const isRootURL = location.pathname === "/";
+  const menuItems: ItemType<MenuItemType>[] = [
+    {
+      key: "/tasks",
+      label: "Tasks",
+      icon: <FileDoneOutlined />,
+    },
+    {
+      key: "/profile",
+      label: "Profile",
+      icon: <UserOutlined />,
+    },
+  ];
 
   return (
     <Layout style={layoutStyle}>
@@ -39,23 +54,12 @@ const RootLayoutPage = () => {
         width={250}
         style={siderStyle}
       >
-        <Typography.Title style={headerStyle}>To-Do List!</Typography.Title>
+        <Title style={headerStyle}>To-Do List!</Title>
         <Menu
           style={siderStyle}
           defaultSelectedKeys={[isRootURL ? "/tasks" : location.pathname]}
           onClick={(info) => navigate(info.key)}
-          items={[
-            {
-              key: "/tasks",
-              label: "Tasks",
-              icon: <FileDoneOutlined />,
-            },
-            {
-              key: "/profile",
-              label: "Profile",
-              icon: <UserOutlined />,
-            },
-          ]}
+          items={menuItems}
         />
       </Sider>
       <Content style={contentStyle}>

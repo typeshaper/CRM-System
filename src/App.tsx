@@ -1,8 +1,8 @@
 import "./App.css";
-import ProfilePage from "./pages/ProfilePage";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
 import RootLayoutPage from "./pages/RootLayoutPage";
 import TodoListPage from "./pages/TodoListPage";
+import ProfilePage from "./pages/ProfilePage";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
 
 const router = createBrowserRouter([
   {

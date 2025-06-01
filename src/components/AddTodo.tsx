@@ -1,7 +1,7 @@
-import { type CSSProperties } from "react";
 import { createTodoItem } from "../api/todo";
-import { Form, Input, Button, Row, Col } from "antd";
 import { hasValidTodoTitle } from "../utility/validation";
+import { Form, Input, Button, Row, Col } from "antd";
+import { type CSSProperties } from "react";
 
 interface AddTodoProps {
   updateTasks: () => void;
