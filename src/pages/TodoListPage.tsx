@@ -4,25 +4,28 @@ import { useEffect, useState, type CSSProperties } from "react";
 import type { Todo, TodoStatus, TodoInfo } from "../types/types";
 import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
-import { Layout } from "antd";
+import { Layout, Menu } from "antd";
+import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
   minHeight: "100vh",
   display: "flex",
-  alignItems: "center",
 };
 
 const contentStyle: CSSProperties = {
   width: "75ch",
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
-  padding: "1rem",
+  alignItems: "start",
+  padding: "1rem 2rem",
 };
-
+const siderStyle: CSSProperties = {
+  padding: "1rem 0",
+  backgroundColor: "#FFF",
+};
 const TodoListPage = () => {
-  const { Content } = Layout;
+  const { Content, Sider } = Layout;
   const [hasFetchingError, setHasFetchingError] = useState<boolean>(false);
   const [status, setStatus] = useState<TodoStatus>("all");
   const [todoList, setTodoList] = useState<Todo[]>([]);
@@ -50,6 +53,18 @@ const TodoListPage = () => {
 
   return (
     <Layout style={layoutStyle}>
+      <Sider
+        width={250}
+        style={siderStyle}
+      >
+        <Menu
+          style={siderStyle}
+          items={[
+            { key: "tasks", label: "Tasks", icon: <FileDoneOutlined /> },
+            { key: "profile", label: "Profile", icon: <UserOutlined /> },
+          ]}
+        />
+      </Sider>
       <Content style={contentStyle}>
         <AddTodo updateTasks={updateTasks} />
         <StatusNavigation

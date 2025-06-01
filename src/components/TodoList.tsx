@@ -9,7 +9,7 @@ interface TodoListProps {
 }
 
 const listStyle: CSSProperties = {
-  width: "100%",
+  width: "75ch",
 };
 
 const TodoList = ({ todoList, updateTasks }: TodoListProps) => {

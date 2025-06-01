@@ -8,14 +8,6 @@ interface StatusNavigationProps {
   status: TodoStatus;
 }
 
-const flexStyle: CSSProperties = {
-  width: "100%",
-};
-
-const tabsStyle: CSSProperties = {
-  width: "100%",
-};
-
 const StatusNavigation = ({
   todoListInfo,
   setStatus,
@@ -31,10 +23,9 @@ const StatusNavigation = ({
   }
 
   return (
-    <Flex style={flexStyle}>
+    <Flex>
       <Tabs
         size="large"
-        style={tabsStyle}
         tabBarGutter={58}
         centered
         onChange={(key) => handleClick(key)}

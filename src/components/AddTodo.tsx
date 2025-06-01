@@ -8,7 +8,7 @@ interface AddTodoProps {
 }
 
 const formStyle: CSSProperties = {
-  width: "100%",
+  width: "75ch",
   height: "48px",
 };
 
@@ -41,7 +41,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       size="large"
     >
       <Row gutter={16}>
-        <Col span={18}>
+        <Col span={20}>
           <Form.Item
             name="taskTitle"
             rules={[
@@ -63,7 +63,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
             />
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={4}>
           <Form.Item name="button">
             <Button
               style={buttonStyle}
