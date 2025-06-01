@@ -1,7 +1,8 @@
-import { type CSSProperties, type ReactNode } from "react";
+import { type CSSProperties } from "react";
 import { Outlet } from "react-router";
 import { Layout, Menu } from "antd";
 import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -24,6 +25,7 @@ const siderStyle: CSSProperties = {
 
 const RootLayoutPage = () => {
   const { Content, Sider } = Layout;
+  const navigate = useNavigate();
 
   return (
     <Layout style={layoutStyle}>
@@ -33,9 +35,21 @@ const RootLayoutPage = () => {
       >
         <Menu
           style={siderStyle}
+          defaultSelectedKeys={["tasks"]}
           items={[
-            { key: "tasks", label: "Tasks", icon: <FileDoneOutlined /> },
-            { key: "profile", label: "Profile", icon: <UserOutlined /> },
+            {
+              key: "tasks",
+              label: "Tasks",
+              icon: <FileDoneOutlined />,
+              onClick: () => navigate("/tasks"),
+            },
+            {
+              key: "profile",
+              label: "Profile",
+              icon: <UserOutlined />,
+
+              onClick: () => navigate("/profile"),
+            },
           ]}
         />
       </Sider>
