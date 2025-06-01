@@ -1,8 +1,7 @@
 import { type CSSProperties } from "react";
-import { Outlet } from "react-router";
 import { Layout, Menu, Typography } from "antd";
 import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation, Outlet } from "react-router";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -32,7 +31,7 @@ const RootLayoutPage = () => {
   const { Content, Sider } = Layout;
   const navigate = useNavigate();
   const location = useLocation();
-  const locationName = location.pathname.slice(1);
+  const isRootURL = location.pathname === "/";
 
   return (
     <Layout style={layoutStyle}>
@@ -43,20 +42,18 @@ const RootLayoutPage = () => {
         <Typography.Title style={headerStyle}>To-Do List!</Typography.Title>
         <Menu
           style={siderStyle}
-          defaultSelectedKeys={[locationName]}
+          defaultSelectedKeys={[isRootURL ? "/tasks" : location.pathname]}
+          onClick={(info) => navigate(info.key)}
           items={[
             {
-              key: "tasks",
+              key: "/tasks",
               label: "Tasks",
               icon: <FileDoneOutlined />,
-              onClick: () => navigate("/tasks"),
             },
             {
-              key: "profile",
+              key: "/profile",
               label: "Profile",
               icon: <UserOutlined />,
-
-              onClick: () => navigate("/profile"),
             },
           ]}
         />
