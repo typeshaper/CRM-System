@@ -5,7 +5,6 @@ import { Tabs, Flex } from "antd";
 interface StatusNavigationProps {
   todoListInfo: TodoInfo;
   setStatus: React.Dispatch<React.SetStateAction<TodoStatus>>;
-  status: TodoStatus;
 }
 
 const StatusNavigation = ({

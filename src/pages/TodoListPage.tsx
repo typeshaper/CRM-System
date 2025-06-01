@@ -34,7 +34,7 @@ const TodoListPage = () => {
     return () => {
       clearInterval(timerId);
     };
-  }, []);
+  }, [status]);
 
   useEffect(() => {
     updateTasks();
@@ -46,7 +46,6 @@ const TodoListPage = () => {
       <StatusNavigation
         setStatus={setStatus}
         todoListInfo={todoListInfo}
-        status={status}
       />
       <TodoList
         todoList={todoList}

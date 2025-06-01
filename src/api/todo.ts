@@ -19,6 +19,8 @@ export async function fetchTodoList(
     const response: AxiosResponse = await api.get(`/todos?filter=${status}`);
 
     const resData: MetaResponse<Todo, TodoInfo> = response.data;
+    console.log(resData);
+
     return resData;
   } catch (error: unknown) {
     throw error as Error;
