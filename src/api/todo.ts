@@ -7,16 +7,20 @@ import type {
   TodoStatus,
 } from "../types/types";
 
-const BASE_URL = "https://easydev.club/api/v1";
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: `https://easydev.club/api/v1`,
 });
 
 export async function fetchTodoList(
   status: TodoStatus
 ): Promise<MetaResponse<Todo, TodoInfo>> {
   try {
-    const response: AxiosResponse = await api.get(`/todos?filter=${status}`);
+    const response: AxiosResponse = await api({
+      method: "get",
+      url: `/todos`,
+      params: { statusFilter: status },
+      paramsSerializer: (params) => `filter=${params.statusFilter}`,
+    });
 
     const resData: MetaResponse<Todo, TodoInfo> = response.data;
 
@@ -33,8 +37,13 @@ export async function createTodoItem(title: string) {
   };
 
   try {
-    const response: AxiosResponse = await api.post(`/todos`, {
-      ...todo,
+    const response: AxiosResponse = await api(`/todos`, {
+      method: "post",
+      url: "/todos",
+      data: { ...todo },
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (response.status === 400) {
@@ -54,7 +63,10 @@ export async function createTodoItem(title: string) {
 
 export async function deleteTodoItem(id: number) {
   try {
-    const response: AxiosResponse = await api.delete(`/todos/${id}`);
+    const response: AxiosResponse = await api({
+      method: "delete",
+      url: `/todos/${id}`,
+    });
 
     if (response.status === 404) {
       throw new Error("Could not find task");
@@ -76,8 +88,13 @@ export async function deleteTodoItem(id: number) {
 
 export async function editTodo(id: number, taskData: TodoRequest) {
   try {
-    const response: AxiosResponse = await api.put(`/todos/${id}`, {
-      ...taskData,
+    const response: AxiosResponse = await api(`/todos/${id}`, {
+      method: "put",
+      url: `/todos/${id}`,
+      data: { ...taskData },
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (response.status === 400) {
