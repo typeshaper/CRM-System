@@ -47,6 +47,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
             name="title"
             rules={[
               {
+                required: true,
                 min: 2,
                 max: 64,
                 message: "Title must be between 2 and 64 characters long!",
