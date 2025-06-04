@@ -1,5 +1,4 @@
 import type { Todo } from "../types/types";
-import { hasValidTodoTitle } from "../utility/validation";
 import { deleteTodoItem, editTodo } from "../api/todo";
 import { useState, type CSSProperties } from "react";
 import { Row, Col, List, Space, Input, Button, Typography, Form } from "antd";
@@ -144,15 +143,11 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                     name="taskTitle"
                     rules={[
                       {
+                        required: true,
+                        min: 2,
+                        max: 64,
                         message:
                           "Title must be between 2 and 64 characters long!",
-                        validator: (_, value) => {
-                          if (hasValidTodoTitle(value)) {
-                            return Promise.resolve();
-                          } else {
-                            return Promise.reject();
-                          }
-                        },
                       },
                     ]}
                   >
