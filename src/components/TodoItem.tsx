@@ -9,6 +9,7 @@ import {
   EditOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 interface TodoItemProps {
   todo: Todo;
@@ -32,6 +33,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { Text } = Typography;
   const { title, isDone, id } = todo;
   const [taskForm] = Form.useForm();
+  const { showError } = useErrorMessage();
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -41,7 +43,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       updateTasks();
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error.message);
+        showError(error.message);
       }
       updateTasks();
     }
@@ -54,7 +56,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       updateTasks();
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error.message);
+        showError(error.message);
       }
     }
   };
@@ -70,7 +72,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       setIsEditing(false);
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error);
+        showError(error.message);
       }
     }
   };
