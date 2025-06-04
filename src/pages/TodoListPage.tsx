@@ -2,7 +2,7 @@ import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
 import StatusNavigation from "../components/StatusNavigation";
 import { fetchTodoList } from "../api/todo";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, use } from "react";
 import type { Todo, TodoStatus, TodoInfo } from "../types/types";
 import useErrorMessage from "../hooks/useErrorMessage";
 import { AxiosError } from "axios";
@@ -17,7 +17,7 @@ const TodoListPage = () => {
     inWork: 0,
   });
 
-  const updateTasks = async () => {
+  const updateTasks = useCallback(async () => {
     try {
       const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
@@ -29,7 +29,7 @@ const TodoListPage = () => {
         showError(error.response?.data);
       }
     }
-  };
+  }, [status, showError]);
 
   useEffect(() => {
     const timerId = setInterval(() => {
