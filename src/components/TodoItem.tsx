@@ -35,10 +35,13 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { title, isDone, id } = todo;
   const showError = useErrorMessage();
   const [taskForm] = Form.useForm();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isDisabledDeleteButton, setIsDisabledDeleteButton] =
+    useState<boolean>(false);
 
   const handleDeleteButton = async () => {
     try {
+      setIsDisabledDeleteButton(true);
       await deleteTodoItem(id);
       updateTasks();
     } catch (error) {
@@ -124,6 +127,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                     icon={<DeleteOutlined />}
                     name="delete"
                     onClick={handleDeleteButton}
+                    disabled={isDisabledDeleteButton}
                     variant="solid"
                     color="red"
                   />
