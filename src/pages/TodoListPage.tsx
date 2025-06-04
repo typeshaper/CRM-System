@@ -4,9 +4,11 @@ import StatusNavigation from "../components/StatusNavigation";
 import { fetchTodoList } from "../api/todo";
 import { useEffect, useState } from "react";
 import type { Todo, TodoStatus, TodoInfo } from "../types/types";
+import useErrorMessage from "../hooks/useErrorMessage";
+import { AxiosError } from "axios";
 
 const TodoListPage = () => {
-  const [hasFetchingError, setHasFetchingError] = useState<boolean>(false);
+  const { showError } = useErrorMessage();
   const [status, setStatus] = useState<TodoStatus>("all");
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [todoListInfo, setTodoListInfo] = useState<TodoInfo>({
@@ -23,7 +25,9 @@ const TodoListPage = () => {
         setTodoListInfo(fetchedData.info);
       }
     } catch (error) {
-      setHasFetchingError(true);
+      if (error instanceof AxiosError) {
+        showError(error.response?.data);
+      }
     }
   };
 
@@ -51,7 +55,6 @@ const TodoListPage = () => {
         todoList={todoList}
         updateTasks={updateTasks}
       />
-      {hasFetchingError && <p>Failed to fetch to-do list...</p>}
     </>
   );
 };

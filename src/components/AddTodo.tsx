@@ -3,6 +3,7 @@ import { Form, Input, Button, Row, Col } from "antd";
 import { type CSSProperties } from "react";
 import type { TodoFormData } from "../types/types";
 import useErrorMessage from "../hooks/useErrorMessage";
+import { AxiosError } from "axios";
 
 interface AddTodoProps {
   updateTasks: () => void;
@@ -27,8 +28,8 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       taskForm.resetFields();
       updateTasks();
     } catch (error) {
-      if (error instanceof Error) {
-        showError(error.message);
+      if (error instanceof AxiosError) {
+        showError(error.response?.data);
       }
     }
   };

@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
+import axios, { AxiosError, type AxiosResponse } from "axios";
 import type {
   MetaResponse,
   Todo,
@@ -25,7 +25,8 @@ export async function fetchTodoList(
 
     return resData;
   } catch (error: unknown) {
-    throw error as Error;
+    console.log(error);
+    throw error as AxiosError;
   }
 }
 
@@ -45,18 +46,10 @@ export async function createTodoItem(title: string) {
       },
     });
 
-    if (response.status === 400) {
-      throw new Error("Invalid request body or missing/incorrect fields.");
-    }
-
-    if (response.status === 500) {
-      throw new Error("Internal server error.");
-    }
-
     const resData: Todo = await response.data;
     return resData;
   } catch (error: unknown) {
-    throw error as Error;
+    throw error as AxiosError;
   }
 }
 
@@ -67,21 +60,9 @@ export async function deleteTodoItem(id: number) {
       url: `/todos/${id}`,
     });
 
-    if (response.status === 404) {
-      throw new Error("Could not find task");
-    }
-
-    if (response.status === 400) {
-      throw new Error("Invalid or missing task id");
-    }
-
-    if (response.status === 500) {
-      throw new Error("Internal server error");
-    }
-
     return response;
   } catch (error: unknown) {
-    throw error as Error;
+    throw error as AxiosError;
   }
 }
 
@@ -96,23 +77,9 @@ export async function editTodo(id: number, taskData: TodoRequest) {
       },
     });
 
-    if (response.status === 400) {
-      throw new Error(
-        "Invalid request body, missing/incorrect fields, or invalid ID."
-      );
-    }
-
-    if (response.status === 404) {
-      throw new Error("Task not found.");
-    }
-
-    if (response.status === 500) {
-      throw new Error("Internal server error");
-    }
-
     const resData: Todo = await response.data;
     return resData;
   } catch (error: unknown) {
-    throw error as Error;
+    throw error as AxiosError;
   }
 }

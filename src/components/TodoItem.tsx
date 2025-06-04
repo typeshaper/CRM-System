@@ -10,6 +10,7 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import useErrorMessage from "../hooks/useErrorMessage";
+import { AxiosError } from "axios";
 
 interface TodoItemProps {
   todo: Todo;
@@ -42,8 +43,8 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       await deleteTodoItem(id);
       updateTasks();
     } catch (error) {
-      if (error instanceof Error) {
-        showError(error.message);
+      if (error instanceof AxiosError) {
+        showError(error.response?.data);
       }
       updateTasks();
     }
@@ -55,8 +56,8 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       setIsEditing(false);
       updateTasks();
     } catch (error) {
-      if (error instanceof Error) {
-        showError(error.message);
+      if (error instanceof AxiosError) {
+        showError(error.response?.data);
       }
     }
   };
@@ -71,8 +72,8 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       updateTasks();
       setIsEditing(false);
     } catch (error) {
-      if (error instanceof Error) {
-        showError(error.message);
+      if (error instanceof AxiosError) {
+        showError(error.response?.data);
       }
     }
   };
