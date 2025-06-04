@@ -39,7 +39,7 @@ export async function createTodoItem(title: string) {
     const response: AxiosResponse = await api(`/todos`, {
       method: "post",
       url: "/todos",
-      data: { ...todo },
+      data: todo,
       headers: {
         "Content-Type": "application/json",
       },
@@ -90,7 +90,7 @@ export async function editTodo(id: number, taskData: TodoRequest) {
     const response: AxiosResponse = await api(`/todos/${id}`, {
       method: "put",
       url: `/todos/${id}`,
-      data: { ...taskData },
+      data: taskData,
       headers: {
         "Content-Type": "application/json",
       },
