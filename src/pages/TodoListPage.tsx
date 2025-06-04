@@ -26,7 +26,7 @@ const TodoListPage = () => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        showError(error.response?.data);
+        showError(error);
       }
     }
   }, [status, showError]);

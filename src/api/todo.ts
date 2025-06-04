@@ -25,7 +25,6 @@ export async function fetchTodoList(
 
     return resData;
   } catch (error: unknown) {
-    console.log(error);
     throw error as AxiosError;
   }
 }

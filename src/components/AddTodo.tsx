@@ -29,7 +29,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       updateTasks();
     } catch (error) {
       if (error instanceof AxiosError) {
-        showError(error.response?.data);
+        showError(error);
       }
     }
   };

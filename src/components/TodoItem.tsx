@@ -43,7 +43,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       updateTasks();
     } catch (error) {
       if (error instanceof AxiosError) {
-        showError(error.response?.data);
+        showError(error);
       }
       updateTasks();
     }
@@ -56,7 +56,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       updateTasks();
     } catch (error) {
       if (error instanceof AxiosError) {
-        showError(error.response?.data);
+        showError(error);
       }
     }
   };
@@ -72,7 +72,7 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       setIsEditing(false);
     } catch (error) {
       if (error instanceof AxiosError) {
-        showError(error.response?.data);
+        showError(error);
       }
     }
   };
