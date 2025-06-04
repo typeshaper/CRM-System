@@ -10,9 +10,16 @@ const StatusNavigation = ({
   todoListInfo,
   setStatus,
 }: StatusNavigationProps) => {
-  function handleClick(newStatus: TodoStatus) {
-    setStatus(newStatus);
-  }
+  const isStatus = (str: string): str is TodoStatus => {
+    return str === "all" || str === "inWork" || str === "completed";
+  };
+
+  const handleClick = (newStatus: string) => {
+    if (isStatus(newStatus)) {
+      setStatus(newStatus);
+    }
+    return;
+  };
 
   return (
     <Flex>
@@ -20,7 +27,7 @@ const StatusNavigation = ({
         size="large"
         tabBarGutter={58}
         centered
-        onChange={(key) => handleClick(key as TodoStatus)}
+        onChange={(key) => handleClick(key)}
         items={[
           { label: `All (${todoListInfo.all})`, key: "all" },
           { label: `In work (${todoListInfo.inWork})`, key: "inWork" },
