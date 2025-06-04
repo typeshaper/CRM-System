@@ -18,8 +18,7 @@ export async function fetchTodoList(
     const response: AxiosResponse = await api({
       method: "get",
       url: `/todos`,
-      params: { statusFilter: status },
-      paramsSerializer: (params) => `filter=${params.statusFilter}`,
+      params: { filter: status },
     });
 
     const resData: MetaResponse<Todo, TodoInfo> = response.data;
