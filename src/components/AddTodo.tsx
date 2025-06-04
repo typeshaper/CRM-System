@@ -2,6 +2,7 @@ import { createTodoItem } from "../api/todo";
 import { Form, Input, Button, Row, Col } from "antd";
 import { type CSSProperties } from "react";
 import type { TodoFormData } from "../types/types";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 interface AddTodoProps {
   updateTasks: () => void;
@@ -18,6 +19,7 @@ const buttonStyle: CSSProperties = {
 
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
   const [taskForm] = Form.useForm();
+  const { showError } = useErrorMessage();
 
   const handleSubmit = async (formData: TodoFormData) => {
     try {
@@ -26,7 +28,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       updateTasks();
     } catch (error) {
       if (error instanceof Error) {
-        //
+        showError(error.message);
       }
     }
   };

@@ -3,6 +3,7 @@ import RootLayoutPage from "./pages/RootLayoutPage";
 import TodoListPage from "./pages/TodoListPage";
 import ProfilePage from "./pages/ProfilePage";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
+import { App as AntdApp } from "antd";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <AntdApp>
+      <RouterProvider router={router} />
+    </AntdApp>
+  );
 };
 
 export default App;
