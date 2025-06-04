@@ -49,14 +49,9 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
             name="taskTitle"
             rules={[
               {
+                min: 2,
+                max: 64,
                 message: "Title must be between 2 and 64 characters long!",
-                validator: (_, value) => {
-                  if (hasValidTodoTitle(value)) {
-                    return Promise.resolve();
-                  } else {
-                    return Promise.reject();
-                  }
-                },
               },
             ]}
           >
