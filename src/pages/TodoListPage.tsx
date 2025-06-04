@@ -38,7 +38,7 @@ const TodoListPage = () => {
     return () => {
       clearInterval(timerId);
     };
-  }, [status]);
+  });
 
   useEffect(() => {
     updateTasks();
