@@ -20,7 +20,7 @@ const buttonStyle: CSSProperties = {
 
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
   const [taskForm] = Form.useForm();
-  const { showError } = useErrorMessage();
+  const showError = useErrorMessage();
 
   const handleSubmit = async (formData: TodoFormData) => {
     try {

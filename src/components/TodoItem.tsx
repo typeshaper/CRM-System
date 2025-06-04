@@ -33,9 +33,8 @@ const formItemStyle: CSSProperties = {
 const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { Text } = Typography;
   const { title, isDone, id } = todo;
+  const showError = useErrorMessage();
   const [taskForm] = Form.useForm();
-  const { showError } = useErrorMessage();
-
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDeleteButton = async () => {

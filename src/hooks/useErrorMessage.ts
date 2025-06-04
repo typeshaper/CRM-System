@@ -6,7 +6,7 @@ const useErrorMessage = () => {
     notification.error({ message, placement: "bottomRight" });
   };
 
-  return { showError };
+  return showError;
 };
 
 export default useErrorMessage;
