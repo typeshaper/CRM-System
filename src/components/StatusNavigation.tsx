@@ -10,14 +10,8 @@ const StatusNavigation = ({
   todoListInfo,
   setStatus,
 }: StatusNavigationProps) => {
-  function handleClick(newStatus: string) {
-    if (
-      newStatus === "all" ||
-      newStatus === "inWork" ||
-      newStatus === "completed"
-    ) {
-      setStatus(newStatus);
-    }
+  function handleClick(newStatus: TodoStatus) {
+    setStatus(newStatus);
   }
 
   return (
@@ -26,7 +20,7 @@ const StatusNavigation = ({
         size="large"
         tabBarGutter={58}
         centered
-        onChange={(key) => handleClick(key)}
+        onChange={(key) => handleClick(key as TodoStatus)}
         items={[
           { label: `All (${todoListInfo.all})`, key: "all" },
           { label: `In work (${todoListInfo.inWork})`, key: "inWork" },
