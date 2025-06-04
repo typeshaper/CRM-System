@@ -25,3 +25,7 @@ export interface MetaResponse<T, N> {
     totalAmount: number;
   };
 }
+
+export interface TodoFormData {
+  title: string;
+}

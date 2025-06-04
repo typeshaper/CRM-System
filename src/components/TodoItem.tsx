@@ -1,4 +1,4 @@
-import type { Todo } from "../types/types";
+import type { Todo, TodoFormData } from "../types/types";
 import { deleteTodoItem, editTodo } from "../api/todo";
 import { useState, type CSSProperties } from "react";
 import { Row, Col, List, Space, Input, Button, Typography, Form } from "antd";
@@ -32,7 +32,6 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
   const { Text } = Typography;
   const { title, isDone, id } = todo;
   const [taskForm] = Form.useForm();
-  const titleName = Form.useWatch("taskTitle", taskForm);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -64,9 +63,9 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
     setIsEditing(true);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (formData: TodoFormData) => {
     try {
-      await editTodo(id, { title: titleName });
+      await editTodo(id, { title: formData.title });
       updateTasks();
       setIsEditing(false);
     } catch (error) {
@@ -133,14 +132,14 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
           {isEditing && (
             <Form
               form={taskForm}
-              initialValues={{ taskTitle: title }}
-              onFinish={handleSave}
+              initialValues={{ title: title }}
+              onFinish={(values: TodoFormData) => handleSave(values)}
             >
               <Row gutter={16}>
                 <Col span={20}>
                   <Form.Item
                     style={formItemStyle}
-                    name="taskTitle"
+                    name="title"
                     rules={[
                       {
                         required: true,

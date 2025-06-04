@@ -1,13 +1,10 @@
 import { createTodoItem } from "../api/todo";
 import { Form, Input, Button, Row, Col } from "antd";
 import { type CSSProperties } from "react";
+import type { TodoFormData } from "../types/types";
 
 interface AddTodoProps {
   updateTasks: () => void;
-}
-
-interface FormData {
-  taskTitle: string;
 }
 
 const formStyle: CSSProperties = {
@@ -22,9 +19,9 @@ const buttonStyle: CSSProperties = {
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
   const [taskForm] = Form.useForm();
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (formData: TodoFormData) => {
     try {
-      await createTodoItem(formData.taskTitle);
+      await createTodoItem(formData.title);
       taskForm.resetFields();
       updateTasks();
     } catch (error) {
@@ -37,7 +34,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
   return (
     <Form
       style={formStyle}
-      onFinish={(values: FormData) => handleSubmit(values)}
+      onFinish={(values: TodoFormData) => handleSubmit(values)}
       form={taskForm}
       autoComplete="off"
       size="large"
@@ -45,7 +42,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       <Row gutter={16}>
         <Col span={20}>
           <Form.Item
-            name="taskTitle"
+            name="title"
             rules={[
               {
                 min: 2,
