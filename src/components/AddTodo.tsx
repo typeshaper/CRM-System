@@ -7,6 +7,10 @@ interface AddTodoProps {
   updateTasks: () => void;
 }
 
+interface FormData {
+  taskTitle: string;
+}
+
 const formStyle: CSSProperties = {
   width: "75ch",
   height: "48px",
@@ -18,11 +22,10 @@ const buttonStyle: CSSProperties = {
 
 const AddTodo = ({ updateTasks }: AddTodoProps) => {
   const [taskForm] = Form.useForm();
-  const titleName = Form.useWatch("taskTitle", taskForm);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (formData: FormData) => {
     try {
-      await createTodoItem(titleName);
+      await createTodoItem(formData.taskTitle);
       taskForm.resetFields();
       updateTasks();
     } catch (error) {
@@ -35,7 +38,7 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
   return (
     <Form
       style={formStyle}
-      onFinish={handleSubmit}
+      onFinish={(values: FormData) => handleSubmit(values)}
       form={taskForm}
       autoComplete="off"
       size="large"
