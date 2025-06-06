@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import useErrorMessage from "../hooks/useErrorMessage";
 import { AxiosError } from "axios";
+import { titleValidationInfo } from "../utility/validation";
 
 interface TodoItemProps {
   todo: Todo;
@@ -149,17 +150,16 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
                     rules={[
                       {
                         required: true,
-                        min: 2,
-                        max: 64,
-                        message:
-                          "Title must be between 2 and 64 characters long!",
+                        min: titleValidationInfo.minLength,
+                        max: titleValidationInfo.maxLength,
+                        message: titleValidationInfo.message,
                       },
                     ]}
                   >
                     <Input
                       autoFocus
                       variant="filled"
-                      count={{ show: true, max: 64 }}
+                      count={{ show: true, max: titleValidationInfo.maxLength }}
                       autoComplete="off"
                     />
                   </Form.Item>

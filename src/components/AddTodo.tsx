@@ -4,6 +4,7 @@ import { type CSSProperties } from "react";
 import type { TodoFormData } from "../types/types";
 import useErrorMessage from "../hooks/useErrorMessage";
 import { AxiosError } from "axios";
+import { titleValidationInfo } from "../utility/validation";
 
 interface AddTodoProps {
   updateTasks: () => void;
@@ -49,14 +50,14 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
             rules={[
               {
                 required: true,
-                min: 2,
-                max: 64,
-                message: "Title must be between 2 and 64 characters long!",
+                min: titleValidationInfo.minLength,
+                max: titleValidationInfo.maxLength,
+                message: titleValidationInfo.message,
               },
             ]}
           >
             <Input
-              count={{ show: true, max: 64 }}
+              count={{ show: true, max: titleValidationInfo.maxLength }}
               placeholder="Enter your task name..."
             />
           </Form.Item>
