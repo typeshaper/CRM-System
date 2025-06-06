@@ -1,6 +1,6 @@
 import { createTodoItem } from "../api/todo";
 import { Form, Input, Button, Row, Col } from "antd";
-import { type CSSProperties } from "react";
+import { type CSSProperties, memo } from "react";
 import type { TodoFormData } from "../types/types";
 import useErrorMessage from "../hooks/useErrorMessage";
 import { AxiosError } from "axios";
@@ -19,7 +19,7 @@ const buttonStyle: CSSProperties = {
   padding: "1rem 2rem",
 };
 
-const AddTodo = ({ updateTasks }: AddTodoProps) => {
+const AddTodo = memo(({ updateTasks }: AddTodoProps) => {
   const [taskForm] = Form.useForm();
   const showError = useErrorMessage();
 
@@ -77,6 +77,6 @@ const AddTodo = ({ updateTasks }: AddTodoProps) => {
       </Row>
     </Form>
   );
-};
+});
 
 export default AddTodo;
