@@ -10,12 +10,12 @@ const StatusNavigation = ({
   todoListInfo,
   setStatus,
 }: StatusNavigationProps) => {
-  const isStatus = (str: string): str is TodoStatus => {
+  const hasValidStatus = (str: string): str is TodoStatus => {
     return str === "all" || str === "inWork" || str === "completed";
   };
 
   const handleClick = (newStatus: string) => {
-    if (isStatus(newStatus)) {
+    if (hasValidStatus(newStatus)) {
       setStatus(newStatus);
     }
     return;
