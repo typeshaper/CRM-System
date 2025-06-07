@@ -1,15 +1,20 @@
 import TodoItem from "./TodoItem";
-import classes from "./TodoList.module.css";
 import type { Todo } from "../types/types";
+import { List } from "antd";
+import { type CSSProperties, memo } from "react";
 
 interface TodoListProps {
   todoList: Todo[];
   updateTasks: () => void;
 }
 
-const TodoList = ({ todoList, updateTasks }: TodoListProps) => {
+const listStyle: CSSProperties = {
+  width: "75ch",
+};
+
+const TodoList = memo(({ todoList, updateTasks }: TodoListProps) => {
   return (
-    <ul className={classes.list}>
+    <List style={listStyle}>
       {todoList.map((todo) => (
         <TodoItem
           key={todo.id}
@@ -17,8 +22,8 @@ const TodoList = ({ todoList, updateTasks }: TodoListProps) => {
           updateTasks={updateTasks}
         />
       ))}
-    </ul>
+    </List>
   );
-};
+});
 
 export default TodoList;

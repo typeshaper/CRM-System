@@ -1,47 +1,56 @@
-import type { Todo } from "../types/types";
+import type { Todo, TodoFormData } from "../types/types";
 import { deleteTodoItem, editTodo } from "../api/todo";
-import { hasValidTodoTitle } from "../utility/validation";
-import { useState } from "react";
-import classes from "./TodoItem.module.css";
-import saveIcon from "../assets/save.svg";
-import undoIcon from "../assets/undo.svg";
-import isDoneIcon from "../assets/checkbox-done.svg";
-import isNotDone from "../assets/checkbox-undone.svg";
-import deleteIcon from "../assets/delete.svg";
-import editIcon from "../assets/edit.svg";
+import { useState, memo, type CSSProperties } from "react";
+import { Row, Col, List, Space, Input, Button, Typography, Form } from "antd";
+import {
+  SaveOutlined,
+  UndoOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
+import useErrorMessage from "../hooks/useErrorMessage";
+import { AxiosError } from "axios";
+import { titleValidationInfo } from "../utility/validation";
 
 interface TodoItemProps {
   todo: Todo;
   updateTasks: () => void;
 }
 
-const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
+const listStyle: CSSProperties = {
+  width: "100%",
+  height: "5rem",
+};
+
+const rowStyle: CSSProperties = {
+  width: "100%",
+};
+
+const formItemStyle: CSSProperties = {
+  height: 0,
+};
+
+const TodoItem = memo(({ todo, updateTasks }: TodoItemProps) => {
+  const { Text } = Typography;
   const { title, isDone, id } = todo;
-  const [editingError, setEditingError] = useState<Error>();
-  const [isEditing, setIsEditing] = useState(false);
-  const [didEdit, setDidEdit] = useState<boolean>(false);
-  const [newTitleValue, setNewTitleValue] = useState<string>(title);
-  const isValidTitle = hasValidTodoTitle(newTitleValue);
+  const showError = useErrorMessage();
+  const [taskForm] = Form.useForm();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isDisabledDeleteButton, setIsDisabledDeleteButton] =
+    useState<boolean>(false);
 
   const handleDeleteButton = async () => {
     try {
+      setIsDisabledDeleteButton(true);
       await deleteTodoItem(id);
       updateTasks();
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
+      if (error instanceof AxiosError) {
+        showError(error);
       }
       updateTasks();
     }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitleValue(event.target.value);
-    setDidEdit(false);
-  };
-
-  const handleBlur = () => {
-    setDidEdit(true);
   };
 
   const handleStatusButton = async () => {
@@ -50,8 +59,8 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       setIsEditing(false);
       updateTasks();
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
+      if (error instanceof AxiosError) {
+        showError(error);
       }
     }
   };
@@ -60,119 +69,139 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
     setIsEditing(true);
   };
 
-  const handleSave = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!isValidTitle) return;
+  const handleSave = async (formData: TodoFormData) => {
     try {
-      await editTodo(id, { title: newTitleValue });
+      await editTodo(id, { title: formData.title });
       updateTasks();
       setIsEditing(false);
     } catch (error) {
-      if (error instanceof Error) {
-        setEditingError(error);
+      if (error instanceof AxiosError) {
+        showError(error);
       }
     }
   };
 
   const handleUndoButton = () => {
-    setNewTitleValue(title);
+    taskForm.resetFields();
     setIsEditing(false);
   };
 
   return (
-    <li className={classes["todo-item"]}>
-      <button className={classes["task-status-button"]}>
-        <img
-          onClick={handleStatusButton}
-          className={classes["task-status-icon"]}
-          src={isDone ? isDoneIcon : isNotDone}
-        />
-      </button>
-
-      {editingError && <p>{editingError.message}</p>}
-      {!isEditing && (
-        <p className={isDone ? classes["text-done"] : ""}>{title}</p>
-      )}
-
-      {isEditing && (
-        <form
-          onSubmit={handleSave}
-          className={classes["edit-form"]}
-        >
-          <input
-            className={classes["edit-input"]}
-            type="text"
-            name="title"
-            value={newTitleValue}
-            onChange={handleChange}
-            onBlur={handleBlur}
+    <List.Item style={listStyle}>
+      <Row
+        style={rowStyle}
+        gutter={16}
+      >
+        <Col span={2}>
+          <Button
+            shape="default"
+            onClick={handleStatusButton}
+            icon={isDone ? <CheckOutlined /> : <></>}
           />
+        </Col>
 
-          <div className={classes["icons-wrapper"]}>
-            <div className={classes["save-icon-wrapper"]}>
-              <button
-                type="submit"
-                className={classes["save-button"]}
+        <Col span={22}>
+          {!isEditing && (
+            <Row gutter={16}>
+              <Col
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                span={20}
               >
-                <img
-                  src={saveIcon}
-                  className={classes["save-icon"]}
-                />
-              </button>
-            </div>
-
-            <div className={classes["undo-icon-wrapper"]}>
-              <button
-                type="button"
-                onClick={handleUndoButton}
-                className={classes["undo-button"]}
-              >
-                <img
-                  className={classes["undo-icon"]}
-                  src={undoIcon}
-                />
-              </button>
-            </div>
-          </div>
-          {!isValidTitle && didEdit && (
-            <p className={classes["validation-error"]}>
-              Title must be between 2 and 64 characters long!
-            </p>
+                <Text ellipsis>{title}</Text>
+              </Col>
+              <Col span={4}>
+                <Space
+                  direction="horizontal"
+                  size="small"
+                >
+                  <Button
+                    icon={<EditOutlined />}
+                    name="edit"
+                    onClick={handleEditButton}
+                    variant="solid"
+                    color="blue"
+                  />
+                  <Button
+                    icon={<DeleteOutlined />}
+                    name="delete"
+                    onClick={handleDeleteButton}
+                    disabled={isDisabledDeleteButton}
+                    variant="solid"
+                    color="red"
+                  />
+                </Space>
+              </Col>
+            </Row>
           )}
-        </form>
-      )}
-
-      {!isEditing && (
-        <div className={classes["icons-wrapper"]}>
-          <div className={classes["edit-icon-wrapper"]}>
-            <button
-              type="button"
-              onClick={handleEditButton}
-              className={classes["edit-button"]}
+          {isEditing && (
+            <Form
+              form={taskForm}
+              initialValues={{ title: title }}
+              onFinish={(values: TodoFormData) => handleSave(values)}
             >
-              <img
-                src={editIcon}
-                className={classes["edit-icon"]}
-              />
-            </button>
-          </div>
-
-          <div className={classes["delete-icon-wrapper"]}>
-            <button
-              type="button"
-              onClick={handleDeleteButton}
-              className={classes["delete-button"]}
-            >
-              <img
-                className={classes["delete-icon"]}
-                src={deleteIcon}
-              />
-            </button>
-          </div>
-        </div>
-      )}
-    </li>
+              <Row gutter={16}>
+                <Col span={20}>
+                  <Form.Item
+                    style={formItemStyle}
+                    name="title"
+                    rules={[
+                      {
+                        required: true,
+                        min: titleValidationInfo.minLength,
+                        max: titleValidationInfo.maxLength,
+                        message: titleValidationInfo.message,
+                      },
+                    ]}
+                  >
+                    <Input
+                      autoFocus
+                      variant="filled"
+                      count={{ show: true, max: titleValidationInfo.maxLength }}
+                      autoComplete="off"
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={4}>
+                  <Space
+                    direction="horizontal"
+                    size="small"
+                  >
+                    <Form.Item
+                      style={formItemStyle}
+                      name="saveButton"
+                    >
+                      <Button
+                        icon={<SaveOutlined />}
+                        name="save"
+                        htmlType="submit"
+                        variant="solid"
+                        color="green"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      style={formItemStyle}
+                      name="undoButton"
+                    >
+                      <Button
+                        icon={<UndoOutlined />}
+                        name="undo"
+                        onClick={handleUndoButton}
+                        variant="solid"
+                        color="geekblue"
+                      />
+                    </Form.Item>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Col>
+      </Row>
+    </List.Item>
   );
-};
+});
 
 export default TodoItem;

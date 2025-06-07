@@ -1,3 +1,5 @@
-export function hasValidTodoTitle(title: string) {
-  return title.trim().length <= 64 && title.trim().length >= 2;
-}
+export const titleValidationInfo = {
+  minLength: 2,
+  maxLength: 64,
+  message: "Title must be between 2 and 64 characters long!",
+};

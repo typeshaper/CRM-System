@@ -1,47 +1,40 @@
+import { Tabs, Flex } from "antd";
 import type { TodoInfo, TodoStatus } from "../types/types";
-import classes from "./StatusNavigation.module.css";
 
 interface StatusNavigationProps {
   todoListInfo: TodoInfo;
   setStatus: React.Dispatch<React.SetStateAction<TodoStatus>>;
-  status: TodoStatus;
 }
 
 const StatusNavigation = ({
   todoListInfo,
   setStatus,
-  status,
 }: StatusNavigationProps) => {
-  const handleClick = (newStatus: TodoStatus) => {
-    setStatus(newStatus);
+  const hasValidStatus = (str: string): str is TodoStatus => {
+    return str === "all" || str === "inWork" || str === "completed";
+  };
+
+  const handleClick = (newStatus: string) => {
+    if (hasValidStatus(newStatus)) {
+      setStatus(newStatus);
+    }
+    return;
   };
 
   return (
-    <nav className={classes["status-list-wrapper"]}>
-      <ul className={classes["status-list"]}>
-        <li
-          className={`${classes["status-list-item"]} 
-          ${status === "all" && classes["active"]}`}
-          onClick={() => handleClick("all")}
-        >
-          All ({todoListInfo.all})
-        </li>
-        <li
-          className={`${classes["status-list-item"]} 
-          ${status === "inWork" && classes["active"]}`}
-          onClick={() => handleClick("inWork")}
-        >
-          In work ({todoListInfo.inWork})
-        </li>
-        <li
-          className={`${classes["status-list-item"]} 
-          ${status === "completed" && classes["active"]}`}
-          onClick={() => handleClick("completed")}
-        >
-          Completed ({todoListInfo.completed})
-        </li>
-      </ul>
-    </nav>
+    <Flex>
+      <Tabs
+        size="large"
+        tabBarGutter={58}
+        centered
+        onChange={(key) => handleClick(key)}
+        items={[
+          { label: `All (${todoListInfo.all})`, key: "all" },
+          { label: `In work (${todoListInfo.inWork})`, key: "inWork" },
+          { label: `Completed (${todoListInfo.completed})`, key: "completed" },
+        ]}
+      />
+    </Flex>
   );
 };
 

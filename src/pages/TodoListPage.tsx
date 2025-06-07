@@ -1,12 +1,14 @@
 import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
-import { useEffect, useState } from "react";
-import type { Todo, TodoStatus, TodoInfo } from "../types/types";
-import { fetchTodoList } from "../api/todo";
 import StatusNavigation from "../components/StatusNavigation";
+import { fetchTodoList } from "../api/todo";
+import { useEffect, useState, useCallback } from "react";
+import type { Todo, TodoStatus, TodoInfo } from "../types/types";
+import useErrorMessage from "../hooks/useErrorMessage";
+import { AxiosError } from "axios";
 
 const TodoListPage = () => {
-  const [hasFetchingError, setHasFetchingError] = useState<boolean>(false);
+  const showError = useErrorMessage();
   const [status, setStatus] = useState<TodoStatus>("all");
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [todoListInfo, setTodoListInfo] = useState<TodoInfo>({
@@ -15,7 +17,7 @@ const TodoListPage = () => {
     inWork: 0,
   });
 
-  const updateTasks = async () => {
+  const updateTasks = useCallback(async () => {
     try {
       const fetchedData = await fetchTodoList(status);
       setTodoList(fetchedData.data);
@@ -23,9 +25,20 @@ const TodoListPage = () => {
         setTodoListInfo(fetchedData.info);
       }
     } catch (error) {
-      setHasFetchingError(true);
+      if (error instanceof AxiosError) {
+        showError(error);
+      }
     }
-  };
+  }, [status, showError]);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      updateTasks();
+    }, 5000);
+    return () => {
+      clearInterval(timerId);
+    };
+  });
 
   useEffect(() => {
     updateTasks();
@@ -37,13 +50,11 @@ const TodoListPage = () => {
       <StatusNavigation
         setStatus={setStatus}
         todoListInfo={todoListInfo}
-        status={status}
       />
       <TodoList
         todoList={todoList}
         updateTasks={updateTasks}
       />
-      {hasFetchingError && <p>Failed to fetch to-do list...</p>}
     </>
   );
 };

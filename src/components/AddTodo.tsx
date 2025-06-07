@@ -1,79 +1,82 @@
-import classes from "./AddTodo.module.css";
-import React, { useState } from "react";
 import { createTodoItem } from "../api/todo";
-import { hasValidTodoTitle } from "../utility/validation";
+import { Form, Input, Button, Row, Col } from "antd";
+import { type CSSProperties, memo } from "react";
+import type { TodoFormData } from "../types/types";
+import useErrorMessage from "../hooks/useErrorMessage";
+import { AxiosError } from "axios";
+import { titleValidationInfo } from "../utility/validation";
 
 interface AddTodoProps {
   updateTasks: () => void;
 }
 
-const AddTodo = ({ updateTasks }: AddTodoProps) => {
-  const [addingTaskError, setAddingTaskError] = useState<Error>();
-  const [isUploadingTask, setIsUploadingTask] = useState<boolean>(false);
-  const [titleValue, setTitleValue] = useState<string>("");
-  const [didEdit, setDidEdit] = useState<boolean>(false);
-  const isValidTitle = hasValidTodoTitle(titleValue);
+const formStyle: CSSProperties = {
+  width: "75ch",
+  height: "48px",
+};
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitleValue(event.target.value);
-    setDidEdit(false);
-  };
+const buttonStyle: CSSProperties = {
+  padding: "1rem 2rem",
+};
 
-  const handleBlur = () => {
-    setDidEdit(true);
-  };
+const AddTodo = memo(({ updateTasks }: AddTodoProps) => {
+  const [taskForm] = Form.useForm();
+  const showError = useErrorMessage();
 
-  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!isValidTitle) {
-      return;
-    }
-    setDidEdit(false);
-    setIsUploadingTask(true);
-
+  const handleSubmit = async (formData: TodoFormData) => {
     try {
-      await createTodoItem(titleValue);
+      await createTodoItem(formData.title);
+      taskForm.resetFields();
       updateTasks();
-      setTitleValue("");
     } catch (error) {
-      if (error instanceof Error) {
-        setAddingTaskError(error);
+      if (error instanceof AxiosError) {
+        showError(error);
       }
     }
-    setIsUploadingTask(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Enter your task..."
-        name="title"
-        value={titleValue}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        disabled={isUploadingTask}
-      />
-      {addingTaskError && (
-        <p className={classes["validation-error"]}>{addingTaskError.message}</p>
-      )}
-      {!isValidTitle && didEdit && (
-        <p className={classes["validation-error"]}>
-          Title must be between 2 and 64 characters long!
-        </p>
-      )}
-      {isUploadingTask && (
-        <p className={classes["saving-status"]}>Saving task...</p>
-      )}
-      <button
-        className={classes["add-task-button"]}
-        type="submit"
-        disabled={isUploadingTask}
-      >
-        Add
-      </button>
-    </form>
+    <Form
+      style={formStyle}
+      onFinish={(values: TodoFormData) => handleSubmit(values)}
+      form={taskForm}
+      autoComplete="off"
+      size="large"
+    >
+      <Row gutter={16}>
+        <Col span={20}>
+          <Form.Item
+            name="title"
+            rules={[
+              {
+                required: true,
+                min: titleValidationInfo.minLength,
+                max: titleValidationInfo.maxLength,
+                message: titleValidationInfo.message,
+              },
+            ]}
+          >
+            <Input
+              count={{ show: true, max: titleValidationInfo.maxLength }}
+              placeholder="Enter your task name..."
+            />
+          </Form.Item>
+        </Col>
+        <Col span={4}>
+          <Form.Item name="button">
+            <Button
+              style={buttonStyle}
+              htmlType="submit"
+              type="primary"
+              iconPosition="end"
+            >
+              Add
+            </Button>
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
   );
-};
+});
 
 export default AddTodo;
