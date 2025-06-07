@@ -1,6 +1,6 @@
 import type { Todo, TodoFormData } from "../types/types";
 import { deleteTodoItem, editTodo } from "../api/todo";
-import { useState, type CSSProperties } from "react";
+import { useState, memo, type CSSProperties } from "react";
 import { Row, Col, List, Space, Input, Button, Typography, Form } from "antd";
 import {
   SaveOutlined,
@@ -31,7 +31,7 @@ const formItemStyle: CSSProperties = {
   height: 0,
 };
 
-const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
+const TodoItem = memo(({ todo, updateTasks }: TodoItemProps) => {
   const { Text } = Typography;
   const { title, isDone, id } = todo;
   const showError = useErrorMessage();
@@ -202,6 +202,6 @@ const TodoItem = ({ todo, updateTasks }: TodoItemProps) => {
       </Row>
     </List.Item>
   );
-};
+});
 
 export default TodoItem;
