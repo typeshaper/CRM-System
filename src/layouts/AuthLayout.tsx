@@ -1,7 +1,7 @@
-import { Image, Flex } from "antd";
+import { Flex, Image } from "antd";
+import { type CSSProperties } from "react";
 import { Outlet } from "react-router";
 import illustration from "../assets/auth-illustration.png";
-import { type CSSProperties } from "react";
 
 const flexStyle: CSSProperties = {
   padding: "1rem",

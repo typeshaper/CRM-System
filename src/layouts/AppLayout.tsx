@@ -1,8 +1,8 @@
+import { FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, Typography } from "antd";
-import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
-import { useNavigate, useLocation, Outlet } from "react-router";
-import { type CSSProperties } from "react";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { type CSSProperties } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
