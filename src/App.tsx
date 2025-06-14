@@ -6,6 +6,8 @@ import ProfilePage from "./pages/app/ProfilePage";
 import { Navigate } from "react-router";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { App as AntdApp } from "antd";
+import LoginPage from "./pages/auth/LoginPage";
+import SignUpPage from "./pages/auth/SignUpPage";
 
 const router = createBrowserRouter([
   {
@@ -38,8 +40,8 @@ const router = createBrowserRouter([
           />
         ),
       },
-      { path: "sign-up", element: <TodoListPage /> },
-      { path: "login", element: <ProfilePage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "signup", element: <SignUpPage /> },
     ],
   },
 ]);
