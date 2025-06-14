@@ -1,4 +1,13 @@
-import { Flex, Image, Typography, Form, Input, Button, Checkbox } from "antd";
+import {
+  Flex,
+  Image,
+  Typography,
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Space,
+} from "antd";
 import icon from "../../assets/auth-icon.png";
 import type { CSSProperties } from "react";
 
@@ -10,8 +19,8 @@ const outerFlexContainerStyle: CSSProperties = {
 
 const innerFlexContainerStyle: CSSProperties = {
   width: "70%",
-  height: "500px",
-  marginTop: "30%",
+  height: "100%",
+  padding: "10rem 0 4rem 0",
   flexDirection: "column",
   justifyContent: "center",
 };
@@ -80,17 +89,20 @@ const LoginPage = () => {
             style={{ paddingBottom: "1rem" }}
           >
             <Checkbox>Remember me</Checkbox>
-            <a
-              style={{ color: "#7F275B" }}
-              href=""
-            >
-              Forgot password?
-            </a>
+            <a style={{ color: "#7F275B" }}>Forgot password?</a>
           </Flex>
           <Form.Item>
             <Button style={loginButtonStyle}>Login</Button>
           </Form.Item>
         </Form>
+        <Flex
+          justify="center"
+          gap="1rem"
+          style={{ marginTop: "auto", fontSize: "18px" }}
+        >
+          <p>Not Registered Yet?</p>
+          <a style={{ color: "#7F275B" }}>Create an account</a>
+        </Flex>
       </Flex>
     </Flex>
   );
