@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 import illustration from "../assets/auth-illustration.png";
 
 const flexStyle: CSSProperties = {
-  padding: "1rem",
+  padding: "0.5rem",
   height: "100vh",
   display: "flex",
 };
@@ -17,16 +17,12 @@ const imageStyle: CSSProperties = {
 };
 
 const authItemStyle: CSSProperties = {
-  flex: 3,
+  flex: "3 1 300px",
 };
 
 const AuthLayout = () => {
   return (
-    <Flex
-      style={flexStyle}
-      gap={10}
-      justify="space-between"
-    >
+    <Flex style={flexStyle}>
       <Image
         style={imageStyle}
         preview={false}
