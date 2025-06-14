@@ -34,15 +34,15 @@ const AppLayout = () => {
   const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
-  const isRootURL = location.pathname === "/";
+  const isRootURL = location.pathname.match(/\/app\/?/g);
   const menuItems: ItemType<MenuItemType>[] = [
     {
-      key: "/tasks",
+      key: "/app/tasks",
       label: "Tasks",
       icon: <FileDoneOutlined />,
     },
     {
-      key: "/profile",
+      key: "/app/profile",
       label: "Profile",
       icon: <UserOutlined />,
     },
@@ -57,7 +57,7 @@ const AppLayout = () => {
         <Title style={headerStyle}>To-Do List!</Title>
         <Menu
           style={siderStyle}
-          defaultSelectedKeys={[isRootURL ? "/tasks" : location.pathname]}
+          defaultSelectedKeys={[isRootURL ? "/app/tasks" : location.pathname]}
           onClick={(info) => navigate(info.key)}
           items={menuItems}
         />
