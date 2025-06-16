@@ -1,5 +1,3 @@
-import { message } from "antd";
-
 export const titleValidationRules = {
   min: 2,
   max: 64,

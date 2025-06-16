@@ -1,4 +1,4 @@
-import { Flex, Image, Typography, Form, Input, Button, Checkbox } from "antd";
+import { Flex, Image, Typography, Form, Input, Button } from "antd";
 import icon from "../../assets/auth-icon.png";
 import { useState, type CSSProperties } from "react";
 import { login } from "../../api/auth";
