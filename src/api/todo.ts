@@ -36,7 +36,7 @@ export async function createTodoItem(title: string) {
   };
 
   try {
-    const response: AxiosResponse = await api(`/todos`, {
+    const response: AxiosResponse = await api({
       method: "post",
       url: "/todos",
       data: todo,
@@ -67,7 +67,7 @@ export async function deleteTodoItem(id: number) {
 
 export async function editTodo(id: number, taskData: TodoRequest) {
   try {
-    const response: AxiosResponse = await api(`/todos/${id}`, {
+    const response: AxiosResponse = await api({
       method: "put",
       url: `/todos/${id}`,
       data: taskData,
