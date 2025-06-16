@@ -5,7 +5,7 @@ import type {
   TodoInfo,
   TodoRequest,
   TodoStatus,
-} from "../types/types";
+} from "../types/todo";
 
 const api = axios.create({
   baseURL: `https://easydev.club/api/v1`,
