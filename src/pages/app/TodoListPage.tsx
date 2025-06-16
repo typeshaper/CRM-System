@@ -5,7 +5,7 @@ import AddTodo from "../../components/app/AddTodo";
 import StatusNavigation from "../../components/app/StatusNavigation";
 import TodoList from "../../components/app/TodoList";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import type { Todo, TodoInfo, TodoStatus } from "../../types/types";
+import type { Todo, TodoInfo, TodoStatus } from "../../types/todo";
 
 const TodoListPage = () => {
   const showError = useErrorMessage();
