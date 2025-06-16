@@ -1,8 +1,8 @@
 import { Flex, Image, Typography, Form, Input, Button } from "antd";
 import icon from "../../assets/auth-icon.png";
 import { useState, type CSSProperties } from "react";
-import { login } from "../../api/auth";
-import type { AuthData } from "../../types/auth";
+import { login, signup } from "../../api/auth";
+import type { AuthData, UserRegistration } from "../../types/auth";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router";
@@ -15,6 +15,7 @@ import {
 } from "../../utility/validation";
 import { isPossiblePhoneNumber } from "libphonenumber-js";
 import * as EmailValidator from "email-validator";
+import useApp from "antd/es/app/useApp";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -53,12 +54,18 @@ const SignUpPage = () => {
   const showError = useErrorMessage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const app = useApp();
+  const notification = app.notification;
 
-  const handleLoginButton = async (loginData: AuthData) => {
+  const handleSignupButton = async (userData: UserRegistration) => {
     setIsLoading(true);
     try {
-      await login(loginData);
-      navigate("/app");
+      await signup(userData);
+      notification.success({
+        message: "Account is created successfully!",
+        placement: "bottomRight",
+      });
+      navigate("/auth/login");
       setIsLoading(false);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -90,7 +97,7 @@ const SignUpPage = () => {
 
         <Form
           layout="vertical"
-          onFinish={(values: AuthData) => handleLoginButton(values)}
+          onFinish={(values: UserRegistration) => handleSignupButton(values)}
         >
           <Form.Item
             name="userName"

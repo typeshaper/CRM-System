@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
-import type { AuthData } from "../types/auth";
+import type { AuthData, Profile, UserRegistration } from "../types/auth";
 import type { Token } from "../types/auth";
 
 const api = axios.create({
@@ -18,6 +18,24 @@ export async function login(loginData: AuthData) {
     });
 
     const resData: Token = await response.data;
+    return resData;
+  } catch (error: unknown) {
+    throw error as AxiosError;
+  }
+}
+
+export async function signup(userData: UserRegistration) {
+  try {
+    const response: AxiosResponse = await api({
+      method: "post",
+      url: "/auth/signup",
+      data: userData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const resData: Profile = await response.data;
     return resData;
   } catch (error: unknown) {
     throw error as AxiosError;

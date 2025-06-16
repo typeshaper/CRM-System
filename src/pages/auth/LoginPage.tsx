@@ -6,6 +6,7 @@ import type { AuthData } from "../../types/auth";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router";
+import useApp from "antd/es/app/useApp";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -44,11 +45,17 @@ const LoginPage = () => {
   const showError = useErrorMessage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const app = useApp();
+  const notification = app.notification;
 
   const handleLoginButton = async (loginData: AuthData) => {
     setIsLoading(true);
     try {
       await login(loginData);
+      notification.success({
+        message: "You have logged in!",
+        placement: "bottomRight",
+      });
       navigate("/app");
       setIsLoading(false);
     } catch (error) {
