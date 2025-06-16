@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { type CSSProperties, memo } from "react";
 import { createTodoItem } from "../../api/todo";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import type { TodoFormData } from "../../types/types";
+import type { TodoFormData } from "../../types/todo";
 import { titleValidationInfo } from "../../utility/validation";
 
 interface AddTodoProps {

@@ -1,6 +1,6 @@
 import { List } from "antd";
 import { type CSSProperties, memo } from "react";
-import type { Todo } from "../../types/types";
+import type { Todo } from "../../types/todo";
 import TodoItem from "./TodoItem";
 
 interface TodoListProps {

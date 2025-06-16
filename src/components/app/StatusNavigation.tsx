@@ -1,5 +1,5 @@
 import { Flex, Tabs } from "antd";
-import type { TodoInfo, TodoStatus } from "../../types/types";
+import type { TodoInfo, TodoStatus } from "../../types/todo";
 
 interface StatusNavigationProps {
   todoListInfo: TodoInfo;

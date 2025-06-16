@@ -10,7 +10,7 @@ import { AxiosError } from "axios";
 import { memo, useState, type CSSProperties } from "react";
 import { deleteTodoItem, editTodo } from "../../api/todo";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import type { Todo, TodoFormData } from "../../types/types";
+import type { Todo, TodoFormData } from "../../types/todo";
 import { titleValidationInfo } from "../../utility/validation";
 
 interface TodoItemProps {
