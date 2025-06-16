@@ -29,8 +29,3 @@ export interface MetaResponse<T, N> {
 export interface TodoFormData {
   title: string;
 }
-
-export interface AuthData {
-  login: string;
-  password: string;
-}

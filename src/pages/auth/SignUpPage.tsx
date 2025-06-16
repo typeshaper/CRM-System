@@ -2,7 +2,7 @@ import { Flex, Image, Typography, Form, Input, Button } from "antd";
 import icon from "../../assets/auth-icon.png";
 import { useState, type CSSProperties } from "react";
 import { login } from "../../api/auth";
-import type { AuthData } from "../../types/todo";
+import type { AuthData } from "../../types/auth";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router";
