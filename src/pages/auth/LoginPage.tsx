@@ -1,6 +1,11 @@
 import { Flex, Image, Typography, Form, Input, Button, Checkbox } from "antd";
 import icon from "../../assets/auth-icon.png";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
+import { login } from "../../api/auth";
+import type { AuthData } from "../../types/todo";
+import useErrorMessage from "../../hooks/useErrorMessage";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -36,6 +41,23 @@ const inputStyle: CSSProperties = {
 
 const LoginPage = () => {
   const { Title, Paragraph } = Typography;
+  const showError = useErrorMessage();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleLoginButton = async (loginData: AuthData) => {
+    setIsLoading(true);
+    try {
+      await login(loginData);
+      navigate("/app");
+      setIsLoading(false);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showError(error);
+        setIsLoading(false);
+      }
+    }
+  };
 
   return (
     <Flex style={outerFlexContainerStyle}>
@@ -58,20 +80,30 @@ const LoginPage = () => {
           <Paragraph>See what is going on with your business</Paragraph>
         </Flex>
 
-        <Form layout="vertical">
-          <Form.Item label="Email">
+        <Form
+          layout="vertical"
+          onFinish={(values: AuthData) => handleLoginButton(values)}
+        >
+          <Form.Item
+            name="login"
+            label="Login"
+            rules={[{ required: true, message: "Please enter your login" }]}
+          >
             <Input
               style={inputStyle}
               size="large"
-              placeholder="mail@abc.com"
-              type="p"
+              placeholder="Login"
             />
           </Form.Item>
-          <Form.Item label="Password">
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Please enter your password" }]}
+          >
             <Input.Password
               style={inputStyle}
               size="large"
-              placeholder="*******************"
+              placeholder="*************"
             />
           </Form.Item>
           <Flex
@@ -83,7 +115,13 @@ const LoginPage = () => {
             <a style={{ color: "#7F275B" }}>Forgot password?</a>
           </Flex>
           <Form.Item>
-            <Button style={loginButtonStyle}>Login</Button>
+            <Button
+              htmlType="submit"
+              style={loginButtonStyle}
+              loading={isLoading}
+            >
+              Login
+            </Button>
           </Form.Item>
         </Form>
         <Flex
