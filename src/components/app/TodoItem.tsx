@@ -11,7 +11,7 @@ import { memo, useState, type CSSProperties } from "react";
 import { deleteTodoItem, editTodo } from "../../api/todo";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import type { Todo, TodoFormData } from "../../types/todo";
-import { titleValidationInfo } from "../../utility/validation";
+import { titleValidationRules } from "../../utility/validation";
 
 interface TodoItemProps {
   todo: Todo;
@@ -149,17 +149,17 @@ const TodoItem = memo(({ todo, updateTasks }: TodoItemProps) => {
                     name="title"
                     rules={[
                       {
-                        required: true,
-                        min: titleValidationInfo.minLength,
-                        max: titleValidationInfo.maxLength,
-                        message: titleValidationInfo.message,
+                        ...titleValidationRules,
                       },
                     ]}
                   >
                     <Input
                       autoFocus
                       variant="filled"
-                      count={{ show: true, max: titleValidationInfo.maxLength }}
+                      count={{
+                        show: true,
+                        max: titleValidationRules.max,
+                      }}
                       autoComplete="off"
                     />
                   </Form.Item>

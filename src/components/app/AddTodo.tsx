@@ -4,7 +4,7 @@ import { type CSSProperties, memo } from "react";
 import { createTodoItem } from "../../api/todo";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import type { TodoFormData } from "../../types/todo";
-import { titleValidationInfo } from "../../utility/validation";
+import { titleValidationRules } from "../../utility/validation";
 
 interface AddTodoProps {
   updateTasks: () => void;
@@ -49,15 +49,12 @@ const AddTodo = memo(({ updateTasks }: AddTodoProps) => {
             name="title"
             rules={[
               {
-                required: true,
-                min: titleValidationInfo.minLength,
-                max: titleValidationInfo.maxLength,
-                message: titleValidationInfo.message,
+                ...titleValidationRules,
               },
             ]}
           >
             <Input
-              count={{ show: true, max: titleValidationInfo.maxLength }}
+              count={{ show: true, max: titleValidationRules.max }}
               placeholder="Enter your task name..."
             />
           </Form.Item>

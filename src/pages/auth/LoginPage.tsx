@@ -5,7 +5,7 @@ import { login } from "../../api/auth";
 import type { AuthData } from "../../types/todo";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -130,7 +130,13 @@ const LoginPage = () => {
           style={{ marginTop: "auto", fontSize: "18px" }}
         >
           <p>Not Registered Yet?</p>
-          <a style={{ color: "#7F275B" }}>Create an account</a>
+
+          <Link
+            to="/auth/signup"
+            style={{ color: "#7F275B" }}
+          >
+            Create an account
+          </Link>
         </Flex>
       </Flex>
     </Flex>
