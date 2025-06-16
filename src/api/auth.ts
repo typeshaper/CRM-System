@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
-import type { AuthData } from "../types/todo";
+import type { AuthData } from "../types/auth";
 import type { Token } from "../types/auth";
 
 const api = axios.create({
