@@ -2,11 +2,13 @@ import { Flex, Image, Typography, Form, Input, Button, Checkbox } from "antd";
 import icon from "../../assets/auth-icon.png";
 import { useState, type CSSProperties } from "react";
 import { login } from "../../api/auth";
-import type { AuthData } from "../../types/auth";
+import type { AuthData, Token } from "../../types/auth";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router";
 import useApp from "antd/es/app/useApp";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/auth";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -47,11 +49,15 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const app = useApp();
   const notification = app.notification;
+  const dispatch = useDispatch();
 
   const handleLoginButton = async (loginData: AuthData) => {
     setIsLoading(true);
     try {
-      await login(loginData);
+      const token: Token = await login(loginData);
+      dispatch(authActions.setTokens(token));
+      localStorage.setItem("refreshToken", token.refreshToken);
+
       notification.success({
         message: "You have logged in!",
         placement: "bottomRight",
