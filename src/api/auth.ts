@@ -1,6 +1,6 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import type { AuthData, Profile, UserRegistration } from "../types/auth";
-import type { Token } from "../types/auth";
+import type { Token, RefreshToken } from "../types/auth";
 
 const api = axios.create({
   baseURL: `https://easydev.club/api/v1`,
@@ -36,6 +36,24 @@ export async function signup(userData: UserRegistration) {
     });
 
     const resData: Profile = await response.data;
+    return resData;
+  } catch (error: unknown) {
+    throw error as AxiosError;
+  }
+}
+
+export async function refreshSession(refreshToken: RefreshToken) {
+  try {
+    const response: AxiosResponse = await api({
+      method: "post",
+      url: "/auth/refresh",
+      data: refreshToken,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const resData: Token = await response.data;
     return resData;
   } catch (error: unknown) {
     throw error as AxiosError;
