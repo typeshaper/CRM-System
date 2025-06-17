@@ -1,8 +1,8 @@
 import { Flex, Image, Typography, Form, Input, Button } from "antd";
 import icon from "../../assets/auth-icon.png";
 import { useState, type CSSProperties } from "react";
-import { login, signup } from "../../api/auth";
-import type { AuthData, UserRegistration } from "../../types/auth";
+import { signup } from "../../api/auth";
+import type { UserRegistration } from "../../types/auth";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router";
