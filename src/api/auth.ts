@@ -71,6 +71,8 @@ export async function logout(accessToken: string) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    return response;
   } catch (error: unknown) {
     throw error as AxiosError;
   }

@@ -7,14 +7,11 @@ import ProfilePage from "./pages/app/ProfilePage";
 import TodoListPage from "./pages/app/TodoListPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
-import ProtectedRoutes from "./pages/protectedRoutes";
-
-const isAuth = !!localStorage.getItem("refreshToken");
+import ProtectedRoutes from "./pages/ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: isAuth ? <Navigate to="/app" /> : <Navigate to="/auth" />,
     element: <ProtectedRoutes />,
     children: [
       {
