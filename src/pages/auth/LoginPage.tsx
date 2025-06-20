@@ -55,7 +55,9 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       const token: Token = await login(loginData);
-      dispatch(authActions.setTokens(token));
+
+      dispatch(authActions.setAccessToken(token.accessToken));
+      localStorage.removeItem("refreshToken");
       localStorage.setItem("refreshToken", token.refreshToken);
 
       notification.success({

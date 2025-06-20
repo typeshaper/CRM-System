@@ -47,10 +47,11 @@ export async function refreshSession(refreshToken: RefreshToken) {
     const response: AxiosResponse = await api({
       method: "post",
       url: "/auth/refresh",
-      data: refreshToken,
       headers: {
+        accept: "application/json",
         "Content-Type": "application/json",
       },
+      data: refreshToken,
     });
 
     const resData: Token = await response.data;
