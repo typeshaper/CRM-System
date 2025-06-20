@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { Profile } from "../../types/user";
 import type { RootState } from "../../store";
+import useErrorMessage from "../../hooks/useErrorMessage";
+import { AxiosError } from "axios";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
@@ -12,6 +14,7 @@ const ProfilePage = () => {
   const accessToken = useSelector<RootState, string>(
     (state) => state.accessToken
   );
+  const showError = useErrorMessage();
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,7 +26,9 @@ const ProfilePage = () => {
           setIsLoading(false);
         }
       } catch (error) {
-        //
+        if (error instanceof AxiosError) {
+          showError(error);
+        }
       }
     })();
   }, [accessToken]);
