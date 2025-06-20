@@ -1,19 +1,12 @@
-import "./App.css";
-import AuthLayout from "./layouts/AuthLayout";
-import AppLayout from "./layouts/AppLayout";
-import TodoListPage from "./pages/app/TodoListPage";
-import ProfilePage from "./pages/app/ProfilePage";
-import { Navigate } from "react-router";
-import { createBrowserRouter, RouterProvider } from "react-router";
 import { App as AntdApp } from "antd";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import "./App.css";
+import AppLayout from "./layouts/AppLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import ProfilePage from "./pages/app/ProfilePage";
+import TodoListPage from "./pages/app/TodoListPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "./store";
-import { refreshSession } from "./api/auth";
-import { authActions } from "./store/auth";
-import { useDispatch } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -53,20 +46,6 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const dispatch = useDispatch();
-  const accessToken = useSelector((state: RootState) => state.accessToken);
-  const refreshToken = localStorage.getItem("refreshToken");
-
-  useEffect(() => {
-    (async () => {
-      if (!accessToken && refreshToken) {
-        const newTokens = await refreshSession({ refreshToken });
-        localStorage.setItem("refreshToken", newTokens.refreshToken);
-        dispatch(authActions.setAccessToken(newTokens.accessToken));
-      }
-    })();
-  }, []);
-
   return (
     <AntdApp>
       <RouterProvider router={router} />
