@@ -65,8 +65,8 @@ const AppLayout = () => {
       if (!accessToken && refreshToken) {
         try {
           const newTokens = await refreshSession({ refreshToken });
-          localStorage.setItem("refreshToken", newTokens.refreshToken);
           dispatch(authActions.setAccessToken(newTokens.accessToken));
+          localStorage.setItem("refreshToken", newTokens.refreshToken);
         } catch (error) {
           if (error instanceof AxiosError) {
             if (error.status === 401) {
@@ -78,7 +78,7 @@ const AppLayout = () => {
         }
       }
     })();
-  });
+  }, []);
 
   return (
     <Layout style={layoutStyle}>

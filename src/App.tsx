@@ -8,7 +8,13 @@ import TodoListPage from "./pages/app/TodoListPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 
+const isAuth = !!localStorage.getItem("refreshToken");
+
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: isAuth ? <Navigate to="/app" /> : <Navigate to="/auth" />,
+  },
   {
     path: "/app",
     element: <AppLayout />,
