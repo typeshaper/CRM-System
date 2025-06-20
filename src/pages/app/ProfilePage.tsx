@@ -32,6 +32,7 @@ const ProfilePage = () => {
       }
     })();
   }, [accessToken]);
+
   return (
     <>
       <Skeleton
@@ -40,17 +41,23 @@ const ProfilePage = () => {
       >
         <Title>Your info</Title>
         <List bordered>
-          <List.Item>
-            <Text>Username: {userData?.username ?? "unknown"}</Text>
-          </List.Item>
+          {userData?.username && (
+            <List.Item>
+              <Text>Username: {userData?.username}</Text>
+            </List.Item>
+          )}
 
-          <List.Item>
-            <Text>Email: {userData?.email ?? "unknown"}</Text>
-          </List.Item>
+          {userData?.email && (
+            <List.Item>
+              <Text>Email: {userData?.email}</Text>
+            </List.Item>
+          )}
 
-          <List.Item>
-            <Text>Phone: {userData?.phoneNumber ?? "unknown"}</Text>
-          </List.Item>
+          {userData?.phoneNumber && (
+            <List.Item>
+              <Text>Phone number: {userData?.phoneNumber}</Text>
+            </List.Item>
+          )}
         </List>
       </Skeleton>
     </>
