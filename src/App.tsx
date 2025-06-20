@@ -1,26 +1,54 @@
-import "./App.css";
-import RootLayoutPage from "./pages/RootLayoutPage";
-import TodoListPage from "./pages/TodoListPage";
-import ProfilePage from "./pages/ProfilePage";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
 import { App as AntdApp } from "antd";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import "./App.css";
+import AppLayout from "./layouts/AppLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import ProfilePage from "./pages/app/ProfilePage";
+import TodoListPage from "./pages/app/TodoListPage";
+import LoginPage from "./pages/auth/LoginPage";
+import SignUpPage from "./pages/auth/SignUpPage";
+import ProtectedRoutes from "./pages/ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayoutPage />,
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        path: "/app",
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Navigate
+                to="tasks"
+                replace
+              />
+            ),
+          },
+          { path: "tasks", element: <TodoListPage /> },
+          { path: "profile", element: <ProfilePage /> },
+        ],
+      },
+    ],
+  },
+  {},
+  {
+    path: "/auth",
+    element: <AuthLayout />,
     children: [
       {
         index: true,
         element: (
           <Navigate
-            to="/tasks"
+            to="login"
             replace
           />
         ),
       },
-      { path: "/tasks", element: <TodoListPage /> },
-      { path: "/profile", element: <ProfilePage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "signup", element: <SignUpPage /> },
     ],
   },
 ]);
