@@ -57,7 +57,7 @@ const AppLayout = () => {
   const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
-  const isRootURL = location.pathname.match(/\/app\/?/g);
+  const isRootURL = location.pathname.match(/\/app\/?$/g);
   const showError = useErrorMessage();
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const AppLayout = () => {
         }
       }
     })();
-  }, []);
+  });
 
   return (
     <Layout style={layoutStyle}>
