@@ -1,4 +1,4 @@
-import { Typography, List, Skeleton } from "antd";
+import { Typography, Flex, List, Skeleton, Button } from "antd";
 import { getCurrentUserData } from "../../api/user";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -40,25 +40,35 @@ const ProfilePage = () => {
         loading={isLoading}
       >
         <Title>Your info</Title>
-        <List bordered>
-          {userData?.username && (
-            <List.Item>
-              <Text>Username: {userData?.username}</Text>
-            </List.Item>
-          )}
-
-          {userData?.email && (
-            <List.Item>
-              <Text>Email: {userData?.email}</Text>
-            </List.Item>
-          )}
-
-          {userData?.phoneNumber && (
-            <List.Item>
-              <Text>Phone number: {userData?.phoneNumber}</Text>
-            </List.Item>
-          )}
-        </List>
+        <Flex
+          vertical
+          style={{ height: "100%" }}
+          justify="space-between"
+        >
+          <List bordered>
+            {userData?.username && (
+              <List.Item>
+                <Text>Username: {userData?.username}</Text>
+              </List.Item>
+            )}
+            {userData?.email && (
+              <List.Item>
+                <Text>Email: {userData?.email}</Text>
+              </List.Item>
+            )}
+            {userData?.phoneNumber && (
+              <List.Item>
+                <Text>Phone number: {userData?.phoneNumber}</Text>
+              </List.Item>
+            )}
+          </List>
+          <Button
+            style={{ alignSelf: "start" }}
+            danger
+          >
+            Logout
+          </Button>
+        </Flex>
       </Skeleton>
     </>
   );
