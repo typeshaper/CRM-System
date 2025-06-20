@@ -7,31 +7,36 @@ import ProfilePage from "./pages/app/ProfilePage";
 import TodoListPage from "./pages/app/TodoListPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
+import ProtectedRoutes from "./pages/protectedRoutes";
 
 const isAuth = !!localStorage.getItem("refreshToken");
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: isAuth ? <Navigate to="/app" /> : <Navigate to="/auth" />,
-  },
-  {
-    path: "/app",
-    element: <AppLayout />,
+    // element: isAuth ? <Navigate to="/app" /> : <Navigate to="/auth" />,
+    element: <ProtectedRoutes />,
     children: [
       {
-        index: true,
-        element: (
-          <Navigate
-            to="tasks"
-            replace
-          />
-        ),
+        path: "/app",
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Navigate
+                to="tasks"
+                replace
+              />
+            ),
+          },
+          { path: "tasks", element: <TodoListPage /> },
+          { path: "profile", element: <ProfilePage /> },
+        ],
       },
-      { path: "tasks", element: <TodoListPage /> },
-      { path: "profile", element: <ProfilePage /> },
     ],
   },
+  {},
   {
     path: "/auth",
     element: <AuthLayout />,
