@@ -60,3 +60,18 @@ export async function refreshSession(refreshToken: RefreshToken) {
     throw error as AxiosError;
   }
 }
+
+export async function logout(accessToken: string) {
+  try {
+    const response: AxiosResponse = await api({
+      method: "post",
+      url: "user/logout",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error: unknown) {
+    throw error as AxiosError;
+  }
+}

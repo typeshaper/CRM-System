@@ -6,15 +6,36 @@ import type { Profile } from "../../types/user";
 import type { RootState } from "../../store";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
+import { logout } from "../../api/auth";
+import { useNavigate } from "react-router";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
   const [userData, setUserData] = useState<Profile>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const accessToken = useSelector<RootState, string>(
     (state) => state.accessToken
   );
   const showError = useErrorMessage();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      if (accessToken !== "") {
+        await logout(accessToken);
+        localStorage.removeItem("refreshToken");
+        setIsLoggingOut(false);
+        navigate("/auth");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showError(error);
+        setIsLoggingOut(false);
+      }
+    }
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -63,8 +84,10 @@ const ProfilePage = () => {
             )}
           </List>
           <Button
+            onClick={handleLogout}
             style={{ alignSelf: "start" }}
             danger
+            disabled={isLoggingOut}
           >
             Logout
           </Button>
