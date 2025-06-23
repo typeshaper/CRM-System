@@ -11,9 +11,18 @@ import ProtectedRoutes from "./pages/ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <ProtectedRoutes />,
+    path: "/",
     children: [
+      {
+        index: true,
+        element: (
+          <Navigate
+            to="app"
+            replace
+          />
+        ),
+      },
       {
         path: "/app",
         element: <AppLayout />,

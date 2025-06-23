@@ -2,7 +2,9 @@ import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoutes = () => {
   const isAuth = !!localStorage.getItem("refreshToken");
-  return isAuth ? <Outlet /> : <Navigate to="/auth" />;
+  const content = isAuth ? <Outlet /> : <Navigate to="/auth" />;
+
+  return content;
 };
 
 export default ProtectedRoutes;
