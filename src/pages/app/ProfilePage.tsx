@@ -67,21 +67,15 @@ const ProfilePage = () => {
           justify="space-between"
         >
           <List bordered>
-            {userData?.username && (
-              <List.Item>
-                <Text>Username: {userData?.username}</Text>
-              </List.Item>
-            )}
-            {userData?.email && (
-              <List.Item>
-                <Text>Email: {userData?.email}</Text>
-              </List.Item>
-            )}
-            {userData?.phoneNumber && (
-              <List.Item>
-                <Text>Phone number: {userData?.phoneNumber}</Text>
-              </List.Item>
-            )}
+            <List.Item>
+              <Text>Username: {userData?.username}</Text>
+            </List.Item>
+            <List.Item>
+              <Text>Email: {userData?.email}</Text>
+            </List.Item>
+            <List.Item>
+              <Text>Phone number: {userData?.phoneNumber || "-"}</Text>
+            </List.Item>
           </List>
           <Button
             onClick={handleLogout}
