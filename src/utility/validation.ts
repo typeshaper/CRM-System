@@ -10,7 +10,7 @@ export const usernameValidationRules = {
   max: 60,
   pattern: /[a-zA-Zа-яА-Я]/g,
   message:
-    "Username must be between 2 and 60 latin or cyrillic characters long!",
+    "Username must be between 1 and 60 latin or cyrillic characters long!",
   required: true,
 };
 
