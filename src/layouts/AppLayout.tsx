@@ -10,6 +10,7 @@ import { refreshSession } from "../api/auth";
 import type { RootState } from "../store";
 import { authActions } from "../store/auth";
 import useErrorMessage from "../hooks/useErrorMessage";
+import store from "../store";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -66,11 +67,13 @@ const AppLayout = () => {
         try {
           const newTokens = await refreshSession({ refreshToken });
           dispatch(authActions.setAccessToken(newTokens.accessToken));
+          dispatch(authActions.setAuthStatus(true));
           localStorage.setItem("refreshToken", newTokens.refreshToken);
         } catch (error) {
           if (error instanceof AxiosError) {
             if (error.status === 401) {
               localStorage.removeItem("refreshToken");
+              dispatch(authActions.setAuthStatus(false));
               navigate("/auth");
               showError(error);
             }

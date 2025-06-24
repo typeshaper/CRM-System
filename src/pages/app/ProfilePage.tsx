@@ -8,15 +8,19 @@ import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { logout } from "../../api/auth";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/auth";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
   const [userData, setUserData] = useState<Profile>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const accessToken = useSelector<RootState, string>(
     (state) => state.accessToken
   );
+
   const showError = useErrorMessage();
   const navigate = useNavigate();
 
@@ -26,6 +30,8 @@ const ProfilePage = () => {
       if (accessToken !== "") {
         await logout(accessToken);
         localStorage.removeItem("refreshToken");
+        dispatch(authActions.setAccessToken(""));
+        dispatch(authActions.setAuthStatus(false));
         setIsLoggingOut(false);
         navigate("/auth");
       }
