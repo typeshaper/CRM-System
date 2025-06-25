@@ -9,58 +9,16 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import ProtectedRoutes from "./pages/ProtectedRoutes";
 
-// const router = createBrowserRouter([
-//   {
-//     element: <ProtectedRoutes />,
-//     path: "/",
-//     children: [
-//       {
-//         index: true,
-//         element: (
-//           <Navigate
-//             to="app"
-//             replace
-//           />
-//         ),
-//       },
-//       {
-//         path: "/app",
-//         element: <AppLayout />,
-//         children: [
-//           {
-//             index: true,
-//             element: (
-//               <Navigate
-//                 to="tasks"
-//                 replace
-//               />
-//             ),
-//           },
-//           { path: "tasks", element: <TodoListPage /> },
-//           { path: "profile", element: <ProfilePage /> },
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     path: "/auth",
-//     element: <AuthLayout />,
-//     children: [
-//       {
-//         index: true,
-//         element: (
-//           <Navigate
-//             to="login"
-//             replace
-//           />
-//         ),
-//       },
-//       { path: "login", element: <LoginPage /> },
-//       { path: "signup", element: <SignUpPage /> },
-//     ],
-//   },
-// ]);
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Navigate
+        to="/app"
+        replace
+      />
+    ),
+  },
   {
     path: "/app",
     element: <AppLayout />,
