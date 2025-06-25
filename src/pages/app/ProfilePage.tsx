@@ -10,6 +10,7 @@ import { logout } from "../../api/auth";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
+import authService from "../../services/authService";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
@@ -17,9 +18,7 @@ const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const accessToken = useSelector<RootState, string>(
-    (state) => state.accessToken
-  );
+  const accessToken = authService.getAccessToken();
 
   const showError = useErrorMessage();
   const navigate = useNavigate();
@@ -30,8 +29,8 @@ const ProfilePage = () => {
       if (accessToken !== "") {
         await logout(accessToken);
         localStorage.removeItem("refreshToken");
-        dispatch(authActions.setAccessToken(""));
-        dispatch(authActions.setAuthStatus(false));
+        authService.clearAccessToken();
+        dispatch(authActions.logout());
         setIsLoggingOut(false);
         navigate("/auth");
       }

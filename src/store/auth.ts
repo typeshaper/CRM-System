@@ -1,24 +1,25 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import authService from "../services/authService";
 
 interface InitialState {
-  accessToken: string;
-  authStatus: boolean;
+  isAuthenticated: boolean;
 }
 
 const initialState: InitialState = {
-  accessToken: "",
-  authStatus: false,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAccessToken(state, action: PayloadAction<string>) {
-      state.accessToken = action.payload;
+    login(state) {
+      state.isAuthenticated = true;
     },
-    setAuthStatus(state, action: PayloadAction<boolean>) {
-      state.authStatus = action.payload;
+    logout(state) {
+      state.isAuthenticated = false;
+      authService.clearAccessToken();
+      localStorage.removeItem("refreshToken");
     },
   },
 });

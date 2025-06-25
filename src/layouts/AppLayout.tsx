@@ -3,14 +3,6 @@ import { Layout, Menu, Typography } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { type CSSProperties } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { AxiosError } from "axios";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { refreshSession } from "../api/auth";
-import type { RootState } from "../store";
-import { authActions } from "../store/auth";
-import useErrorMessage from "../hooks/useErrorMessage";
-import store from "../store";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -51,37 +43,11 @@ const menuItems: ItemType<MenuItemType>[] = [
 ];
 
 const AppLayout = () => {
-  const dispatch = useDispatch();
-  const accessToken = useSelector((state: RootState) => state.accessToken);
-  const refreshToken = localStorage.getItem("refreshToken");
   const { Content, Sider } = Layout;
   const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
   const isRootURL = location.pathname.match(/\/app\/?$/g);
-  const showError = useErrorMessage();
-
-  useEffect(() => {
-    (async () => {
-      if (!accessToken && refreshToken) {
-        try {
-          const newTokens = await refreshSession({ refreshToken });
-          dispatch(authActions.setAccessToken(newTokens.accessToken));
-          dispatch(authActions.setAuthStatus(true));
-          localStorage.setItem("refreshToken", newTokens.refreshToken);
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            if (error.status === 401) {
-              localStorage.removeItem("refreshToken");
-              dispatch(authActions.setAuthStatus(false));
-              navigate("/auth");
-              showError(error);
-            }
-          }
-        }
-      }
-    })();
-  }, []);
 
   return (
     <Layout style={layoutStyle}>

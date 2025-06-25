@@ -9,6 +9,7 @@ import { useNavigate, Link } from "react-router";
 import useApp from "antd/es/app/useApp";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
+import authService from "../../services/authService";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -56,9 +57,8 @@ const LoginPage = () => {
     try {
       const token: Token = await login(loginData);
 
-      dispatch(authActions.setAccessToken(token.accessToken));
-      dispatch(authActions.setAuthStatus(true));
-      localStorage.removeItem("refreshToken");
+      dispatch(authActions.login());
+      authService.setAccessToken(token.accessToken);
       localStorage.setItem("refreshToken", token.refreshToken);
 
       notification.success({
