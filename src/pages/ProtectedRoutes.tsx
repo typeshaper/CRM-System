@@ -11,14 +11,13 @@ import { refreshSession } from "../api/auth";
 
 const ProtectedRoutes = () => {
   const dispatch = useDispatch();
-  const accessToken = authService.getAccessToken();
   const refreshToken = localStorage.getItem("refreshToken");
   const showError = useErrorMessage();
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      if (!accessToken && refreshToken) {
+      if (refreshToken) {
         try {
           const newTokens = await refreshSession({ refreshToken });
           authService.setAccessToken(newTokens.accessToken);
@@ -36,7 +35,7 @@ const ProtectedRoutes = () => {
         }
       }
     })();
-  });
+  }, []);
 
   const isAuth = useSelector<RootState>((state) => state.isAuthenticated);
   const content = isAuth ? <Outlet /> : <Navigate to="/auth" />;

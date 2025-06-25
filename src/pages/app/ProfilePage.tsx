@@ -1,9 +1,7 @@
 import { Typography, Flex, List, Skeleton, Button } from "antd";
 import { getCurrentUserData } from "../../api/user";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import type { Profile } from "../../types/user";
-import type { RootState } from "../../store";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { AxiosError } from "axios";
 import { logout } from "../../api/auth";
@@ -57,7 +55,7 @@ const ProfilePage = () => {
         }
       }
     })();
-  }, [accessToken]);
+  }, []);
 
   return (
     <>
