@@ -8,6 +8,7 @@ import TodoListPage from "./pages/app/TodoListPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import ProtectedRoutes from "./pages/ProtectedRoutes";
+import UsersPage from "./pages/app/UsersPage";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
           },
           { path: "tasks", element: <TodoListPage /> },
           { path: "profile", element: <ProfilePage /> },
+          { path: "users", element: <UsersPage /> },
         ],
       },
     ],

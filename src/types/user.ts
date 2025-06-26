@@ -20,6 +20,12 @@ export interface PasswordRequest {
 
 export type Role = "ADMIN" | "USER" | "MODERATOR";
 
+export enum Roles {
+  ADMIN = "ADMIN",
+  MODERATOR = "MODERATOR",
+  USER = "USER",
+}
+
 export interface User {
   id: number;
   username: string;
