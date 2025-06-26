@@ -31,7 +31,7 @@ export async function getCurrentUserData() {
 
 export async function getUsersList(queryParams?: UserFilters) {
   try {
-    const response: UsersMetaResponse<User> = await api({
+    const response: AxiosResponse = await api({
       method: "get",
       url: "admin/users",
       headers: {
@@ -41,7 +41,7 @@ export async function getUsersList(queryParams?: UserFilters) {
       params: { ...queryParams },
     });
 
-    const resData: User[] = await response.data;
+    const resData: UsersMetaResponse<User> = await response.data.data;
     return resData;
   } catch (error: unknown) {
     throw error as AxiosError;
