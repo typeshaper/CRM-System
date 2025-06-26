@@ -3,7 +3,7 @@ import type { User } from "../../types/user";
 import { getUsersList } from "../../api/user";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import { Tag, Table, type TableProps, type TagProps } from "antd";
+import { Tag, Table, type TableProps } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 
 const UsersPage = () => {
