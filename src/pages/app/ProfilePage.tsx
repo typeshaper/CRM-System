@@ -45,7 +45,7 @@ const ProfilePage = () => {
     (async () => {
       try {
         if (accessToken !== "") {
-          const response = await getCurrentUserData(accessToken);
+          const response = await getCurrentUserData();
           setUserData(response);
           setIsLoading(false);
         }
