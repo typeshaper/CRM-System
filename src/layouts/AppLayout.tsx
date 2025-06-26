@@ -1,4 +1,8 @@
-import { FileDoneOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  FileDoneOutlined,
+  UserOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import store from "../store";
 import { authActions } from "../store/auth";
 import { useEffect } from "react";
@@ -47,6 +51,11 @@ const menuItems: ItemType<MenuItemType>[] = [
   {
     key: "/app/profile",
     label: "Profile",
+    icon: <InfoCircleOutlined />,
+  },
+  {
+    key: "/app/users",
+    label: "Users",
     icon: <UserOutlined />,
   },
 ];
