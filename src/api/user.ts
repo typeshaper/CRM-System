@@ -41,7 +41,7 @@ export async function getUsersList(queryParams?: UserFilters) {
       params: { ...queryParams },
     });
 
-    const resData: UsersMetaResponse<User> = await response.data.data;
+    const resData: UsersMetaResponse<User> = await response.data;
     return resData;
   } catch (error: unknown) {
     throw error as AxiosError;
