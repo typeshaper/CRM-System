@@ -1,10 +1,7 @@
-import axios, { AxiosError, type AxiosResponse } from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
+import { api } from "./index";
 import type { AuthData, UserRegistration } from "../types/auth";
 import type { Token, RefreshToken } from "../types/auth";
-
-const api = axios.create({
-  baseURL: `https://easydev.club/api/v1`,
-});
 
 export async function login(loginData: AuthData) {
   try {

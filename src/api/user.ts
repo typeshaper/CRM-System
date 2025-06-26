@@ -1,15 +1,11 @@
-import axios, { AxiosError, type AxiosResponse } from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
+import { api } from "./index";
 import type {
   Profile,
   User,
   UserFilters,
   UsersMetaResponse,
 } from "../types/user";
-import authService from "../services/authService";
-
-const api = axios.create({
-  baseURL: `https://easydev.club/api/v1`,
-});
 
 export async function getCurrentUserData() {
   try {
@@ -18,7 +14,6 @@ export async function getCurrentUserData() {
       url: "user/profile",
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${authService.getAccessToken()}`,
       },
     });
 
@@ -36,7 +31,6 @@ export async function getUsersList(queryParams?: UserFilters) {
       url: "admin/users",
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${authService.getAccessToken()}`,
       },
       params: { ...queryParams },
     });
