@@ -82,7 +82,7 @@ const UsersPage = () => {
         }
       }
     })();
-  }, [showError]);
+  }, []);
 
   return (
     <>
