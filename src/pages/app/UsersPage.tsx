@@ -89,6 +89,7 @@ const UsersPage = () => {
       <Table
         dataSource={usersList}
         columns={columns}
+        size="middle"
       />
     </>
   );
