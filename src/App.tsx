@@ -21,26 +21,26 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/app",
-    element: <AppLayout />,
+    element: <ProtectedRoutes />,
     children: [
       {
         index: true,
         element: (
           <Navigate
-            to="tasks"
+            to="app"
             replace
           />
         ),
       },
       {
-        element: <ProtectedRoutes />,
+        path: "/app",
+        element: <AppLayout />,
         children: [
           {
             index: true,
             element: (
               <Navigate
-                to="app"
+                to="tasks"
                 replace
               />
             ),

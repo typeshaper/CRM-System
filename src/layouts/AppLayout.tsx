@@ -3,18 +3,10 @@ import {
   UserOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { authActions } from "../store/auth";
-import { useEffect, useState } from "react";
-import authService from "../services/authService";
-import { AxiosError } from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { Layout, Menu, Typography } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { type CSSProperties } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import useErrorMessage from "../hooks/useErrorMessage";
-import { refreshSession } from "../api/auth";
-import type { RootState } from "../store";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -65,37 +57,8 @@ const AppLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isRootURL = location.pathname.match(/\/app\/?$/g);
-  const dispatch = useDispatch();
-  const refreshToken = localStorage.getItem("refreshToken");
-  const showError = useErrorMessage();
-  const [isWaitingAuth, setIsWaitingAuth] = useState<boolean>(true);
-  const isAuth = useSelector<RootState>((state) => state.isAuthenticated);
 
-  useEffect(() => {
-    (async () => {
-      if (refreshToken && !isAuth) {
-        try {
-          const newTokens = await refreshSession({ refreshToken });
-          authService.setAccessToken(newTokens.accessToken);
-          dispatch(authActions.login());
-          localStorage.setItem("refreshToken", newTokens.refreshToken);
-          setIsWaitingAuth(false);
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            if (error.status === 401) {
-              localStorage.removeItem("refreshToken");
-              dispatch(authActions.logout());
-              navigate("/auth");
-              showError(error);
-              setIsWaitingAuth(false);
-            }
-          }
-        }
-      }
-    })();
-  }, []);
-
-  const content = (
+  return (
     <Layout style={layoutStyle}>
       <Sider
         width={250}
@@ -114,8 +77,6 @@ const AppLayout = () => {
       </Content>
     </Layout>
   );
-
-  return isWaitingAuth ? <></> : content;
 };
 
 export default AppLayout;
