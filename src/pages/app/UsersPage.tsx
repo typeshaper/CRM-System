@@ -23,16 +23,9 @@ const UsersPage = () => {
       key: "email",
     },
     {
-      title: "Registration date",
-      dataIndex: "date",
-      key: "date",
-      render: (_, user) => <p>{formatDateFromIsoString(user.date)}</p>,
-    },
-    {
-      title: "Is blocked",
-      dataIndex: "isBlocked",
-      key: "isBlocked",
-      render: (_, user) => <p>{user.isBlocked ? "+" : "-"}</p>,
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Roles",
@@ -65,9 +58,16 @@ const UsersPage = () => {
       },
     },
     {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
+      title: "Is blocked",
+      dataIndex: "isBlocked",
+      key: "isBlocked",
+      render: (_, user) => <p>{user.isBlocked ? "+" : "-"}</p>,
+    },
+    {
+      title: "Registration date",
+      dataIndex: "date",
+      key: "date",
+      render: (_, user) => <p>{formatDateFromIsoString(user.date)}</p>,
     },
   ];
 
