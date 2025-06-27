@@ -1,7 +1,6 @@
 import { FileDoneOutlined, UserOutlined } from "@ant-design/icons";
-import store from "../store";
 import { authActions } from "../store/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import authService from "../services/authService";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,6 +59,7 @@ const AppLayout = () => {
   const dispatch = useDispatch();
   const refreshToken = localStorage.getItem("refreshToken");
   const showError = useErrorMessage();
+  const [isWaitingAuth, setIsWaitingAuth] = useState<boolean>(true);
   const isAuth = useSelector<RootState>((state) => state.isAuthenticated);
 
   useEffect(() => {
@@ -70,11 +70,7 @@ const AppLayout = () => {
           authService.setAccessToken(newTokens.accessToken);
           dispatch(authActions.login());
           localStorage.setItem("refreshToken", newTokens.refreshToken);
-          const currentAuthStatus = store.getState();
-          console.log(
-            "On AppLayout rendering auth status: ",
-            currentAuthStatus.isAuthenticated
-          );
+          setIsWaitingAuth(false);
         } catch (error) {
           if (error instanceof AxiosError) {
             if (error.status === 401) {
@@ -82,6 +78,7 @@ const AppLayout = () => {
               dispatch(authActions.logout());
               navigate("/auth");
               showError(error);
+              setIsWaitingAuth(false);
             }
           }
         }
@@ -89,7 +86,7 @@ const AppLayout = () => {
     })();
   }, []);
 
-  return (
+  const content = (
     <Layout style={layoutStyle}>
       <Sider
         width={250}
@@ -108,6 +105,8 @@ const AppLayout = () => {
       </Content>
     </Layout>
   );
+
+  return isWaitingAuth ? <></> : content;
 };
 
 export default AppLayout;
