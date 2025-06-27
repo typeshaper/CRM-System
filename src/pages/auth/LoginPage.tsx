@@ -57,9 +57,8 @@ const LoginPage = () => {
     try {
       const token: Token = await login(loginData);
 
-      dispatch(authActions.login());
       authService.setAccessToken(token.accessToken);
-      localStorage.setItem("refreshToken", token.refreshToken);
+      dispatch(authActions.login(token.refreshToken));
 
       notification.success({
         message: "You have logged in!",
