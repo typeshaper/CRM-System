@@ -11,10 +11,27 @@ const authServiceFactory = () => {
     accessToken = "";
   };
 
+  let isRetry = false;
+
+  const setIsRetry = () => {
+    isRetry = true;
+  };
+
+  const unsetIsRetry = () => {
+    isRetry = false;
+  };
+
+  const getIsRetry = () => {
+    return isRetry;
+  };
+
   return {
     getAccessToken,
     setAccessToken,
     clearAccessToken,
+    setIsRetry,
+    unsetIsRetry,
+    getIsRetry,
   };
 };
 
