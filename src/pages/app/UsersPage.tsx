@@ -6,6 +6,7 @@ import useErrorMessage from "../../hooks/useErrorMessage";
 import { Tag, Table, type TableProps, Space } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
+import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
@@ -21,11 +22,29 @@ const UsersPage = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (_, user) => (
+        <Space
+          direction="horizontal"
+          size="small"
+        >
+          <MailOutlined />
+          <p>{user.email}</p>
+        </Space>
+      ),
     },
     {
-      title: "Phone Number",
+      title: "Phone number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
+      render: (_, user) => (
+        <Space
+          direction="horizontal"
+          size="small"
+        >
+          <PhoneOutlined />
+          <p>{user.phoneNumber}</p>
+        </Space>
+      ),
     },
     {
       title: "Roles",
