@@ -7,6 +7,7 @@ import { Tag, Table, type TableProps, Space } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import parsePhoneNumberFromString from "libphonenumber-js";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
@@ -36,15 +37,20 @@ const UsersPage = () => {
       title: "Phone number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
-      render: (_, user) => (
-        <Space
-          direction="horizontal"
-          size="small"
-        >
-          <PhoneOutlined />
-          <p>{user.phoneNumber}</p>
-        </Space>
-      ),
+      render: (_, user) => {
+        const formattedPhone = parsePhoneNumberFromString(
+          user.phoneNumber
+        )?.formatInternational();
+        return (
+          <Space
+            direction="horizontal"
+            size="small"
+          >
+            <PhoneOutlined />
+            <p>{formattedPhone}</p>
+          </Space>
+        );
+      },
     },
     {
       title: "Roles",
