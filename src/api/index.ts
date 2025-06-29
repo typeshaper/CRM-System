@@ -30,8 +30,8 @@ api.interceptors.response.use(
         }
       } catch (error) {
         authService.unsetIsRetry();
-        throw error;
       }
     }
+    throw error;
   }
 );
