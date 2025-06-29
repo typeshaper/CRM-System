@@ -13,10 +13,7 @@ import {
   phoneNumberValidationRules,
   usernameValidationRules,
 } from "../../utility/validation";
-import {
-  isPossiblePhoneNumber,
-  parsePhoneNumberFromString,
-} from "libphonenumber-js";
+import { isPossiblePhoneNumber } from "libphonenumber-js";
 import * as EmailValidator from "email-validator";
 import useApp from "antd/es/app/useApp";
 import { formatPhoneNumber } from "../../utility/formatting";
