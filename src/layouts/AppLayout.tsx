@@ -1,8 +1,8 @@
+import { FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, Typography } from "antd";
-import { UserOutlined, FileDoneOutlined } from "@ant-design/icons";
-import { useNavigate, useLocation, Outlet } from "react-router";
-import { type CSSProperties } from "react";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { type CSSProperties } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -29,24 +29,25 @@ const headerStyle: CSSProperties = {
   fontSize: "22px",
 };
 
-const RootLayoutPage = () => {
+const menuItems: ItemType<MenuItemType>[] = [
+  {
+    key: "/app/tasks",
+    label: "Tasks",
+    icon: <FileDoneOutlined />,
+  },
+  {
+    key: "/app/profile",
+    label: "Profile",
+    icon: <UserOutlined />,
+  },
+];
+
+const AppLayout = () => {
   const { Content, Sider } = Layout;
   const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
-  const isRootURL = location.pathname === "/";
-  const menuItems: ItemType<MenuItemType>[] = [
-    {
-      key: "/tasks",
-      label: "Tasks",
-      icon: <FileDoneOutlined />,
-    },
-    {
-      key: "/profile",
-      label: "Profile",
-      icon: <UserOutlined />,
-    },
-  ];
+  const isRootURL = location.pathname.match(/\/app\/?$/g);
 
   return (
     <Layout style={layoutStyle}>
@@ -57,7 +58,7 @@ const RootLayoutPage = () => {
         <Title style={headerStyle}>To-Do List!</Title>
         <Menu
           style={siderStyle}
-          defaultSelectedKeys={[isRootURL ? "/tasks" : location.pathname]}
+          defaultSelectedKeys={[isRootURL ? "/app/tasks" : location.pathname]}
           onClick={(info) => navigate(info.key)}
           items={menuItems}
         />
@@ -69,4 +70,4 @@ const RootLayoutPage = () => {
   );
 };
 
-export default RootLayoutPage;
+export default AppLayout;
