@@ -130,7 +130,7 @@ const UsersPage = () => {
         style={{ minWidth: "100%" }}
         dataSource={usersList}
         columns={columns}
-        size="small"
+        size="middle"
         scroll={{ x: "max-content" }}
       />
     </>
