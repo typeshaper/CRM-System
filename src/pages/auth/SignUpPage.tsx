@@ -60,6 +60,8 @@ const SignUpPage = () => {
   const handleSignupButton = async (userData: UserRegistration) => {
     setIsLoading(true);
     try {
+      console.log(userData);
+
       await signup(userData);
       notification.success({
         message: "Account is created successfully!",
