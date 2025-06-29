@@ -15,7 +15,7 @@ const layoutStyle: CSSProperties = {
 };
 
 const contentStyle: CSSProperties = {
-  width: "75ch",
+  // width: "75ch",
   display: "flex",
   flexDirection: "column",
   alignItems: "start",
