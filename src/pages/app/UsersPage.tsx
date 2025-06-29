@@ -8,16 +8,19 @@ import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
+import { Typography } from "antd";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
   const showError = useErrorMessage();
+  const { Title } = Typography;
 
   const columns: TableProps<User>["columns"] = [
     {
       title: "Username",
       dataIndex: "username",
       key: "username",
+      fixed: "left",
     },
     {
       title: "Email",
@@ -46,11 +49,18 @@ const UsersPage = () => {
             direction="horizontal"
             size="small"
           >
-            <PhoneOutlined />
-            <p>{formattedPhone}</p>
+            {user.phoneNumber ? (
+              <>
+                <PhoneOutlined />
+                <p>{formattedPhone}</p>
+              </>
+            ) : (
+              <p>-</p>
+            )}
           </Space>
         );
       },
+      width: "18ch",
     },
     {
       title: "Roles",
@@ -87,12 +97,16 @@ const UsersPage = () => {
       dataIndex: "isBlocked",
       key: "isBlocked",
       render: (_, user) => <p>{user.isBlocked ? "+" : "-"}</p>,
+      width: "10ch",
     },
     {
       title: "Registration date",
       dataIndex: "date",
       key: "date",
-      render: (_, user) => <p>{formatDateFromIsoString(user.date)}</p>,
+      render: (_, user) => (
+        <p style={{ maxWidth: "10ch" }}>{formatDateFromIsoString(user.date)}</p>
+      ),
+      width: "15ch",
     },
   ];
 
@@ -111,10 +125,13 @@ const UsersPage = () => {
 
   return (
     <>
+      <Title>Users</Title>
       <Table
+        style={{ minWidth: "100%" }}
         dataSource={usersList}
         columns={columns}
-        size="middle"
+        size="small"
+        scroll={{ x: "max-content" }}
       />
     </>
   );
