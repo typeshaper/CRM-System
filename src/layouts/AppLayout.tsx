@@ -3,7 +3,7 @@ import {
   UserOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { Collapse, Layout, Menu, Typography } from "antd";
+import { Layout, Menu, Typography } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useState, type CSSProperties } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
@@ -78,6 +78,7 @@ const AppLayout = () => {
         collapsible
         collapsed={isCollapsed}
         onCollapse={handleCollapse}
+        breakpoint="lg"
       >
         <Title style={headerStyle}>{headerText}</Title>
         <Menu
