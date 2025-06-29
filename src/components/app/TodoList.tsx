@@ -9,7 +9,7 @@ interface TodoListProps {
 }
 
 const listStyle: CSSProperties = {
-  width: "80%",
+  width: "75ch",
 };
 
 const TodoList = memo(({ todoList, updateTasks }: TodoListProps) => {

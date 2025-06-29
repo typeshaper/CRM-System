@@ -11,7 +11,7 @@ interface AddTodoProps {
 }
 
 const formStyle: CSSProperties = {
-  width: "80%",
+  width: "75ch",
   height: "48px",
 };
 
