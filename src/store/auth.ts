@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import authService from "../services/authService";
 
 interface InitialState {
@@ -13,8 +13,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login(state) {
+    login(state, action: PayloadAction<string>) {
       state.isAuthenticated = true;
+      localStorage.setItem("refreshToken", action.payload);
     },
     logout(state) {
       state.isAuthenticated = false;

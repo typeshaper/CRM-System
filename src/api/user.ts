@@ -1,18 +1,14 @@
-import axios, { AxiosError, type AxiosResponse } from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
+import { api } from "./index";
 import type { Profile } from "../types/user";
 
-const api = axios.create({
-  baseURL: `https://easydev.club/api/v1`,
-});
-
-export async function getCurrentUserData(accessToken: string) {
+export async function getCurrentUserData() {
   try {
     const response: AxiosResponse = await api({
       method: "get",
       url: "user/profile",
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
     });
 
