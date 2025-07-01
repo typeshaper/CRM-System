@@ -8,7 +8,7 @@ import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
-import { Typography } from "antd";
+import { Typography, Flex, Row, Col, Input } from "antd";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
@@ -126,13 +126,41 @@ const UsersPage = () => {
   return (
     <>
       <Title>Users</Title>
-      <Table
-        style={{ minWidth: "100%" }}
-        dataSource={usersList}
-        columns={columns}
-        size="middle"
-        scroll={{ x: "max-content" }}
-      />
+      <Flex
+        vertical
+        style={{
+          border: "1px solid #E4E4E4",
+          borderRadius: 10,
+          padding: "2rem 1.5rem 0 1.5rem",
+        }}
+      >
+        <Row style={{ paddingBottom: "1rem" }}>
+          <Col span={14}>
+            <Title level={3}>Users</Title>
+          </Col>
+          <Col span={10}>
+            <Flex gap="1rem">
+              <Input placeholder="SHIT!" />
+              <p
+                style={{
+                  border: "2px solid black",
+                  borderRadius: 6,
+                  padding: ".5rem 1rem",
+                }}
+              >
+                Filter
+              </p>
+            </Flex>
+          </Col>
+        </Row>
+        <Table
+          style={{ minWidth: "100%" }}
+          dataSource={usersList}
+          columns={columns}
+          size="middle"
+          scroll={{ x: "max-content" }}
+        />
+      </Flex>
     </>
   );
 };
