@@ -6,7 +6,12 @@ import useErrorMessage from "../../hooks/useErrorMessage";
 import { Tag, Table, type TableProps, Space } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
-import { PhoneOutlined, MailOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  PhoneOutlined,
+  MailOutlined,
+  SearchOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
@@ -15,18 +20,22 @@ const UsersPage = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
   const showError = useErrorMessage();
   const { Title } = Typography;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getUsersListWithQuery = useCallback(
+  const handleUserSearch = useCallback(
     debounce(async (query: string) => {
+      setIsLoading(true);
       try {
         const newUsersList = await getUsersList({ search: query });
         setUsersList(newUsersList.data);
+        setIsLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {
           showError(error);
+          setIsLoading(false);
         }
       }
-    }, 100),
+    }, 200),
     []
   );
 
@@ -159,10 +168,10 @@ const UsersPage = () => {
           <Col span={10}>
             <Flex gap="1rem">
               <Input
-                prefix={<SearchOutlined />}
+                prefix={isLoading ? <LoadingOutlined /> : <SearchOutlined />}
                 size="large"
                 placeholder="Search by name or email"
-                onChange={(e) => getUsersListWithQuery(e.currentTarget.value)}
+                onChange={(e) => handleUserSearch(e.currentTarget.value)}
               />
               <p
                 style={{
