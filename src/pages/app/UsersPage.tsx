@@ -182,7 +182,7 @@ const UsersPage = () => {
               defaultPageSize: 20,
               total: usersList.meta.totalAmount,
               onChange(page, pageSize) {
-                fetchUsers({ offset: page });
+                fetchUsers({ offset: page - 1 });
               },
             }}
             style={{ maxHeight: "100%" }}
