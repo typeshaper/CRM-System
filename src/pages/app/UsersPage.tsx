@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { User } from "../../types/user";
+import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
 import { getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
@@ -17,27 +17,11 @@ import { Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
 
 const UsersPage = () => {
-  const [usersList, setUsersList] = useState<User[]>([]);
+  const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
   const showError = useErrorMessage();
   const { Title } = Typography;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const handleUserSearch = useCallback(
-    debounce(async (query: string) => {
-      setIsLoading(true);
-      try {
-        const newUsersList = await getUsersList({ search: query });
-        setUsersList(newUsersList.data);
-        setIsLoading(false);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          showError(error);
-          setIsLoading(false);
-        }
-      }
-    }, 200),
-    []
-  );
+  const [userFilters, setUserFilters] = useState<UserFilters>({});
 
   const columns: TableProps<User>["columns"] = [
     {
@@ -134,18 +118,26 @@ const UsersPage = () => {
     },
   ];
 
-  useEffect(() => {
-    (async () => {
+  const fetchUsers = useCallback(
+    debounce(async (queryParams: UserFilters) => {
+      setIsLoading(true);
       try {
-        const newUsersList = await getUsersList();
-        setUsersList(newUsersList.data);
+        const newUsersList = await getUsersList(queryParams);
+        setUsersList(newUsersList);
+        setIsLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {
           showError(error);
+          setIsLoading(false);
         }
       }
-    })();
-  }, []);
+    }, 200),
+    []
+  );
+
+  useEffect(() => {
+    fetchUsers(userFilters);
+  }, [userFilters, fetchUsers]);
 
   return (
     <Flex
@@ -171,7 +163,9 @@ const UsersPage = () => {
                 prefix={isLoading ? <LoadingOutlined /> : <SearchOutlined />}
                 size="large"
                 placeholder="Search by name or email"
-                onChange={(e) => handleUserSearch(e.currentTarget.value)}
+                onChange={(e) =>
+                  setUserFilters({ search: e.currentTarget.value })
+                }
               />
               <p
                 style={{
@@ -185,12 +179,25 @@ const UsersPage = () => {
             </Flex>
           </Col>
         </Row>
-        <Table
-          dataSource={usersList}
-          columns={columns}
-          size="middle"
-          scroll={{ x: "max-content" }}
-        />
+        {usersList ? (
+          <Table
+            pagination={{
+              hideOnSinglePage: true,
+              defaultPageSize: 20,
+              total: usersList.meta.totalAmount,
+              onChange(page, pageSize) {
+                fetchUsers({ offset: page });
+              },
+            }}
+            style={{ maxHeight: "100%" }}
+            dataSource={usersList.data}
+            columns={columns}
+            size="middle"
+            scroll={{ x: "max-content", y: "60vh" }}
+          />
+        ) : (
+          <p>loading</p>
+        )}
       </Flex>
     </Flex>
   );
