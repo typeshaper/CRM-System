@@ -6,7 +6,7 @@ import useErrorMessage from "../../hooks/useErrorMessage";
 import { Tag, Table, type TableProps, Space } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
-import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { PhoneOutlined, MailOutlined, SearchOutlined } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Typography, Flex, Row, Col, Input } from "antd";
 
@@ -140,7 +140,11 @@ const UsersPage = () => {
           </Col>
           <Col span={10}>
             <Flex gap="1rem">
-              <Input placeholder="SHIT!" />
+              <Input
+                prefix={<SearchOutlined />}
+                size="large"
+                placeholder="Search by name or email"
+              />
               <p
                 style={{
                   border: "2px solid black",
