@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { User } from "../../types/user";
 import { getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
@@ -9,11 +9,26 @@ import { formatDateFromIsoString } from "../../utility/date";
 import { PhoneOutlined, MailOutlined, SearchOutlined } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Typography, Flex, Row, Col, Input } from "antd";
+import debounce from "lodash.debounce";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
   const showError = useErrorMessage();
   const { Title } = Typography;
+
+  const getUsersListWithQuery = useCallback(
+    debounce(async (query: string) => {
+      try {
+        const newUsersList = await getUsersList({ search: query });
+        setUsersList(newUsersList.data);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          showError(error);
+        }
+      }
+    }, 100),
+    []
+  );
 
   const columns: TableProps<User>["columns"] = [
     {
@@ -124,14 +139,17 @@ const UsersPage = () => {
   }, []);
 
   return (
-    <>
+    <Flex
+      vertical
+      style={{ width: "100%" }}
+    >
       <Title>Users</Title>
       <Flex
         vertical
         style={{
           border: "1px solid #E4E4E4",
           borderRadius: 10,
-          padding: "2rem 1.5rem 0 1.5rem",
+          padding: "1.5rem 1.5rem 1.5rem 1.5rem",
         }}
       >
         <Row style={{ paddingBottom: "1rem" }}>
@@ -144,6 +162,7 @@ const UsersPage = () => {
                 prefix={<SearchOutlined />}
                 size="large"
                 placeholder="Search by name or email"
+                onChange={(e) => getUsersListWithQuery(e.currentTarget.value)}
               />
               <p
                 style={{
@@ -158,14 +177,13 @@ const UsersPage = () => {
           </Col>
         </Row>
         <Table
-          style={{ minWidth: "100%" }}
           dataSource={usersList}
           columns={columns}
           size="middle"
           scroll={{ x: "max-content" }}
         />
       </Flex>
-    </>
+    </Flex>
   );
 };
 
