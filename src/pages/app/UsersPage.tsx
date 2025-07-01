@@ -3,7 +3,7 @@ import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
 import { getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import { Tag, Table, type TableProps, Space } from "antd";
+import { Tag, Table, type TableProps, Space, Skeleton } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
 import {
@@ -196,7 +196,7 @@ const UsersPage = () => {
             scroll={{ x: "max-content", y: "60vh" }}
           />
         ) : (
-          <p>loading</p>
+          <Skeleton active />
         )}
       </Flex>
     </Flex>
