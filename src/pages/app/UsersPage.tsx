@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { User } from "../../types/user";
-import { getUsersList } from "../../api/user";
+import { getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { Tag, Table, type TableProps, Space } from "antd";
