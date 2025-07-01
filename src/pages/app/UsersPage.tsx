@@ -6,12 +6,7 @@ import useErrorMessage from "../../hooks/useErrorMessage";
 import { Tag, Table, type TableProps, Space, Skeleton } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
-import {
-  PhoneOutlined,
-  MailOutlined,
-  SearchOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { PhoneOutlined, MailOutlined, SearchOutlined } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
@@ -160,7 +155,7 @@ const UsersPage = () => {
           <Col span={10}>
             <Flex gap="1rem">
               <Input
-                prefix={isLoading ? <LoadingOutlined /> : <SearchOutlined />}
+                prefix={<SearchOutlined />}
                 size="large"
                 placeholder="Search by name or email"
                 onChange={(e) =>
@@ -181,6 +176,7 @@ const UsersPage = () => {
         </Row>
         {usersList ? (
           <Table
+            loading={isLoading}
             pagination={{
               hideOnSinglePage: true,
               defaultPageSize: 20,
