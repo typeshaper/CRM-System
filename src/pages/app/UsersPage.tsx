@@ -1,14 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
 import { getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import { Tag, Table, Space, Skeleton } from "antd";
+import { Tag, Table, Space, Skeleton, Button, type MenuProps } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
-import { PhoneOutlined, MailOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  PhoneOutlined,
+  MailOutlined,
+  SearchOutlined,
+  FilterOutlined,
+} from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
-import { Typography, Flex, Row, Col, Input } from "antd";
+import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
 import type { ColumnsType } from "antd/es/table/InternalTable";
 import type { SorterResult } from "antd/es/table/interface";
@@ -117,6 +122,80 @@ const UsersPage = () => {
     },
   ];
 
+  const selectedMenuItemStyle: CSSProperties = {
+    color: "#1777FF",
+    backgroundColor: "#E6f4FF",
+  };
+
+  const filterMenuItems: MenuProps["items"] = [
+    {
+      label: "All",
+      key: "all",
+      onClick: () => {
+        setUserFilters((prev) => {
+          const newFilters = {
+            ...prev,
+            isBlocked: undefined,
+            offset: undefined,
+          };
+          return newFilters;
+        });
+      },
+      style:
+        userFilters.isBlocked === undefined ? selectedMenuItemStyle : undefined,
+    },
+    {
+      label: "Blocked",
+      key: "blocked",
+      onClick: () => {
+        setUserFilters((prev) => {
+          const newFilters = {
+            ...prev,
+            isBlocked: true,
+            offset: undefined,
+          };
+          return newFilters;
+        });
+      },
+      style: userFilters.isBlocked === true ? selectedMenuItemStyle : undefined,
+    },
+    {
+      label: "Unblocked",
+      key: "unblocked",
+      onClick: () => {
+        setUserFilters((prev) => {
+          const newFilters = {
+            ...prev,
+            isBlocked: false,
+            offset: undefined,
+          };
+          return newFilters;
+        });
+      },
+      style:
+        userFilters.isBlocked === false ? selectedMenuItemStyle : undefined,
+    },
+  ];
+
+  const handleFilterClick = async () => {
+    //
+  };
+
+  const filterMenuProps = {
+    items: filterMenuItems,
+    onclick: handleFilterClick,
+  };
+
+  let userHeading = "All users";
+
+  if (userFilters.isBlocked) {
+    userHeading = "Blocked users";
+  }
+
+  if (userFilters.isBlocked === false) {
+    userHeading = "Unblocked users";
+  }
+
   const fetchUsers = useCallback(
     debounce(async (queryParams: UserFilters) => {
       setIsLoading(true);
@@ -153,10 +232,10 @@ const UsersPage = () => {
         }}
       >
         <Row style={{ paddingBottom: "1rem" }}>
-          <Col span={14}>
-            <Title level={3}>Users</Title>
-          </Col>
           <Col span={10}>
+            <Title level={3}>{userHeading}</Title>
+          </Col>
+          <Col span={14}>
             <Flex gap="1rem">
               <Input
                 prefix={<SearchOutlined />}
@@ -173,15 +252,20 @@ const UsersPage = () => {
                   })
                 }
               />
-              <p
-                style={{
-                  border: "2px solid black",
-                  borderRadius: 6,
-                  padding: ".5rem 1rem",
-                }}
-              >
-                Filter
-              </p>
+              <Dropdown menu={filterMenuProps}>
+                <Button
+                  style={{
+                    minWidth: "12ch",
+                    border: "2px solid black",
+                    height: "2.5rem",
+                  }}
+                >
+                  <Space>
+                    <FilterOutlined />
+                    <p>Filter</p>
+                  </Space>
+                </Button>
+              </Dropdown>
             </Flex>
           </Col>
         </Row>
@@ -189,7 +273,6 @@ const UsersPage = () => {
           <Table
             loading={isLoading}
             pagination={{
-              hideOnSinglePage: true,
               defaultPageSize: 20,
               total: usersList.meta.totalAmount,
               onChange(page, pageSize) {

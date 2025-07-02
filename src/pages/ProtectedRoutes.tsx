@@ -40,8 +40,14 @@ const ProtectedRoutes = () => {
         } else {
           dispatch(authActions.login(refreshToken));
         }
-        const userData = await getCurrentUserData();
-        dispatch(authActions.setUserData(userData));
+        try {
+          const userData = await getCurrentUserData();
+          dispatch(authActions.setUserData(userData));
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            showError(error);
+          }
+        }
       } else {
         dispatch(authActions.logout());
       }
