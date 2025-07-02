@@ -3,13 +3,15 @@ import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
 import { getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import { Tag, Table, type TableProps, Space, Skeleton } from "antd";
+import { Tag, Table, Space, Skeleton } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
 import { PhoneOutlined, MailOutlined, SearchOutlined } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
+import type { ColumnsType } from "antd/es/table/InternalTable";
+import type { SorterResult } from "antd/es/table/interface";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -18,17 +20,19 @@ const UsersPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userFilters, setUserFilters] = useState<UserFilters>({});
 
-  const columns: TableProps<User>["columns"] = [
+  const columns: ColumnsType<User> = [
     {
       title: "Username",
       dataIndex: "username",
       key: "username",
       fixed: "left",
+      sorter: true,
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      sorter: true,
       render: (_, user) => (
         <Space
           direction="horizontal"
@@ -190,6 +194,19 @@ const UsersPage = () => {
             columns={columns}
             size="middle"
             scroll={{ x: "max-content", y: "60vh" }}
+            onChange={(_pagination, _filters, sorter) => {
+              setUserFilters((prev) => {
+                const newFilters = {
+                  ...prev,
+                  sortBy:
+                    (sorter as SorterResult<User>).field?.toString() ?? "id",
+                  sortOrder:
+                    (sorter as SorterResult<User>).order?.slice(0, -3) ?? "asc",
+                };
+
+                return newFilters as UserFilters;
+              });
+            }}
           />
         ) : (
           <Skeleton active />
