@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AxiosError } from "axios";
 import { Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { getCurrentUserData } from "../api/user";
 
 const ProtectedRoutes = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -42,6 +43,8 @@ const ProtectedRoutes = () => {
       } else {
         dispatch(authActions.logout());
       }
+      const userData = await getCurrentUserData();
+      dispatch(authActions.setUserData(userData));
       setIsLoading(false);
     })();
   }, []);
