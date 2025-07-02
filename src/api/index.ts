@@ -1,6 +1,8 @@
 import axios from "axios";
 import authService from "../services/authService";
 import { refreshSession } from "./auth";
+import store from "../store";
+import { authActions } from "../store/auth";
 
 export const api = axios.create({
   baseURL: `https://easydev.club/api/v1`,
@@ -30,6 +32,7 @@ api.interceptors.response.use(
         }
       } catch (error) {
         authService.unsetIsRetry();
+        store.dispatch(authActions.logout());
       }
     }
     throw error;
