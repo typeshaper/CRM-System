@@ -45,7 +45,7 @@ const menuItems: ItemType<MenuItemType>[] = [
   },
   {
     key: "/app/users",
-    label: "users",
+    label: "Users",
     icon: <UserOutlined />,
   },
 ];
