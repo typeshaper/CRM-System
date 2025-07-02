@@ -40,11 +40,11 @@ const ProtectedRoutes = () => {
         } else {
           dispatch(authActions.login(refreshToken));
         }
+        const userData = await getCurrentUserData();
+        dispatch(authActions.setUserData(userData));
       } else {
         dispatch(authActions.logout());
       }
-      const userData = await getCurrentUserData();
-      dispatch(authActions.setUserData(userData));
       setIsLoading(false);
     })();
   }, []);
