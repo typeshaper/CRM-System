@@ -196,15 +196,23 @@ const UsersPage = () => {
             scroll={{ x: "max-content", y: "60vh" }}
             onChange={(_pagination, _filters, sorter) => {
               setUserFilters((prev) => {
+                const hasValidOrder = (str: string | undefined) => {
+                  if (str === "asc") return "asc" as const;
+                  if (str === "desc") return "desc" as const;
+                  if (str === undefined) return undefined;
+                };
+                const sortOrder = hasValidOrder(
+                  (sorter as SorterResult<User>).order?.slice(0, -3)
+                );
+
                 const newFilters = {
                   ...prev,
+                  sortOrder,
                   sortBy:
                     (sorter as SorterResult<User>).field?.toString() ?? "id",
-                  sortOrder:
-                    (sorter as SorterResult<User>).order?.slice(0, -3) ?? "asc",
                 };
 
-                return newFilters as UserFilters;
+                return newFilters satisfies UserFilters;
               });
             }}
           />
