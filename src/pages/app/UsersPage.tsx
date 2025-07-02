@@ -273,6 +273,7 @@ const UsersPage = () => {
           <Table
             loading={isLoading}
             pagination={{
+              current: (userFilters.offset && userFilters.offset + 1) ?? 1,
               defaultPageSize: 20,
               total: usersList.meta.totalAmount,
               onChange(page, pageSize) {
