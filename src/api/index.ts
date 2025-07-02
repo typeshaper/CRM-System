@@ -1,40 +1,1 @@
-import axios from "axios";
-import authService from "../services/authService";
-import { refreshSession } from "./auth";
-import store from "../store";
-import { authActions } from "../store/auth";
-
-export const api = axios.create({
-  baseURL: `https://easydev.club/api/v1`,
-});
-
-api.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${authService.getAccessToken()}`;
-  return config;
-});
-
-api.interceptors.response.use(
-  (config) => {
-    return config;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !authService.getIsRetry()) {
-      authService.setIsRetry();
-      try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (refreshToken) {
-          const response = await refreshSession({ refreshToken });
-          localStorage.setItem("refreshToken", response.refreshToken);
-          authService.setAccessToken(response.accessToken);
-          authService.unsetIsRetry();
-          return api(originalRequest);
-        }
-      } catch (error) {
-        authService.unsetIsRetry();
-        store.dispatch(authActions.logout());
-      }
-    }
-    throw error;
-  }
-);
+import axios from "axios";import authService from "../services/authService";import { refreshSession } from "./auth";import store from "../store";import { authActions } from "../store/auth";export const api = axios.create({  baseURL: `https://easydev.club/api/v1`,});api.interceptors.request.use((config) => {  config.headers.Authorization = `Bearer ${authService.getAccessToken()}`;  return config;});api.interceptors.response.use(  (config) => {    return config;  },  async (error) => {    const originalRequest = error.config;    if (error.response.status === 401 && !authService.getIsRetry()) {      authService.setIsRetry();      try {        const refreshToken = localStorage.getItem("refreshToken");        if (refreshToken) {          const response = await refreshSession({ refreshToken });          localStorage.setItem("refreshToken", response.refreshToken);          authService.setAccessToken(response.accessToken);          authService.unsetIsRetry();          return api(originalRequest);        }      } catch (error) {        authService.unsetIsRetry();        store.dispatch(authActions.logout());      }    }    throw error;  });
