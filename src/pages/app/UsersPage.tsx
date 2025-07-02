@@ -163,7 +163,14 @@ const UsersPage = () => {
                 size="large"
                 placeholder="Search by name or email"
                 onChange={(e) =>
-                  setUserFilters({ search: e.currentTarget.value })
+                  setUserFilters((prev) => {
+                    const newFilters = {
+                      ...prev,
+                      search: e.currentTarget.value,
+                    };
+
+                    return newFilters;
+                  })
                 }
               />
               <p
@@ -186,7 +193,15 @@ const UsersPage = () => {
               defaultPageSize: 20,
               total: usersList.meta.totalAmount,
               onChange(page, pageSize) {
-                fetchUsers({ offset: page - 1, limit: pageSize });
+                setUserFilters((prev) => {
+                  const newFilters = {
+                    ...prev,
+                    offset: page - 1,
+                    limit: pageSize,
+                  };
+
+                  return newFilters;
+                });
               },
             }}
             style={{ maxHeight: "100%" }}
@@ -201,6 +216,7 @@ const UsersPage = () => {
                   if (str === "desc") return "desc" as const;
                   if (str === undefined) return undefined;
                 };
+
                 const sortOrder = hasValidOrder(
                   (sorter as SorterResult<User>).order?.slice(0, -3)
                 );
