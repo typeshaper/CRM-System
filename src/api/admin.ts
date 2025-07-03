@@ -49,7 +49,7 @@ export async function updateUserData(
 ): Promise<Profile> {
   try {
     const response: AxiosResponse<Profile> = await api({
-      method: "post",
+      method: "put",
       url: `admin/users/${id}`,
       data: newData,
       headers: {
