@@ -103,8 +103,12 @@ const UsersPage = () => {
       render: (_, user) => {
         return (
           <Space
-            size="small"
+            size={[4, 16]}
             direction="horizontal"
+            wrap
+            style={{
+              width: "170px",
+            }}
           >
             {user.roles.map((role) => {
               let color: PresetColorKey;
@@ -125,8 +129,6 @@ const UsersPage = () => {
           </Space>
         );
       },
-      width: "320px",
-      ellipsis: true,
     },
     {
       title: "Is blocked",
@@ -134,7 +136,7 @@ const UsersPage = () => {
       key: "isBlocked",
       ellipsis: true,
       render: (_, user) => <p>{user.isBlocked ? "+" : "-"}</p>,
-      width: "132px",
+      width: "10ch",
     },
     {
       title: "Registration date",
@@ -144,7 +146,7 @@ const UsersPage = () => {
       render: (_, user) => (
         <p style={{ maxWidth: "10ch" }}>{formatDateFromIsoString(user.date)}</p>
       ),
-      width: "130px",
+      width: "17ch",
     },
     {
       title: "",
