@@ -32,6 +32,20 @@ const UsersPage = () => {
       key: "username",
       fixed: "left",
       sorter: true,
+      render: (_, user) => {
+        return (
+          <div
+            style={{
+              wordWrap: "break-word",
+              wordBreak: "break-word",
+              width: "200px",
+            }}
+          >
+            {user.username}
+          </div>
+        );
+      },
+      width: "200px",
     },
     {
       title: "Email",
@@ -40,6 +54,11 @@ const UsersPage = () => {
       sorter: true,
       render: (_, user) => (
         <Space
+          style={{
+            wordWrap: "break-word",
+            wordBreak: "break-word",
+            width: "260px",
+          }}
           direction="horizontal"
           size="small"
         >
@@ -47,6 +66,8 @@ const UsersPage = () => {
           <p>{user.email}</p>
         </Space>
       ),
+      width: "260px",
+      ellipsis: true,
     },
     {
       title: "Phone number",
@@ -72,6 +93,7 @@ const UsersPage = () => {
           </Space>
         );
       },
+      ellipsis: true,
       width: "18ch",
     },
     {
@@ -103,22 +125,35 @@ const UsersPage = () => {
           </Space>
         );
       },
+      width: "320px",
+      ellipsis: true,
     },
     {
       title: "Is blocked",
       dataIndex: "isBlocked",
       key: "isBlocked",
+      ellipsis: true,
       render: (_, user) => <p>{user.isBlocked ? "+" : "-"}</p>,
-      width: "10ch",
+      width: "132px",
     },
     {
       title: "Registration date",
       dataIndex: "date",
       key: "date",
+      ellipsis: true,
       render: (_, user) => (
         <p style={{ maxWidth: "10ch" }}>{formatDateFromIsoString(user.date)}</p>
       ),
-      width: "15ch",
+      width: "130px",
+    },
+    {
+      title: "",
+      dataIndex: "userActions",
+      key: "userActions",
+      render: () => {
+        return <div style={{ width: "210px" }}>sas</div>;
+      },
+      width: "210px",
     },
   ];
 
@@ -271,6 +306,7 @@ const UsersPage = () => {
         </Row>
         {usersList ? (
           <Table
+            tableLayout="fixed"
             loading={isLoading}
             pagination={{
               current: (userFilters.offset && userFilters.offset + 1) ?? 1,
