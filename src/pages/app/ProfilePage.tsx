@@ -1,6 +1,6 @@
 import { Typography, Flex, List, Skeleton, Button, Input, Form } from "antd";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
 import { getUserById, updateUserData } from "../../api/admin";
 import { useState } from "react";
@@ -15,6 +15,7 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const showError = useErrorMessage();
   const [profileForm] = Form.useForm();
+  const navigate = useNavigate();
 
   const handleEditButton = () => {
     setIsEditing(true);
@@ -34,6 +35,10 @@ const ProfilePage = () => {
         setIsEditing(false);
       }
     }
+  };
+
+  const handleGoBack = () => {
+    navigate("..", { relative: "path" });
   };
 
   useEffect(() => {
@@ -145,6 +150,7 @@ const ProfilePage = () => {
           )}
         </Flex>
       </Skeleton>
+      <Button onClick={handleGoBack}>Go back</Button>
     </>
   );
 };
