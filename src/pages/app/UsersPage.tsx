@@ -152,8 +152,18 @@ const UsersPage = () => {
       title: "",
       dataIndex: "userActions",
       key: "userActions",
-      render: () => {
-        return <div style={{ width: "210px" }}>sas</div>;
+      render: (_, user) => {
+        return (
+          <Space>
+            <Button
+              variant="outlined"
+              color="default"
+              style={{ border: "1px solid black" }}
+            >
+              →
+            </Button>
+          </Space>
+        );
       },
       width: "210px",
     },
