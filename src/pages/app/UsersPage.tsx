@@ -148,7 +148,7 @@ const UsersPage = () => {
       render: (_, user) => (
         <p style={{ maxWidth: "10ch" }}>{formatDateFromIsoString(user.date)}</p>
       ),
-      width: "17ch",
+      width: "15ch",
     },
     {
       title: "",
