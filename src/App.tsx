@@ -3,12 +3,13 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
 import "./App.css";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
-import ProfilePage from "./pages/app/ProfilePage";
+import CurrentProfilePage from "./pages/app/CurrentProfilePage";
 import TodoListPage from "./pages/app/TodoListPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import ProtectedRoutes from "./pages/ProtectedRoutes";
 import UsersPage from "./pages/app/UsersPage";
+import ProfilePage from "./pages/app/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +47,15 @@ const router = createBrowserRouter([
             ),
           },
           { path: "tasks", element: <TodoListPage /> },
-          { path: "profile", element: <ProfilePage /> },
-          { path: "users", element: <UsersPage /> },
+          { path: "profile", element: <CurrentProfilePage /> },
+          {
+            path: "users",
+            element: <UsersPage />,
+          },
+          {
+            path: "users/:userId",
+            element: <ProfilePage />,
+          },
         ],
       },
     ],

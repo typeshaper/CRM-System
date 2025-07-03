@@ -17,6 +17,7 @@ import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
 import type { ColumnsType } from "antd/es/table/InternalTable";
 import type { SorterResult } from "antd/es/table/interface";
+import { useNavigate } from "react-router";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -24,6 +25,7 @@ const UsersPage = () => {
   const { Title } = Typography;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userFilters, setUserFilters] = useState<UserFilters>({});
+  const navigate = useNavigate();
 
   const columns: ColumnsType<User> = [
     {
@@ -159,6 +161,9 @@ const UsersPage = () => {
               variant="outlined"
               color="default"
               style={{ border: "1px solid black" }}
+              onClick={() => {
+                navigate(`${user.id}`);
+              }}
             >
               →
             </Button>
