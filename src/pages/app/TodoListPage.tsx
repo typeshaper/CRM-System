@@ -1,11 +1,11 @@
-import AddTodo from "../components/AddTodo";
-import TodoList from "../components/TodoList";
-import StatusNavigation from "../components/StatusNavigation";
-import { fetchTodoList } from "../api/todo";
-import { useEffect, useState, useCallback } from "react";
-import type { Todo, TodoStatus, TodoInfo } from "../types/types";
-import useErrorMessage from "../hooks/useErrorMessage";
 import { AxiosError } from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { fetchTodoList } from "../../api/todo";
+import AddTodo from "../../components/app/AddTodo";
+import StatusNavigation from "../../components/app/StatusNavigation";
+import TodoList from "../../components/app/TodoList";
+import useErrorMessage from "../../hooks/useErrorMessage";
+import type { Todo, TodoInfo, TodoStatus } from "../../types/todo";
 
 const TodoListPage = () => {
   const showError = useErrorMessage();

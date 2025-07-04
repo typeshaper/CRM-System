@@ -1,15 +1,12 @@
-import axios, { AxiosError, type AxiosResponse } from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
+import { api } from "./index";
 import type {
   MetaResponse,
   Todo,
   TodoInfo,
   TodoRequest,
   TodoStatus,
-} from "../types/types";
-
-const api = axios.create({
-  baseURL: `https://easydev.club/api/v1`,
-});
+} from "../types/todo";
 
 export async function fetchTodoList(
   status: TodoStatus
@@ -36,7 +33,7 @@ export async function createTodoItem(title: string) {
   };
 
   try {
-    const response: AxiosResponse = await api(`/todos`, {
+    const response: AxiosResponse = await api({
       method: "post",
       url: "/todos",
       data: todo,
@@ -67,7 +64,7 @@ export async function deleteTodoItem(id: number) {
 
 export async function editTodo(id: number, taskData: TodoRequest) {
   try {
-    const response: AxiosResponse = await api(`/todos/${id}`, {
+    const response: AxiosResponse = await api({
       method: "put",
       url: `/todos/${id}`,
       data: taskData,
