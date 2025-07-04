@@ -64,18 +64,15 @@ export async function updateUserData(
   }
 }
 
-export async function deleteUser(id: Profile["id"]) {
+export async function deleteUser(id: Profile["id"]): Promise<void> {
   try {
-    const response: AxiosResponse = await api({
+    await api({
       method: "delete",
       url: `admin/users/${id}`,
       headers: {
         "Content-Type": "application/json",
       },
     });
-
-    const resData = response.data;
-    return resData;
   } catch (error: unknown) {
     throw error as AxiosError;
   }
