@@ -1,3 +1,4 @@
+import * as EmailValidator from "email-validator";
 import {
   Typography,
   Flex,
@@ -16,6 +17,12 @@ import { useState } from "react";
 import type { Profile, ProfileRequest } from "../../types/user";
 import { AxiosError } from "axios";
 import { diff } from "deep-object-diff";
+import {
+  emailValidationRules,
+  phoneNumberValidationRules,
+  usernameValidationRules,
+} from "../../utility/validation";
+import { isPossiblePhoneNumber } from "libphonenumber-js";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
@@ -132,6 +139,7 @@ const ProfilePage = () => {
                       <Form.Item
                         name="username"
                         style={formItemStyle}
+                        rules={[{ ...usernameValidationRules }]}
                       >
                         <Input style={{ width: " 100%" }} />
                       </Form.Item>
@@ -152,6 +160,20 @@ const ProfilePage = () => {
                       <Form.Item
                         name="email"
                         style={formItemStyle}
+                        rules={[
+                          {
+                            ...emailValidationRules,
+
+                            validator(_, value) {
+                              if (EmailValidator.validate(value)) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(
+                                new Error(emailValidationRules.message)
+                              );
+                            },
+                          },
+                        ]}
                       >
                         <Input style={{ width: " 100%" }} />
                       </Form.Item>
@@ -172,6 +194,23 @@ const ProfilePage = () => {
                       <Form.Item
                         name="phoneNumber"
                         style={formItemStyle}
+                        rules={[
+                          {
+                            ...phoneNumberValidationRules,
+
+                            validator(_, value) {
+                              if (
+                                !value ||
+                                isPossiblePhoneNumber(value, "RU")
+                              ) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(
+                                new Error(phoneNumberValidationRules.message)
+                              );
+                            },
+                          },
+                        ]}
                       >
                         <Input style={{ width: " 100%" }} />
                       </Form.Item>
