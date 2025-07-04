@@ -16,7 +16,6 @@ const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const accessToken = authService.getAccessToken();
 
   const showError = useErrorMessage();
   const navigate = useNavigate();
@@ -24,14 +23,12 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      if (accessToken !== "") {
-        await logout();
-        localStorage.removeItem("refreshToken");
-        authService.clearAccessToken();
-        dispatch(authActions.logout());
-        setIsLoggingOut(false);
-        navigate("/auth");
-      }
+      await logout();
+      localStorage.removeItem("refreshToken");
+      authService.clearAccessToken();
+      dispatch(authActions.logout());
+      setIsLoggingOut(false);
+      navigate("/auth");
     } catch (error) {
       if (error instanceof AxiosError) {
         showError(error);
@@ -44,11 +41,9 @@ const ProfilePage = () => {
     setIsLoading(true);
     (async () => {
       try {
-        if (accessToken !== "") {
-          const response = await getCurrentUserData();
-          setUserData(response);
-          setIsLoading(false);
-        }
+        const response = await getCurrentUserData();
+        setUserData(response);
+        setIsLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {
           showError(error);
@@ -56,7 +51,6 @@ const ProfilePage = () => {
       }
     })();
   }, []);
-  console.log(userData);
 
   return (
     <>
