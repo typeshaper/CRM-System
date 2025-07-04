@@ -63,3 +63,20 @@ export async function updateUserData(
     throw error as AxiosError;
   }
 }
+
+export async function deleteUser(id: Profile["id"]) {
+  try {
+    const response: AxiosResponse = await api({
+      method: "delete",
+      url: `admin/users/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const resData = response.data;
+    return resData;
+  } catch (error: unknown) {
+    throw error as AxiosError;
+  }
+}
