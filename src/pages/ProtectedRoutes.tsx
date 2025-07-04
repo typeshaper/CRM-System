@@ -10,17 +10,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { AxiosError } from "axios";
 import { Flex, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { getCurrentUserData } from "../api/user";
 
 const ProtectedRoutes = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const showError = useErrorMessage();
   const isAuth = useSelector<RootState>((state) => state.isAuthenticated);
+
   useEffect(() => {
     (async () => {
       const refreshToken = localStorage.getItem("refreshToken");
       const accessToken = authService.getAccessToken();
-
       if (refreshToken) {
         if (!accessToken) {
           try {
@@ -37,6 +38,14 @@ const ProtectedRoutes = () => {
           }
         } else {
           dispatch(authActions.login(refreshToken));
+        }
+        try {
+          const userData = await getCurrentUserData();
+          dispatch(authActions.setUserData(userData));
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            showError(error);
+          }
         }
       } else {
         dispatch(authActions.logout());

@@ -1,7 +1,11 @@
-import { FileDoneOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  FileDoneOutlined,
+  UserOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu, Typography } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
-import { type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
 const layoutStyle: CSSProperties = {
@@ -11,7 +15,6 @@ const layoutStyle: CSSProperties = {
 };
 
 const contentStyle: CSSProperties = {
-  width: "75ch",
   display: "flex",
   flexDirection: "column",
   alignItems: "start",
@@ -38,24 +41,45 @@ const menuItems: ItemType<MenuItemType>[] = [
   {
     key: "/app/profile",
     label: "Profile",
+    icon: <InfoCircleOutlined />,
+  },
+  {
+    key: "/app/users",
+    label: "Users",
     icon: <UserOutlined />,
   },
 ];
 
 const AppLayout = () => {
+  const [headerText, setHeaderText] = useState<string>("To-Do List!");
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const { Content, Sider } = Layout;
   const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
   const isRootURL = location.pathname.match(/\/app\/?$/g);
+  const handleCollapse = () => {
+    if (isCollapsed) {
+      setHeaderText("To-Do List!");
+      setIsCollapsed(false);
+    } else {
+      setHeaderText("To Do List!");
+      setIsCollapsed(true);
+    }
+  };
 
   return (
     <Layout style={layoutStyle}>
       <Sider
+        theme="light"
         width={250}
         style={siderStyle}
+        collapsible
+        collapsed={isCollapsed}
+        onCollapse={handleCollapse}
+        breakpoint="lg"
       >
-        <Title style={headerStyle}>To-Do List!</Title>
+        <Title style={headerStyle}>{headerText}</Title>
         <Menu
           style={siderStyle}
           defaultSelectedKeys={[isRootURL ? "/app/tasks" : location.pathname]}

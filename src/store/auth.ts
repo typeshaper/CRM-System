@@ -1,8 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import authService from "../services/authService";
+import type { Profile } from "../types/user";
 
 interface InitialState {
   isAuthenticated: boolean;
+  userData?: Profile;
 }
 
 const initialState: InitialState = {
@@ -21,6 +23,9 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       authService.clearAccessToken();
       localStorage.removeItem("refreshToken");
+    },
+    setUserData(state, action: PayloadAction<Profile>) {
+      state.userData = action.payload;
     },
   },
 });

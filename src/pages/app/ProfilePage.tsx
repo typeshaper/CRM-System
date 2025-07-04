@@ -1,90 +1,157 @@
-import { Typography, Flex, List, Skeleton, Button } from "antd";
-import { getCurrentUserData } from "../../api/user";
-import { useEffect, useState } from "react";
-import type { Profile } from "../../types/user";
+import { Typography, Flex, List, Skeleton, Button, Input, Form } from "antd";
 import useErrorMessage from "../../hooks/useErrorMessage";
+import { useNavigate, useParams } from "react-router";
+import { useEffect } from "react";
+import { getUserById, updateUserData } from "../../api/admin";
+import { useState } from "react";
+import type { Profile, ProfileRequest } from "../../types/user";
 import { AxiosError } from "axios";
-import { logout } from "../../api/auth";
-import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth";
-import authService from "../../services/authService";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
+  const params = useParams();
   const [userData, setUserData] = useState<Profile>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const showError = useErrorMessage();
+  const [profileForm] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleEditButton = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = async (formData: ProfileRequest) => {
+    console.log(formData);
     try {
-      setIsLoggingOut(true);
-      await logout();
-      localStorage.removeItem("refreshToken");
-      authService.clearAccessToken();
-      dispatch(authActions.logout());
-      setIsLoggingOut(false);
-      navigate("/auth");
+      if (params.userId) {
+        const newUserData = await updateUserData(formData, +params.userId);
+        setIsEditing(false);
+        setUserData(newUserData);
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         showError(error);
-        setIsLoggingOut(false);
+        setIsEditing(false);
       }
     }
   };
 
+  const handleGoBack = () => {
+    navigate("..", { relative: "path" });
+  };
+
   useEffect(() => {
-    setIsLoading(true);
     (async () => {
-      try {
-        const response = await getCurrentUserData();
-        setUserData(response);
-        setIsLoading(false);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          showError(error);
+      if (params.userId) {
+        try {
+          const fetchedData = await getUserById(+params.userId);
+          setUserData(fetchedData);
+          setIsLoading(false);
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            showError(error);
+            setIsLoading(false);
+          }
         }
       }
     })();
-  }, []);
+  }, [params.userId]);
 
   return (
     <>
+      <Title>Profile info</Title>
       <Skeleton
-        active
         loading={isLoading}
+        active
       >
-        <Title>Your info</Title>
         <Flex
           vertical
           style={{ height: "100%" }}
-          justify="space-between"
+          gap="1rem"
+          align="flex-end"
         >
-          <List bordered>
-            <List.Item>
-              <Text>Username: {userData?.username}</Text>
-            </List.Item>
-            <List.Item>
-              <Text>Email: {userData?.email}</Text>
-            </List.Item>
-            <List.Item>
-              <Text>Phone number: {userData?.phoneNumber || "-"}</Text>
-            </List.Item>
-          </List>
-          <Button
-            onClick={handleLogout}
-            style={{ alignSelf: "start" }}
-            danger
-            disabled={isLoggingOut}
-          >
-            Logout
-          </Button>
+          {!isEditing && (
+            <>
+              <List
+                size="large"
+                bordered
+              >
+                <List.Item>
+                  <Text>
+                    <span style={{ fontWeight: "bold" }}>Username: </span>
+                    {userData?.username}
+                  </Text>
+                </List.Item>
+                <List.Item>
+                  <Text>
+                    <span style={{ fontWeight: "bold" }}>Email: </span>
+                    {userData?.email}
+                  </Text>
+                </List.Item>
+                <List.Item>
+                  <Text>
+                    <span style={{ fontWeight: "bold" }}>Phone number: </span>
+                    {userData?.phoneNumber || "-"}
+                  </Text>
+                </List.Item>
+              </List>
+              <Button
+                onClick={handleEditButton}
+                type="primary"
+                style={{ width: "7ch" }}
+              >
+                Edit
+              </Button>
+            </>
+          )}
+
+          {isEditing && (
+            <>
+              <List
+                size="large"
+                bordered
+              >
+                <Form
+                  onFinish={(values: ProfileRequest) => handleSave(values)}
+                  form={profileForm}
+                  initialValues={{
+                    username: userData?.username,
+                    email: userData?.email,
+                    phoneNumber: userData?.phoneNumber,
+                  }}
+                >
+                  <Form.Item name="username">
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item name="email">
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item name="phoneNumber">
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Button
+                      htmlType="submit"
+                      name="save"
+                      color="green"
+                      variant="solid"
+                      style={{ width: "7ch" }}
+                    >
+                      Save
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </List>
+            </>
+          )}
         </Flex>
       </Skeleton>
+      <Button onClick={handleGoBack}>Go back</Button>
     </>
   );
 };
