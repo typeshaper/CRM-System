@@ -16,6 +16,7 @@ import {
 import { isPossiblePhoneNumber } from "libphonenumber-js";
 import * as EmailValidator from "email-validator";
 import useApp from "antd/es/app/useApp";
+import { formatPhoneNumber } from "../../utility/formatting";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",
@@ -60,6 +61,10 @@ const SignUpPage = () => {
   const handleSignupButton = async (userData: UserRegistration) => {
     setIsLoading(true);
     try {
+      const formattedPhone = formatPhoneNumber(userData.phoneNumber);
+      if (formattedPhone) {
+        userData.phoneNumber = formattedPhone;
+      }
       await signup(userData);
       notification.success({
         message: "Account is created successfully!",
@@ -186,7 +191,7 @@ const SignUpPage = () => {
           </Form.Item>
 
           <Form.Item
-            name="phone"
+            name="phoneNumber"
             label="Phone number"
             rules={[
               {

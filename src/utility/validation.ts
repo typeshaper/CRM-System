@@ -8,7 +8,7 @@ export const titleValidationRules = {
 export const usernameValidationRules = {
   min: 1,
   max: 60,
-  pattern: /[a-zA-Zа-яА-Я]/g,
+  pattern: /^[a-zA-Zа-яА-Я]*$/g,
   message:
     "Username must be between 1 and 60 latin or cyrillic characters long!",
   required: true,

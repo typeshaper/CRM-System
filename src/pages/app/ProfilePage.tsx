@@ -13,6 +13,7 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState<Profile>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
   const showError = useErrorMessage();
   const [profileForm] = Form.useForm();
   const navigate = useNavigate();

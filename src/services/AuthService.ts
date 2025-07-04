@@ -1,6 +1,5 @@
 const authServiceFactory = () => {
   let accessToken: string = "";
-
   const getAccessToken = () => {
     return accessToken;
   };
@@ -36,5 +35,4 @@ const authServiceFactory = () => {
 };
 
 const authService = authServiceFactory();
-
 export default authService;

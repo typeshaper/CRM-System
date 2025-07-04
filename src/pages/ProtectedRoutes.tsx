@@ -22,7 +22,6 @@ const ProtectedRoutes = () => {
     (async () => {
       const refreshToken = localStorage.getItem("refreshToken");
       const accessToken = authService.getAccessToken();
-
       if (refreshToken) {
         if (!accessToken) {
           try {
