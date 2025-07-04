@@ -25,7 +25,7 @@ const ProfilePage = () => {
     try {
       setIsLoggingOut(true);
       if (accessToken !== "") {
-        await logout(accessToken);
+        await logout();
         localStorage.removeItem("refreshToken");
         authService.clearAccessToken();
         dispatch(authActions.logout());

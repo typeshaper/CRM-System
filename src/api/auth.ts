@@ -58,14 +58,13 @@ export async function refreshSession(refreshToken: RefreshToken) {
   }
 }
 
-export async function logout(accessToken: string) {
+export async function logout() {
   try {
     const response: AxiosResponse = await api({
       method: "post",
       url: "user/logout",
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
     });
 
