@@ -23,7 +23,7 @@ import {
   usernameValidationRules,
 } from "../../utility/validation";
 import { isPossiblePhoneNumber } from "libphonenumber-js";
-import { isEmpty } from "lodash"
+import { isEmpty } from "lodash";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
@@ -49,8 +49,9 @@ const ProfilePage = () => {
           email: userData.email,
         };
 
-
-        const updatedUserData = diff(prevUserData, formData) as typeof prevUserData || typeof formData;
+        const updatedUserData =
+          (diff(prevUserData, formData) as typeof prevUserData) ||
+          typeof formData;
 
         if (isEmpty(updatedUserData)) {
           setIsEditing(false);
@@ -223,13 +224,35 @@ const ProfilePage = () => {
                 </List.Item>
               </List>
 
-              {!isEditing && <Button variant="solid" color="blue" onClick={handleEditButton}>Edit</Button>}
-              {isEditing && <Button variant="solid" color="green" htmlType="submit">Save</Button>}
+              {!isEditing && (
+                <Button
+                  variant="solid"
+                  color="blue"
+                  onClick={handleEditButton}
+                >
+                  Edit
+                </Button>
+              )}
+              {isEditing && (
+                <Button
+                  variant="solid"
+                  color="green"
+                  htmlType="submit"
+                >
+                  Save
+                </Button>
+              )}
             </Flex>
           </Form>
         </Flex>
       </Skeleton>
-      <Button variant="solid" color="default" onClick={handleGoBack}>← Back</Button>
+      <Button
+        variant="solid"
+        color="default"
+        onClick={handleGoBack}
+      >
+        ← Back
+      </Button>
     </>
   );
 };
