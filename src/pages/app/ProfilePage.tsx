@@ -45,15 +45,13 @@ const ProfilePage = () => {
 
     try {
       if (params.userId && userData) {
-        const prevUserData = {
+        const prevUserData: ProfileRequest = {
           username: userData.username,
           phoneNumber: userData.phoneNumber,
           email: userData.email,
         };
 
-        const updatedUserData = diff(prevUserData, formData);
-        console.log(updatedUserData);
-
+        const updatedUserData = diff(prevUserData, formData) as typeof prevUserData & typeof formData;
         const newUserData = await updateUserData(
           updatedUserData,
           +params.userId
