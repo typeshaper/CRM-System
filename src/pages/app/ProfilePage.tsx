@@ -51,7 +51,7 @@ const ProfilePage = () => {
           email: userData.email,
         };
 
-        const updatedUserData = diff(prevUserData, formData) as typeof prevUserData & typeof formData;
+        const updatedUserData = diff(prevUserData, formData) as typeof prevUserData || typeof formData;
         const newUserData = await updateUserData(
           updatedUserData,
           +params.userId
