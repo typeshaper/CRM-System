@@ -15,6 +15,7 @@ import { getUserById, updateUserData } from "../../api/admin";
 import { useState } from "react";
 import type { Profile, ProfileRequest } from "../../types/user";
 import { AxiosError } from "axios";
+import { diff } from "deep-object-diff";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
@@ -31,25 +32,35 @@ const ProfilePage = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-  };
+  const handleSave = async (formData: ProfileRequest) => {
+    console.log(formData);
+    console.log(userData);
 
-  // const handleSave = async (formData: ProfileRequest) => {
-  //   console.log(formData);
-  //   try {
-  //     if (params.userId) {
-  //       const newUserData = await updateUserData(formData, +params.userId);
-  //       setIsEditing(false);
-  //       setUserData(newUserData);
-  //     }
-  //   } catch (error) {
-  //     if (error instanceof AxiosError) {
-  //       showError(error);
-  //       setIsEditing(false);
-  //     }
-  //   }
-  // };
+    try {
+      if (params.userId && userData) {
+        const prevUserData = {
+          username: userData.username,
+          phoneNumber: userData.phoneNumber,
+          email: userData.email,
+        };
+
+        const updatedUserData = diff(prevUserData, formData);
+        console.log(updatedUserData);
+
+        const newUserData = await updateUserData(
+          updatedUserData,
+          +params.userId
+        );
+        setIsEditing(false);
+        setUserData(newUserData);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showError(error);
+        setIsEditing(false);
+      }
+    }
+  };
 
   const handleGoBack = () => {
     navigate("..", { relative: "path" });
@@ -97,6 +108,7 @@ const ProfilePage = () => {
               username: userData?.username,
             }}
             form={profileForm}
+            onFinish={handleSave}
           >
             <Flex
               gap="2rem"
@@ -170,7 +182,7 @@ const ProfilePage = () => {
               </List>
 
               {!isEditing && <Button onClick={handleEditButton}>Edit</Button>}
-              {isEditing && <Button onClick={handleSave}>Save</Button>}
+              {isEditing && <Button htmlType="submit">Save</Button>}
             </Flex>
           </Form>
         </Flex>
