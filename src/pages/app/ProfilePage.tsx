@@ -1,7 +1,16 @@
-import { Typography, Flex, List, Skeleton, Button, Input, Form } from "antd";
+import {
+  Typography,
+  Flex,
+  List,
+  Skeleton,
+  Button,
+  Input,
+  Form,
+  Space,
+} from "antd";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { useNavigate, useParams } from "react-router";
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 import { getUserById, updateUserData } from "../../api/admin";
 import { useState } from "react";
 import type { Profile, ProfileRequest } from "../../types/user";
@@ -22,21 +31,25 @@ const ProfilePage = () => {
     setIsEditing(true);
   };
 
-  const handleSave = async (formData: ProfileRequest) => {
-    console.log(formData);
-    try {
-      if (params.userId) {
-        const newUserData = await updateUserData(formData, +params.userId);
-        setIsEditing(false);
-        setUserData(newUserData);
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        showError(error);
-        setIsEditing(false);
-      }
-    }
+  const handleSave = () => {
+    setIsEditing(false);
   };
+
+  // const handleSave = async (formData: ProfileRequest) => {
+  //   console.log(formData);
+  //   try {
+  //     if (params.userId) {
+  //       const newUserData = await updateUserData(formData, +params.userId);
+  //       setIsEditing(false);
+  //       setUserData(newUserData);
+  //     }
+  //   } catch (error) {
+  //     if (error instanceof AxiosError) {
+  //       showError(error);
+  //       setIsEditing(false);
+  //     }
+  //   }
+  // };
 
   const handleGoBack = () => {
     navigate("..", { relative: "path" });
@@ -59,6 +72,11 @@ const ProfilePage = () => {
     })();
   }, [params.userId]);
 
+  const formItemStyle: CSSProperties = {
+    height: 0,
+    width: "100%",
+  };
+
   return (
     <>
       <Title>Profile info</Title>
@@ -72,86 +90,92 @@ const ProfilePage = () => {
           gap="1rem"
           align="flex-end"
         >
-          {!isEditing && (
-            <>
+          <Form
+            initialValues={{
+              email: userData?.email,
+              phoneNumber: userData?.phoneNumber,
+              username: userData?.username,
+            }}
+            form={profileForm}
+          >
+            <Flex
+              gap="2rem"
+              vertical
+              align="flex-start"
+            >
               <List
                 size="large"
-                bordered
+                style={{ width: "50ch" }}
               >
                 <List.Item>
-                  <Text>
-                    <span style={{ fontWeight: "bold" }}>Username: </span>
-                    {userData?.username}
-                  </Text>
+                  <Space
+                    style={{ height: "3rem" }}
+                    direction="horizontal"
+                  >
+                    <Text>
+                      <span style={{ fontWeight: "bold" }}>Username: </span>
+                    </Text>
+
+                    {isEditing && (
+                      <Form.Item
+                        name="username"
+                        style={formItemStyle}
+                      >
+                        <Input style={{ width: " 100%" }} />
+                      </Form.Item>
+                    )}
+                    {!isEditing && userData?.username}
+                  </Space>
                 </List.Item>
                 <List.Item>
-                  <Text>
-                    <span style={{ fontWeight: "bold" }}>Email: </span>
-                    {userData?.email}
-                  </Text>
+                  <Space
+                    style={{ height: "3rem" }}
+                    direction="horizontal"
+                  >
+                    <Text>
+                      <span style={{ fontWeight: "bold" }}>Email: </span>
+                    </Text>
+
+                    {isEditing && (
+                      <Form.Item
+                        name="email"
+                        style={formItemStyle}
+                      >
+                        <Input style={{ width: " 100%" }} />
+                      </Form.Item>
+                    )}
+                    {!isEditing && userData?.email}
+                  </Space>
                 </List.Item>
                 <List.Item>
-                  <Text>
-                    <span style={{ fontWeight: "bold" }}>Phone number: </span>
-                    {userData?.phoneNumber || "-"}
-                  </Text>
+                  <Space
+                    style={{ height: "3rem" }}
+                    direction="horizontal"
+                  >
+                    <Text>
+                      <span style={{ fontWeight: "bold" }}>Phone number: </span>
+                    </Text>
+
+                    {isEditing && (
+                      <Form.Item
+                        name="phoneNumber"
+                        style={formItemStyle}
+                      >
+                        <Input style={{ width: " 100%" }} />
+                      </Form.Item>
+                    )}
+                    {!isEditing && userData?.phoneNumber}
+                  </Space>
                 </List.Item>
               </List>
-              <Button
-                onClick={handleEditButton}
-                type="primary"
-                style={{ width: "7ch" }}
-              >
-                Edit
-              </Button>
-            </>
-          )}
 
-          {isEditing && (
-            <>
-              <List
-                size="large"
-                bordered
-              >
-                <Form
-                  onFinish={(values: ProfileRequest) => handleSave(values)}
-                  form={profileForm}
-                  initialValues={{
-                    username: userData?.username,
-                    email: userData?.email,
-                    phoneNumber: userData?.phoneNumber,
-                  }}
-                >
-                  <Form.Item name="username">
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item name="email">
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item name="phoneNumber">
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item>
-                    <Button
-                      htmlType="submit"
-                      name="save"
-                      color="green"
-                      variant="solid"
-                      style={{ width: "7ch" }}
-                    >
-                      Save
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </List>
-            </>
-          )}
+              {!isEditing && <Button onClick={handleEditButton}>Edit</Button>}
+              {isEditing && <Button onClick={handleSave}>Save</Button>}
+            </Flex>
+          </Form>
         </Flex>
       </Skeleton>
-      <Button onClick={handleGoBack}>Go back</Button>
+      <Button onClick={handleGoBack}>← Go back</Button>
     </>
   );
 };
