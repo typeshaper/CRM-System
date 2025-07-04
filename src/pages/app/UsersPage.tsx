@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
-import { getUsersList } from "../../api/admin.ts";
+import { deleteUser, getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import { Tag, Table, Space, Skeleton, Button, type MenuProps } from "antd";
@@ -11,6 +11,7 @@ import {
   MailOutlined,
   SearchOutlined,
   FilterOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
@@ -18,6 +19,7 @@ import debounce from "lodash.debounce";
 import type { ColumnsType } from "antd/es/table/InternalTable";
 import type { SorterResult } from "antd/es/table/interface";
 import { useNavigate } from "react-router";
+import useApp from "antd/es/app/useApp";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -26,6 +28,9 @@ const UsersPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userFilters, setUserFilters] = useState<UserFilters>({});
   const navigate = useNavigate();
+  const app = useApp();
+  const notification = app.notification;
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const columns: ColumnsType<User> = [
     {
@@ -160,12 +165,42 @@ const UsersPage = () => {
             <Button
               variant="outlined"
               color="default"
-              style={{ border: "1px solid black" }}
+              style={{
+                border: "1px solid black",
+              }}
               onClick={() => {
                 navigate(`${user.id}`);
               }}
             >
               →
+            </Button>
+
+            <Button
+              variant="outlined"
+              color="default"
+              disabled={isDeleting}
+              style={{
+                border: "1px solid black",
+              }}
+              onClick={async () => {
+                setIsDeleting(true);
+                try {
+                  await deleteUser(user.id);
+                  fetchUsers(userFilters);
+                  notification.success({
+                    message: `You have deleted user: ${user.username}`,
+                    placement: "bottomRight",
+                  });
+                  setIsDeleting(false);
+                } catch (error) {
+                  if (error instanceof AxiosError) {
+                    showError(error);
+                    setIsDeleting(false);
+                  }
+                }
+              }}
+            >
+              <DeleteOutlined />
             </Button>
           </Space>
         );
