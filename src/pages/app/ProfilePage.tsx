@@ -215,7 +215,7 @@ const ProfilePage = () => {
                         <Input style={{ width: " 100%" }} />
                       </Form.Item>
                     )}
-                    {!isEditing && userData?.phoneNumber}
+                    {!isEditing && (userData?.phoneNumber || "-")}
                   </Space>
                 </List.Item>
               </List>
