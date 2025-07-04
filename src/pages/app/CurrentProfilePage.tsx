@@ -1,4 +1,4 @@
-import { Typography, Flex, List, Skeleton, Button } from "antd";
+import { Typography, Flex, List, Button } from "antd";
 import { useState } from "react";
 import type { Profile } from "../../types/user";
 import useErrorMessage from "../../hooks/useErrorMessage";
@@ -17,7 +17,6 @@ const CurrentProfilePage = () => {
   );
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const accessToken = authService.getAccessToken();
 
   const showError = useErrorMessage();
   const navigate = useNavigate();
@@ -25,14 +24,12 @@ const CurrentProfilePage = () => {
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      if (accessToken !== "") {
-        await logout(accessToken);
-        localStorage.removeItem("refreshToken");
-        authService.clearAccessToken();
-        dispatch(authActions.logout());
-        setIsLoggingOut(false);
-        navigate("/auth");
-      }
+      await logout();
+      localStorage.removeItem("refreshToken");
+      authService.clearAccessToken();
+      dispatch(authActions.logout());
+      setIsLoggingOut(false);
+      navigate("/auth");
     } catch (error) {
       if (error instanceof AxiosError) {
         showError(error);
