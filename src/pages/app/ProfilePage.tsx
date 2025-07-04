@@ -220,13 +220,13 @@ const ProfilePage = () => {
                 </List.Item>
               </List>
 
-              {!isEditing && <Button onClick={handleEditButton}>Edit</Button>}
-              {isEditing && <Button htmlType="submit">Save</Button>}
+              {!isEditing && <Button variant="solid" color="blue" onClick={handleEditButton}>Edit</Button>}
+              {isEditing && <Button variant="solid" color="green" htmlType="submit">Save</Button>}
             </Flex>
           </Form>
         </Flex>
       </Skeleton>
-      <Button onClick={handleGoBack}>← Go back</Button>
+      <Button variant="solid" color="default" onClick={handleGoBack}>← Back</Button>
     </>
   );
 };
