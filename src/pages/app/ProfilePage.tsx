@@ -23,6 +23,7 @@ import {
   usernameValidationRules,
 } from "../../utility/validation";
 import { isPossiblePhoneNumber } from "libphonenumber-js";
+import { isEmpty } from "lodash"
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
@@ -40,9 +41,6 @@ const ProfilePage = () => {
   };
 
   const handleSave = async (formData: ProfileRequest) => {
-    console.log(formData);
-    console.log(userData);
-
     try {
       if (params.userId && userData) {
         const prevUserData: ProfileRequest = {
@@ -51,7 +49,14 @@ const ProfilePage = () => {
           email: userData.email,
         };
 
+
         const updatedUserData = diff(prevUserData, formData) as typeof prevUserData || typeof formData;
+
+        if (isEmpty(updatedUserData)) {
+          setIsEditing(false);
+          return;
+        }
+
         const newUserData = await updateUserData(
           updatedUserData,
           +params.userId
