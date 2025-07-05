@@ -221,6 +221,7 @@ const UsersPage = () => {
             </Popconfirm>
 
             <Dropdown
+              trigger={["click"]}
               menu={{
                 items: [
                   {
