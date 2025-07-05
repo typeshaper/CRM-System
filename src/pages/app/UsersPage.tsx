@@ -360,6 +360,7 @@ const UsersPage = () => {
           <Table
             tableLayout="fixed"
             loading={isLoading}
+            rowKey="id"
             pagination={{
               current: (userFilters.offset && userFilters.offset + 1) ?? 1,
               defaultPageSize: 20,
