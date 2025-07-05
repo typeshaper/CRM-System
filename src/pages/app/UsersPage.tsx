@@ -225,11 +225,11 @@ const UsersPage = () => {
               menu={{
                 items: [
                   {
-                    label: (
+                    label: !user.isBlocked ? (
                       <Popconfirm
                         okText="Yes"
                         cancelText="No"
-                        title="Block user"
+                        title="Block this user?"
                         onConfirm={async () => {
                           try {
                             await blockUser(user.id);
@@ -247,15 +247,11 @@ const UsersPage = () => {
                       >
                         Block
                       </Popconfirm>
-                    ),
-                    key: "blockUser",
-                  },
-                  {
-                    label: (
+                    ) : (
                       <Popconfirm
                         okText="Yes"
                         cancelText="No"
-                        title="Unlock user"
+                        title="Unlock this user?"
                         onConfirm={async () => {
                           try {
                             await unlockUser(user.id);
@@ -274,7 +270,7 @@ const UsersPage = () => {
                         Unlock
                       </Popconfirm>
                     ),
-                    key: "unlockUser",
+                    key: "changeBlockStatus",
                   },
                 ],
               }}
