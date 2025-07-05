@@ -81,7 +81,7 @@ export async function deleteUser(id: Profile["id"]): Promise<void> {
 export async function blockUser(id: Profile["id"]): Promise<Profile> {
   try {
     const response: AxiosResponse<Profile> = await api({
-      method: "delete",
+      method: "post",
       url: `admin/users/${id}/block`,
       headers: {
         "Content-Type": "application/json",
