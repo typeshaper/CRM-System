@@ -77,3 +77,20 @@ export async function deleteUser(id: Profile["id"]): Promise<void> {
     throw error as AxiosError;
   }
 }
+
+export async function blockUser(id: Profile["id"]): Promise<Profile> {
+  try {
+    const response: AxiosResponse<Profile> = await api({
+      method: "delete",
+      url: `admin/users/${id}/block`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const resData = response.data;
+    return resData;
+  } catch (error: unknown) {
+    throw error as AxiosError;
+  }
+}
