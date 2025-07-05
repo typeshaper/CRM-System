@@ -283,7 +283,7 @@ const UsersPage = () => {
           </Space>
         );
       },
-      width: "210px",
+      width: "150px",
     },
   ];
 
