@@ -94,3 +94,20 @@ export async function blockUser(id: Profile["id"]): Promise<Profile> {
     throw error as AxiosError;
   }
 }
+
+export async function unlockUser(id: Profile["id"]): Promise<Profile> {
+  try {
+    const response: AxiosResponse<Profile> = await api({
+      method: "post",
+      url: `admin/users/${id}/unlock`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const resData = response.data;
+    return resData;
+  } catch (error: unknown) {
+    throw error as AxiosError;
+  }
+}
