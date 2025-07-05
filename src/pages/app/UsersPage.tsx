@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
-import { deleteUser, getUsersList } from "../../api/admin.ts";
+import { blockUser, deleteUser, getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import {
@@ -20,6 +20,9 @@ import {
   SearchOutlined,
   FilterOutlined,
   DeleteOutlined,
+  MoreOutlined,
+  BlockOutlined,
+  StopOutlined,
 } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
@@ -209,6 +212,36 @@ const UsersPage = () => {
                 }}
               >
                 <DeleteOutlined />
+              </Button>
+            </Popconfirm>
+
+            <Popconfirm
+              okText="Yes"
+              cancelText="No"
+              onConfirm={async () => {
+                try {
+                  await blockUser(user.id);
+                  fetchUsers(userFilters);
+                  notification.success({
+                    message: `You have blocked user: ${user.username}`,
+                    placement: "bottomRight",
+                  });
+                } catch (error) {
+                  if (error instanceof AxiosError) {
+                    showError(error);
+                  }
+                }
+              }}
+              title="Are you sure to block this user?"
+            >
+              <Button
+                variant="outlined"
+                color="default"
+                style={{
+                  border: "1px solid black",
+                }}
+              >
+                <StopOutlined />
               </Button>
             </Popconfirm>
           </Space>
