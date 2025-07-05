@@ -184,7 +184,6 @@ const UsersPage = () => {
             >
               →
             </Button>
-
             <Popconfirm
               okText="Yes"
               cancelText="No"
@@ -215,37 +214,35 @@ const UsersPage = () => {
               </Button>
             </Popconfirm>
 
-            {!user.isBlocked && (
-              <Popconfirm
-                okText="Yes"
-                cancelText="No"
-                onConfirm={async () => {
-                  try {
-                    await blockUser(user.id);
-                    fetchUsers(userFilters);
-                    notification.success({
-                      message: `You have blocked user: ${user.username}`,
-                      placement: "bottomRight",
-                    });
-                  } catch (error) {
-                    if (error instanceof AxiosError) {
-                      showError(error);
-                    }
+            <Popconfirm
+              okText="Yes"
+              cancelText="No"
+              onConfirm={async () => {
+                try {
+                  await blockUser(user.id);
+                  fetchUsers(userFilters);
+                  notification.success({
+                    message: `You have blocked user: ${user.username}`,
+                    placement: "bottomRight",
+                  });
+                } catch (error) {
+                  if (error instanceof AxiosError) {
+                    showError(error);
                   }
+                }
+              }}
+              title="Are you sure to block this user?"
+            >
+              <Button
+                variant="outlined"
+                color="default"
+                style={{
+                  border: "1px solid black",
                 }}
-                title="Are you sure to block this user?"
               >
-                <Button
-                  variant="outlined"
-                  color="default"
-                  style={{
-                    border: "1px solid black",
-                  }}
-                >
-                  <StopOutlined />
-                </Button>
-              </Popconfirm>
-            )}
+                <StopOutlined />
+              </Button>
+            </Popconfirm>
           </Space>
         );
       },
