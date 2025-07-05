@@ -3,7 +3,15 @@ import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
 import { deleteUser, getUsersList } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
-import { Tag, Table, Space, Skeleton, Button, type MenuProps } from "antd";
+import {
+  Tag,
+  Popconfirm,
+  Table,
+  Space,
+  Skeleton,
+  Button,
+  type MenuProps,
+} from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
 import {
@@ -30,7 +38,6 @@ const UsersPage = () => {
   const navigate = useNavigate();
   const app = useApp();
   const notification = app.notification;
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const columns: ColumnsType<User> = [
     {
@@ -175,15 +182,10 @@ const UsersPage = () => {
               →
             </Button>
 
-            <Button
-              variant="outlined"
-              color="default"
-              disabled={isDeleting}
-              style={{
-                border: "1px solid black",
-              }}
-              onClick={async () => {
-                setIsDeleting(true);
+            <Popconfirm
+              okText="Yes"
+              cancelText="No"
+              onConfirm={async () => {
                 try {
                   await deleteUser(user.id);
                   fetchUsers(userFilters);
@@ -191,17 +193,24 @@ const UsersPage = () => {
                     message: `You have deleted user: ${user.username}`,
                     placement: "bottomRight",
                   });
-                  setIsDeleting(false);
                 } catch (error) {
                   if (error instanceof AxiosError) {
                     showError(error);
-                    setIsDeleting(false);
                   }
                 }
               }}
+              title="Are you sure to delete this user?"
             >
-              <DeleteOutlined />
-            </Button>
+              <Button
+                variant="outlined"
+                color="default"
+                style={{
+                  border: "1px solid black",
+                }}
+              >
+                <DeleteOutlined />
+              </Button>
+            </Popconfirm>
           </Space>
         );
       },
