@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
-import { blockUser, deleteUser, getUsersList } from "../../api/admin.ts";
+import {
+  blockUser,
+  deleteUser,
+  getUsersList,
+  unlockUser,
+} from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import {
@@ -11,6 +16,7 @@ import {
   Skeleton,
   Button,
   type MenuProps,
+  Menu,
 } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
@@ -214,35 +220,66 @@ const UsersPage = () => {
               </Button>
             </Popconfirm>
 
-            <Popconfirm
-              okText="Yes"
-              cancelText="No"
-              onConfirm={async () => {
-                try {
-                  await blockUser(user.id);
-                  fetchUsers(userFilters);
-                  notification.success({
-                    message: `You have blocked user: ${user.username}`,
-                    placement: "bottomRight",
-                  });
-                } catch (error) {
-                  if (error instanceof AxiosError) {
-                    showError(error);
-                  }
-                }
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    label: (
+                      <Popconfirm
+                        okText="Yes"
+                        cancelText="No"
+                        title="Block user"
+                        onConfirm={async () => {
+                          try {
+                            await blockUser(user.id);
+                            fetchUsers(userFilters);
+                            notification.success({
+                              message: `You have blocked user: ${user.username}`,
+                              placement: "bottomRight",
+                            });
+                          } catch (error) {
+                            if (error instanceof AxiosError) {
+                              showError(error);
+                            }
+                          }
+                        }}
+                      >
+                        Block
+                      </Popconfirm>
+                    ),
+                    key: "blockUser",
+                  },
+                  {
+                    label: (
+                      <Popconfirm
+                        okText="Yes"
+                        cancelText="No"
+                        title="Unlock user"
+                        onConfirm={async () => {
+                          try {
+                            await unlockUser(user.id);
+                            fetchUsers(userFilters);
+                            notification.success({
+                              message: `You have blocked user: ${user.username}`,
+                              placement: "bottomRight",
+                            });
+                          } catch (error) {
+                            if (error instanceof AxiosError) {
+                              showError(error);
+                            }
+                          }
+                        }}
+                      >
+                        Unlock
+                      </Popconfirm>
+                    ),
+                    key: "unlockUser",
+                  },
+                ],
               }}
-              title="Are you sure to block this user?"
             >
-              <Button
-                variant="outlined"
-                color="default"
-                style={{
-                  border: "1px solid black",
-                }}
-              >
-                <StopOutlined />
-              </Button>
-            </Popconfirm>
+              <MoreOutlined />
+            </Dropdown>
           </Space>
         );
       },
