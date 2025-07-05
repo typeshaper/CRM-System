@@ -306,13 +306,8 @@ const UsersPage = () => {
     },
   ];
 
-  const handleFilterClick = async () => {
-    //
-  };
-
   const filterMenuProps = {
     items: filterMenuItems,
-    onclick: handleFilterClick,
   };
 
   let userHeading = "All users";
