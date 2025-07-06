@@ -119,7 +119,7 @@ export async function editRoles(
 ): Promise<User> {
   try {
     const response: AxiosResponse<User> = await api({
-      method: "put",
+      method: "post",
       url: `admin/users/${id}/rights`,
       headers: {
         "Content-Type": "application/json",

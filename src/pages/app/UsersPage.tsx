@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
-import type {
-  User,
-  UserFilters,
-  UsersMetaResponse,
+import {
+  Roles,
+  type User,
+  type UserFilters,
+  type UsersMetaResponse,
 } from "../../types/admin.ts";
 import {
   blockUser,
   deleteUser,
+  editRoles,
   getUsersList,
   unblockUser,
 } from "../../api/admin.ts";
@@ -19,8 +21,9 @@ import {
   Space,
   Skeleton,
   Button,
+  Select,
   type MenuProps,
-  Menu,
+  type SelectProps,
 } from "antd";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { formatDateFromIsoString } from "../../utility/date";
@@ -41,6 +44,8 @@ import type { ColumnsType } from "antd/es/table/InternalTable";
 import type { SorterResult } from "antd/es/table/interface";
 import { useNavigate } from "react-router";
 import useApp from "antd/es/app/useApp";
+import Modal from "antd/es/modal/Modal";
+import { kebabCase } from "lodash";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -51,6 +56,47 @@ const UsersPage = () => {
   const navigate = useNavigate();
   const app = useApp();
   const notification = app.notification;
+  const [isRolesModalOpen, setIsRolesModalOpen] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [currentRoles, setCurrentRoles] = useState<Roles[]>([]);
+
+  const showRolesModal = () => {
+    setIsRolesModalOpen(true);
+  };
+
+  const handleRolesModalOk = async () => {
+    try {
+      if (selectedUser?.id) {
+        editRoles(selectedUser?.id, { roles: currentRoles });
+        setIsRolesModalOpen(false);
+        setSelectedUser(null);
+        fetchUsers(userFilters);
+        notification.success({
+          message: `You have changed ${selectedUser.username} roles!`,
+          placement: "bottomRight",
+        });
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showError(error);
+      }
+      setIsRolesModalOpen(false);
+      setSelectedUser(null);
+    }
+  };
+
+  const handleRolesModalCancel = () => {
+    setIsRolesModalOpen(false);
+    setSelectedUser(null);
+  };
+
+  const roleSelectOptions: SelectProps["options"] = [];
+  Object.values(Roles).forEach((role) => {
+    roleSelectOptions.push({
+      value: role,
+      label: role,
+    });
+  });
 
   const columns: ColumnsType<User> = [
     {
@@ -276,6 +322,19 @@ const UsersPage = () => {
                     ),
                     key: "changeBlockStatus",
                   },
+                  {
+                    label: (
+                      <p
+                        onClick={() => {
+                          showRolesModal();
+                          setSelectedUser(user);
+                        }}
+                      >
+                        Roles
+                      </p>
+                    ),
+                    key: "editRoles",
+                  },
                 ],
               }}
             >
@@ -483,6 +542,22 @@ const UsersPage = () => {
           <Skeleton active />
         )}
       </Flex>
+      <Modal
+        title="Basic Modal"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isRolesModalOpen}
+        onCancel={handleRolesModalCancel}
+        onOk={handleRolesModalOk}
+      >
+        <Select
+          mode="tags"
+          style={{ width: "100%" }}
+          placeholder="Select roles"
+          options={roleSelectOptions}
+          defaultValue={selectedUser?.roles}
+          onChange={(values) => setCurrentRoles(values)}
+        />
+      </Modal>
     </Flex>
   );
 };
