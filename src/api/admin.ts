@@ -95,11 +95,11 @@ export async function blockUser(id: Profile["id"]): Promise<Profile> {
   }
 }
 
-export async function unlockUser(id: Profile["id"]): Promise<Profile> {
+export async function unblockUser(id: Profile["id"]): Promise<Profile> {
   try {
     const response: AxiosResponse<Profile> = await api({
       method: "post",
-      url: `admin/users/${id}/unlock`,
+      url: `admin/users/${id}/unblock`,
       headers: {
         "Content-Type": "application/json",
       },

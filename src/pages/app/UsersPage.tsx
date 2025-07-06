@@ -4,7 +4,7 @@ import {
   blockUser,
   deleteUser,
   getUsersList,
-  unlockUser,
+  unblockUser,
 } from "../../api/admin.ts";
 import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
@@ -251,13 +251,13 @@ const UsersPage = () => {
                       <Popconfirm
                         okText="Yes"
                         cancelText="No"
-                        title="Unlock this user?"
+                        title="Unblock this user?"
                         onConfirm={async () => {
                           try {
-                            await unlockUser(user.id);
+                            await unblockUser(user.id);
                             fetchUsers(userFilters);
                             notification.success({
-                              message: `You have blocked user: ${user.username}`,
+                              message: `You have unblocked user: ${user.username}`,
                               placement: "bottomRight",
                             });
                           } catch (error) {
@@ -267,7 +267,7 @@ const UsersPage = () => {
                           }
                         }}
                       >
-                        Unlock
+                        Unblock
                       </Popconfirm>
                     ),
                     key: "changeBlockStatus",
