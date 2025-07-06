@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
-import type { User, UserFilters, UsersMetaResponse } from "../../types/user";
+import type {
+  User,
+  UserFilters,
+  UsersMetaResponse,
+} from "../../types/admin.ts";
 import {
   blockUser,
   deleteUser,
@@ -134,7 +138,7 @@ const UsersPage = () => {
             }}
           >
             {user.roles.map((role) => {
-              let color: PresetColorKey;
+              let color: PresetColorKey = "magenta";
               switch (role) {
                 case "ADMIN":
                   color = "purple";
