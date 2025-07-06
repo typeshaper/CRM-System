@@ -1,12 +1,8 @@
 import { AxiosError, type AxiosResponse } from "axios";
 import { api } from "./index";
-import type {
-  Profile,
-  ProfileRequest,
-  User,
-  UserFilters,
-  UsersMetaResponse,
-} from "../types/user";
+import type { Profile, ProfileRequest } from "../types/user";
+
+import type { User, UserFilters, UsersMetaResponse } from "../types/admin.ts";
 
 export async function getUsersList(queryParams?: UserFilters) {
   try {
