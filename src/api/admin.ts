@@ -112,11 +112,6 @@ export async function unblockUser(id: Profile["id"]): Promise<Profile> {
     throw error as AxiosError;
   }
 }
-// 3. Обновление прав пользователя
-// Method: PUT
-// URL: /admin/users/{id}/rights
-// Request: UserRolesRequest
-// Response: User
 
 export async function editRoles(
   id: Profile["id"],
