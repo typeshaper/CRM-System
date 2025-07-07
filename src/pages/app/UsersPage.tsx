@@ -75,9 +75,6 @@ const UsersPage = () => {
     (state) => state.auth.isModerator
   );
 
-  console.log(isModerator);
-  console.log(isAdmin);
-
   const setUserFilters = (filters: UserFilters) => {
     dispatch(usersTableActions.setUserFilters(filters));
   };
