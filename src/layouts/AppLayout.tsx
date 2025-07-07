@@ -7,6 +7,8 @@ import { Layout, Menu, Typography } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useState, type CSSProperties } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store";
 
 const layoutStyle: CSSProperties = {
   width: "100%",
@@ -32,24 +34,6 @@ const headerStyle: CSSProperties = {
   fontSize: "22px",
 };
 
-const menuItems: ItemType<MenuItemType>[] = [
-  {
-    key: "/app/tasks",
-    label: "Tasks",
-    icon: <FileDoneOutlined />,
-  },
-  {
-    key: "/app/profile",
-    label: "Profile",
-    icon: <InfoCircleOutlined />,
-  },
-  {
-    key: "/app/users",
-    label: "Users",
-    icon: <UserOutlined />,
-  },
-];
-
 const AppLayout = () => {
   const [headerText, setHeaderText] = useState<string>("To-Do List!");
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -68,6 +52,32 @@ const AppLayout = () => {
     }
   };
 
+  const hasPermission = useSelector<RootState, boolean>(
+    (state) => (state.isAdmin || state.isModerator) ?? false
+  );
+
+  const userMenuItems: ItemType<MenuItemType>[] = [
+    {
+      key: "/app/tasks",
+      label: "Tasks",
+      icon: <FileDoneOutlined />,
+    },
+    {
+      key: "/app/profile",
+      label: "Profile",
+      icon: <InfoCircleOutlined />,
+    },
+  ];
+
+  const adminMenuItems: ItemType<MenuItemType>[] = [
+    ...userMenuItems,
+    {
+      key: "/app/users",
+      label: "Users",
+      icon: <UserOutlined />,
+    },
+  ];
+
   return (
     <Layout style={layoutStyle}>
       <Sider
@@ -84,7 +94,7 @@ const AppLayout = () => {
           style={siderStyle}
           defaultSelectedKeys={[isRootURL ? "/app/tasks" : location.pathname]}
           onClick={(info) => navigate(info.key)}
-          items={menuItems}
+          items={hasPermission ? adminMenuItems : userMenuItems}
         />
       </Sider>
       <Content style={contentStyle}>
