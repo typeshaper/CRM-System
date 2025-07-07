@@ -247,7 +247,7 @@ const UsersPage = () => {
       width: "15ch",
     },
     {
-      title: "",
+      title: "Actions",
       dataIndex: "userActions",
       key: "userActions",
       render: (_, user) => {
