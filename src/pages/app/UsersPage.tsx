@@ -381,10 +381,6 @@ const UsersPage = () => {
     },
   ];
 
-  const obj = {
-    ...(isAdmin && { label: "shit" }),
-  };
-
   const selectedMenuItemStyle: CSSProperties = {
     color: "#1777FF",
     backgroundColor: "#E6f4FF",
