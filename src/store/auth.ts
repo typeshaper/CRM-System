@@ -25,6 +25,9 @@ const authSlice = createSlice({
     },
     logout(state) {
       state.isAuthenticated = false;
+      state.isAdmin = false;
+      state.isModerator = false;
+      state.userData = undefined;
       authService.clearAccessToken();
       localStorage.removeItem("refreshToken");
     },
