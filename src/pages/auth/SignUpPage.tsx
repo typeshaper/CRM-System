@@ -1,11 +1,15 @@
-import { Flex, Image, Typography, Form, Input, Button } from "antd";
-import icon from "../../assets/auth-icon.png";
-import { useState, type CSSProperties } from "react";
-import { signup } from "../../api/auth";
-import type { UserRegistration } from "../../types/auth";
-import useErrorMessage from "../../hooks/useErrorMessage";
+import { Button, Flex, Form, Image, Input, Typography } from "antd";
+import useApp from "antd/es/app/useApp";
 import { AxiosError } from "axios";
-import { useNavigate, Link } from "react-router";
+import * as EmailValidator from "email-validator";
+import { isPossiblePhoneNumber } from "libphonenumber-js";
+import { useState, type CSSProperties } from "react";
+import { Link, useNavigate } from "react-router";
+import { signup } from "../../api/auth";
+import icon from "../../assets/auth-icon.png";
+import useErrorMessage from "../../hooks/useErrorMessage";
+import type { UserRegistration } from "../../types/auth";
+import { formatPhoneNumber } from "../../utility/formatting";
 import {
   emailValidationRules,
   loginValidationRules,
@@ -13,10 +17,6 @@ import {
   phoneNumberValidationRules,
   usernameValidationRules,
 } from "../../utility/validation";
-import { isPossiblePhoneNumber } from "libphonenumber-js";
-import * as EmailValidator from "email-validator";
-import useApp from "antd/es/app/useApp";
-import { formatPhoneNumber } from "../../utility/formatting";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",

@@ -1,32 +1,30 @@
-import * as EmailValidator from "email-validator";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router";
-import type { RootState } from "../../store";
 import {
-  Typography,
+  Button,
   Flex,
+  Form,
+  Input,
   List,
   Skeleton,
-  Button,
-  Input,
-  Form,
   Space,
+  Typography,
 } from "antd";
-import useErrorMessage from "../../hooks/useErrorMessage";
-import { useNavigate, useParams } from "react-router";
-import { useEffect, type CSSProperties } from "react";
-import { getUserById, updateUserData } from "../../api/admin";
-import { useState } from "react";
-import type { Profile, ProfileRequest } from "../../types/user";
 import { AxiosError } from "axios";
 import { diff } from "deep-object-diff";
+import * as EmailValidator from "email-validator";
+import { isPossiblePhoneNumber } from "libphonenumber-js";
+import { isEmpty } from "lodash";
+import { useEffect, useState, type CSSProperties } from "react";
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate, useParams } from "react-router";
+import { getUserById, updateUserData } from "../../api/admin";
+import useErrorMessage from "../../hooks/useErrorMessage";
+import type { RootState } from "../../store";
+import type { Profile, ProfileRequest } from "../../types/user";
 import {
   emailValidationRules,
   phoneNumberValidationRules,
   usernameValidationRules,
 } from "../../utility/validation";
-import { isPossiblePhoneNumber } from "libphonenumber-js";
-import { isEmpty } from "lodash";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;

@@ -1,14 +1,39 @@
-import { useCallback, useEffect, useState, type CSSProperties } from "react";
-import { useDispatch } from "react-redux";
-import { usersTableActions } from "../../store/usersTable.ts";
-import type { RootState } from "../../store/index.ts";
-import { useSelector } from "react-redux";
 import {
-  Roles,
-  type User,
-  type UserFilters,
-  type UsersMetaResponse,
-} from "../../types/admin.ts";
+  DeleteOutlined,
+  FilterOutlined,
+  MailOutlined,
+  MoreOutlined,
+  PhoneOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Dropdown,
+  Flex,
+  Input,
+  Popconfirm,
+  Row,
+  Select,
+  Skeleton,
+  Space,
+  Table,
+  Tag,
+  Typography,
+  type MenuProps,
+  type SelectProps,
+} from "antd";
+import useApp from "antd/es/app/useApp";
+import Modal from "antd/es/modal/Modal";
+import type { ColumnsType } from "antd/es/table/InternalTable";
+import type { SorterResult } from "antd/es/table/interface";
+import type { PresetColorKey } from "antd/es/theme/internal";
+import { AxiosError } from "axios";
+import parsePhoneNumberFromString from "libphonenumber-js";
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router";
 import {
   blockUser,
   deleteUser,
@@ -16,39 +41,16 @@ import {
   getUsersList,
   unblockUser,
 } from "../../api/admin.ts";
-import { AxiosError } from "axios";
 import useErrorMessage from "../../hooks/useErrorMessage";
+import type { RootState } from "../../store/index.ts";
+import { usersTableActions } from "../../store/usersTable.ts";
 import {
-  Tag,
-  Popconfirm,
-  Table,
-  Space,
-  Skeleton,
-  Button,
-  Select,
-  type MenuProps,
-  type SelectProps,
-} from "antd";
-import type { PresetColorKey } from "antd/es/theme/internal";
+  Roles,
+  type User,
+  type UserFilters,
+  type UsersMetaResponse,
+} from "../../types/admin.ts";
 import { formatDateFromIsoString } from "../../utility/date";
-import {
-  PhoneOutlined,
-  MailOutlined,
-  SearchOutlined,
-  FilterOutlined,
-  DeleteOutlined,
-  MoreOutlined,
-} from "@ant-design/icons";
-import parsePhoneNumberFromString from "libphonenumber-js";
-import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
-import debounce from "lodash.debounce";
-import type { ColumnsType } from "antd/es/table/InternalTable";
-import type { SorterResult } from "antd/es/table/interface";
-import { useNavigate, Navigate } from "react-router";
-import useApp from "antd/es/app/useApp";
-import Modal from "antd/es/modal/Modal";
-import { isEmpty } from "lodash";
-import store from "../../store/index.ts";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();

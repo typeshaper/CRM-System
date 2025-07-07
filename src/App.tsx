@@ -4,12 +4,12 @@ import "./App.css";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import CurrentProfilePage from "./pages/app/CurrentProfilePage";
+import ProfilePage from "./pages/app/ProfilePage";
 import TodoListPage from "./pages/app/TodoListPage";
+import UsersPage from "./pages/app/UsersPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import ProtectedRoutes from "./pages/ProtectedRoutes";
-import UsersPage from "./pages/app/UsersPage";
-import ProfilePage from "./pages/app/ProfilePage";
 
 const router = createBrowserRouter([
   {

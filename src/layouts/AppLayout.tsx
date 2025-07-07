@@ -1,13 +1,13 @@
 import {
   FileDoneOutlined,
-  UserOutlined,
   InfoCircleOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Typography } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useState, type CSSProperties } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import type { RootState } from "../store";
 
 const layoutStyle: CSSProperties = {

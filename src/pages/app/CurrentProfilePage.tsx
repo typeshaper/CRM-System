@@ -1,14 +1,14 @@
-import { Typography, Flex, List, Button } from "antd";
-import { useState } from "react";
-import type { Profile } from "../../types/user";
-import useErrorMessage from "../../hooks/useErrorMessage";
+import { Button, Flex, List, Typography } from "antd";
 import { AxiosError } from "axios";
-import { logout } from "../../api/auth";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../../store/auth";
+import { useNavigate } from "react-router";
+import { logout } from "../../api/auth";
+import useErrorMessage from "../../hooks/useErrorMessage";
 import authService from "../../services/authService";
 import type { RootState } from "../../store";
+import { authActions } from "../../store/auth";
+import type { Profile } from "../../types/user";
 
 const CurrentProfilePage = () => {
   const { Title, Text } = Typography;

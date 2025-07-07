@@ -1,6 +1,6 @@
 import { AxiosError, type AxiosResponse } from "axios";
-import { api } from "./index";
 import type { Profile } from "../types/user";
+import { api } from "./index";
 
 export async function getCurrentUserData() {
   try {
