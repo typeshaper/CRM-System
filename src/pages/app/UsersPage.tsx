@@ -379,6 +379,18 @@ const UsersPage = () => {
         userFilters.isBlocked === undefined ? selectedMenuItemStyle : undefined,
     },
     {
+      label: "Active",
+      key: "active",
+      onClick: () => {
+        setUserFilters({
+          isBlocked: false,
+          offset: undefined,
+        });
+      },
+      style:
+        userFilters.isBlocked === false ? selectedMenuItemStyle : undefined,
+    },
+    {
       label: "Blocked",
       key: "blocked",
       onClick: () => {
@@ -388,18 +400,6 @@ const UsersPage = () => {
         });
       },
       style: userFilters.isBlocked === true ? selectedMenuItemStyle : undefined,
-    },
-    {
-      label: "Unblocked",
-      key: "unblocked",
-      onClick: () => {
-        setUserFilters({
-          isBlocked: false,
-          offset: undefined,
-        });
-      },
-      style:
-        userFilters.isBlocked === false ? selectedMenuItemStyle : undefined,
     },
   ];
 
@@ -414,7 +414,7 @@ const UsersPage = () => {
   }
 
   if (userFilters.isBlocked === false) {
-    userHeading = "Unblocked users";
+    userHeading = "Active users";
   }
 
   const fetchUsers = useCallback(
