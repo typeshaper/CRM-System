@@ -19,6 +19,7 @@ import {
   Space,
   Table,
   Tag,
+  Tooltip,
   Typography,
   type MenuProps,
   type SelectProps,
@@ -253,18 +254,20 @@ const UsersPage = () => {
       render: (_, user) => {
         return (
           <Space>
-            <Button
-              variant="outlined"
-              color="default"
-              style={{
-                border: "1px solid black",
-              }}
-              onClick={() => {
-                navigate(`${user.id}`);
-              }}
-            >
-              →
-            </Button>
+            <Tooltip title="Go to profile">
+              <Button
+                variant="outlined"
+                color="default"
+                style={{
+                  border: "1px solid black",
+                }}
+                onClick={() => {
+                  navigate(`${user.id}`);
+                }}
+              >
+                →
+              </Button>
+            </Tooltip>
             <Popconfirm
               okText="Yes"
               cancelText="No"
@@ -285,16 +288,18 @@ const UsersPage = () => {
               }}
               title="Are you sure to delete this user?"
             >
-              <Button
-                variant="outlined"
-                color="default"
-                disabled={!isAdmin}
-                style={{
-                  border: "1px solid black",
-                }}
-              >
-                <DeleteOutlined />
-              </Button>
+              <Tooltip title="Delete user">
+                <Button
+                  variant="outlined"
+                  color="default"
+                  disabled={!isAdmin}
+                  style={{
+                    border: "1px solid black",
+                  }}
+                >
+                  <DeleteOutlined />
+                </Button>
+              </Tooltip>
             </Popconfirm>
 
             <Dropdown
