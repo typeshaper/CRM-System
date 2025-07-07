@@ -53,7 +53,7 @@ const AppLayout = () => {
   };
 
   const hasPermission = useSelector<RootState, boolean>(
-    (state) => (state.isAdmin || state.isModerator) ?? false
+    (state) => (state.auth.isAdmin || state.auth.isModerator) ?? false
   );
 
   const userMenuItems: ItemType<MenuItemType>[] = [

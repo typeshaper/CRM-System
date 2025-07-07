@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import { useDispatch } from "react-redux";
+import { usersTableActions } from "../../store/usersTable.ts";
 import type { RootState } from "../../store/index.ts";
 import { useSelector } from "react-redux";
 import {
@@ -45,19 +47,29 @@ import type { SorterResult } from "antd/es/table/interface";
 import { useNavigate, Navigate } from "react-router";
 import useApp from "antd/es/app/useApp";
 import Modal from "antd/es/modal/Modal";
+import { isEmpty } from "lodash";
+import store from "../../store/index.ts";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
   const showError = useErrorMessage();
   const { Title } = Typography;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [userFilters, setUserFilters] = useState<UserFilters>({});
   const navigate = useNavigate();
   const app = useApp();
   const notification = app.notification;
   const [isRolesModalOpen, setIsRolesModalOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [currentRoles, setCurrentRoles] = useState<Roles[]>([]);
+  const userFilters = useSelector(
+    (state: RootState) => state.usersTable.userFilters
+  );
+
+  const setUserFilters = (filters: UserFilters) => {
+    dispatch(usersTableActions.setUserFilters(filters));
+  };
+
+  const dispatch = useDispatch();
 
   const showRolesModal = () => {
     setIsRolesModalOpen(true);
@@ -356,13 +368,9 @@ const UsersPage = () => {
       label: "All",
       key: "all",
       onClick: () => {
-        setUserFilters((prev) => {
-          const newFilters = {
-            ...prev,
-            isBlocked: undefined,
-            offset: undefined,
-          };
-          return newFilters;
+        setUserFilters({
+          isBlocked: undefined,
+          offset: undefined,
         });
       },
       style:
@@ -372,13 +380,9 @@ const UsersPage = () => {
       label: "Blocked",
       key: "blocked",
       onClick: () => {
-        setUserFilters((prev) => {
-          const newFilters = {
-            ...prev,
-            isBlocked: true,
-            offset: undefined,
-          };
-          return newFilters;
+        setUserFilters({
+          isBlocked: true,
+          offset: undefined,
         });
       },
       style: userFilters.isBlocked === true ? selectedMenuItemStyle : undefined,
@@ -387,13 +391,9 @@ const UsersPage = () => {
       label: "Unblocked",
       key: "unblocked",
       onClick: () => {
-        setUserFilters((prev) => {
-          const newFilters = {
-            ...prev,
-            isBlocked: false,
-            offset: undefined,
-          };
-          return newFilters;
+        setUserFilters({
+          isBlocked: false,
+          offset: undefined,
         });
       },
       style:
@@ -434,10 +434,10 @@ const UsersPage = () => {
 
   useEffect(() => {
     fetchUsers(userFilters);
-  }, [userFilters, fetchUsers]);
+  }, [userFilters, fetchUsers, dispatch]);
 
   const hasPermission = useSelector<RootState, boolean>(
-    (state) => (state.isAdmin || state.isModerator) ?? false
+    (state) => (state.auth.isAdmin || state.auth.isModerator) ?? false
   );
 
   if (!hasPermission) {
@@ -473,14 +473,10 @@ const UsersPage = () => {
                 prefix={<SearchOutlined />}
                 size="large"
                 placeholder="Search by name or email"
+                defaultValue={userFilters.search}
                 onChange={(e) =>
-                  setUserFilters((prev) => {
-                    const newFilters = {
-                      ...prev,
-                      search: e.currentTarget.value,
-                    };
-
-                    return newFilters;
+                  setUserFilters({
+                    search: e.currentTarget.value,
                   })
                 }
               />
@@ -511,14 +507,9 @@ const UsersPage = () => {
               defaultPageSize: 20,
               total: usersList.meta.totalAmount,
               onChange(page, pageSize) {
-                setUserFilters((prev) => {
-                  const newFilters = {
-                    ...prev,
-                    offset: page - 1,
-                    limit: pageSize,
-                  };
-
-                  return newFilters;
+                setUserFilters({
+                  offset: page - 1,
+                  limit: pageSize,
                 });
               },
             }}
@@ -528,25 +519,20 @@ const UsersPage = () => {
             size="middle"
             scroll={{ x: "max-content", y: "60vh" }}
             onChange={(_pagination, _filters, sorter) => {
-              setUserFilters((prev) => {
-                const hasValidOrder = (str: string | undefined) => {
-                  if (str === "asc") return "asc" as const;
-                  if (str === "desc") return "desc" as const;
-                  if (str === undefined) return undefined;
-                };
+              const hasValidOrder = (str: string | undefined) => {
+                if (str === "asc") return "asc" as const;
+                if (str === "desc") return "desc" as const;
+                if (str === undefined) return undefined;
+              };
 
-                const sortOrder = hasValidOrder(
-                  (sorter as SorterResult<User>).order?.slice(0, -3)
-                );
+              const sortOrder = hasValidOrder(
+                (sorter as SorterResult<User>).order?.slice(0, -3)
+              );
 
-                const newFilters = {
-                  ...prev,
-                  sortOrder,
-                  sortBy:
-                    (sorter as SorterResult<User>).field?.toString() ?? "id",
-                };
-
-                return newFilters satisfies UserFilters;
+              setUserFilters({
+                sortOrder,
+                sortBy:
+                  (sorter as SorterResult<User>).field?.toString() ?? "id",
               });
             }}
           />

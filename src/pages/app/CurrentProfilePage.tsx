@@ -13,7 +13,7 @@ import type { RootState } from "../../store";
 const CurrentProfilePage = () => {
   const { Title, Text } = Typography;
   const userData = useSelector<RootState, Profile | undefined>(
-    (state) => state.userData
+    (state) => state.auth.userData
   );
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const dispatch = useDispatch();

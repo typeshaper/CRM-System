@@ -17,7 +17,7 @@ const ProtectedRoutes = () => {
   const dispatch = useDispatch();
   const showError = useErrorMessage();
   const isAuth = useSelector<RootState, boolean>(
-    (state) => state.isAuthenticated
+    (state) => state.auth.isAuthenticated
   );
 
   useEffect(() => {

@@ -103,7 +103,7 @@ const ProfilePage = () => {
   };
 
   const hasPermission = useSelector<RootState, boolean>(
-    (state) => (state.isAdmin || state.isModerator) ?? false
+    (state) => (state.auth.isAdmin || state.auth.isModerator) ?? false
   );
 
   if (!hasPermission) {
