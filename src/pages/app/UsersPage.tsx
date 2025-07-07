@@ -497,20 +497,22 @@ const UsersPage = () => {
                   })
                 }
               />
-              <Dropdown menu={filterMenuProps}>
-                <Button
-                  style={{
-                    minWidth: "12ch",
-                    border: "2px solid black",
-                    height: "2.5rem",
-                  }}
-                >
-                  <Space>
-                    <FilterOutlined />
-                    <p>Filter</p>
-                  </Space>
-                </Button>
-              </Dropdown>
+              {isAdmin && (
+                <Dropdown menu={filterMenuProps}>
+                  <Button
+                    style={{
+                      minWidth: "12ch",
+                      border: "2px solid black",
+                      height: "2.5rem",
+                    }}
+                  >
+                    <Space>
+                      <FilterOutlined />
+                      <p>Filter</p>
+                    </Space>
+                  </Button>
+                </Dropdown>
+              )}
             </Flex>
           </Col>
         </Row>
