@@ -268,6 +268,7 @@ const UsersPage = () => {
             <Popconfirm
               okText="Yes"
               cancelText="No"
+              disabled={!isAdmin}
               onConfirm={async () => {
                 try {
                   await deleteUser(user.id);
@@ -287,6 +288,7 @@ const UsersPage = () => {
               <Button
                 variant="outlined"
                 color="default"
+                disabled={!isAdmin}
                 style={{
                   border: "1px solid black",
                 }}
