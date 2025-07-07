@@ -34,8 +34,6 @@ import {
   FilterOutlined,
   DeleteOutlined,
   MoreOutlined,
-  BlockOutlined,
-  StopOutlined,
 } from "@ant-design/icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
@@ -45,7 +43,6 @@ import type { SorterResult } from "antd/es/table/interface";
 import { useNavigate } from "react-router";
 import useApp from "antd/es/app/useApp";
 import Modal from "antd/es/modal/Modal";
-import { kebabCase } from "lodash";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
