@@ -80,7 +80,7 @@ const UsersPage = () => {
   const handleRolesModalOk = async () => {
     try {
       if (selectedUser?.id) {
-        editRoles(selectedUser?.id, { roles: currentRoles });
+        await editRoles(selectedUser?.id, { roles: currentRoles });
         setIsRolesModalOpen(false);
         setSelectedUser(null);
         fetchUsers(userFilters);
