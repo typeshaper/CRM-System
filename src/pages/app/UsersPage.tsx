@@ -235,7 +235,7 @@ const UsersPage = () => {
       render: (_, user) => {
         const activeUser = <Tag color="green">Active</Tag>;
         const blockedUser = <Tag color="red">Blocked</Tag>;
-        return <p>{user.isBlocked ? activeUser : blockedUser}</p>;
+        return <p>{user.isBlocked ? blockedUser : activeUser}</p>;
       },
       width: "10ch",
     },
