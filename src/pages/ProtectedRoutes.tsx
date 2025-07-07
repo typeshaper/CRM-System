@@ -16,7 +16,9 @@ const ProtectedRoutes = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const showError = useErrorMessage();
-  const isAuth = useSelector<RootState>((state) => state.isAuthenticated);
+  const isAuth = useSelector<RootState, boolean>(
+    (state) => state.isAuthenticated
+  );
 
   useEffect(() => {
     (async () => {
