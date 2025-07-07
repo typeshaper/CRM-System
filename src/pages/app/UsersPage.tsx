@@ -234,7 +234,7 @@ const UsersPage = () => {
       ellipsis: true,
       render: (_, user) => {
         const activeUser = <Tag color="green">Active</Tag>;
-        const blockedUser = <Tag color="red">Active</Tag>;
+        const blockedUser = <Tag color="red">Blocked</Tag>;
         return <p>{user.isBlocked ? activeUser : blockedUser}</p>;
       },
       width: "10ch",
