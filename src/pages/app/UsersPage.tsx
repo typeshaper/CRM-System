@@ -67,6 +67,17 @@ const UsersPage = () => {
     (state: RootState) => state.usersTable.userFilters
   );
 
+  const isAdmin = useSelector<RootState, boolean>(
+    (state) => state.auth.isAdmin
+  );
+
+  const isModerator = useSelector<RootState, boolean>(
+    (state) => state.auth.isModerator
+  );
+
+  console.log(isModerator);
+  console.log(isAdmin);
+
   const setUserFilters = (filters: UserFilters) => {
     dispatch(usersTableActions.setUserFilters(filters));
   };
@@ -339,6 +350,7 @@ const UsersPage = () => {
                     ),
                     key: "changeBlockStatus",
                   },
+
                   {
                     label: (
                       <p
@@ -347,10 +359,11 @@ const UsersPage = () => {
                           setSelectedUser(user);
                         }}
                       >
-                        Roles
+                        Edit roles
                       </p>
                     ),
                     key: "editRoles",
+                    disabled: !isAdmin,
                   },
                 ],
               }}
@@ -363,6 +376,10 @@ const UsersPage = () => {
       width: "150px",
     },
   ];
+
+  const obj = {
+    ...(isAdmin && { label: "shit" }),
+  };
 
   const selectedMenuItemStyle: CSSProperties = {
     color: "#1777FF",
@@ -442,11 +459,7 @@ const UsersPage = () => {
     fetchUsers(userFilters);
   }, [userFilters, fetchUsers, dispatch]);
 
-  const hasPermission = useSelector<RootState, boolean>(
-    (state) => (state.auth.isAdmin || state.auth.isModerator) ?? false
-  );
-
-  if (!hasPermission) {
+  if (!isModerator && !isAdmin) {
     return (
       <Navigate
         to="/app"

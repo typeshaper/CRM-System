@@ -4,13 +4,15 @@ import type { Profile } from "../types/user";
 
 interface InitialState {
   isAuthenticated: boolean;
+  isAdmin: boolean;
+  isModerator: boolean;
   userData?: Profile;
-  isAdmin?: boolean;
-  isModerator?: boolean;
 }
 
 const initialState: InitialState = {
   isAuthenticated: false,
+  isAdmin: false,
+  isModerator: false,
 };
 
 const authSlice = createSlice({
