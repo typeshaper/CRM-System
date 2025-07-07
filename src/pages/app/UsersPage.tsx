@@ -327,6 +327,7 @@ const UsersPage = () => {
                         okText="Yes"
                         cancelText="No"
                         title="Unblock this user?"
+                        disabled={!isAdmin}
                         onConfirm={async () => {
                           try {
                             await unblockUser(user.id);
@@ -353,6 +354,9 @@ const UsersPage = () => {
                     label: (
                       <p
                         onClick={() => {
+                          if (!isAdmin) {
+                            return;
+                          }
                           showRolesModal();
                           setSelectedUser(user);
                         }}
