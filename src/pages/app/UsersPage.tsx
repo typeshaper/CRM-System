@@ -346,6 +346,7 @@ const UsersPage = () => {
                       </Popconfirm>
                     ),
                     key: "changeBlockStatus",
+                    disabled: user.isBlocked && !isAdmin,
                   },
 
                   {
