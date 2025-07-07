@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import type { RootState } from "../../store/index.ts";
+import { useSelector } from "react-redux";
 import {
   Roles,
   type User,
@@ -40,7 +42,7 @@ import { Dropdown, Typography, Flex, Row, Col, Input } from "antd";
 import debounce from "lodash.debounce";
 import type { ColumnsType } from "antd/es/table/InternalTable";
 import type { SorterResult } from "antd/es/table/interface";
-import { useNavigate } from "react-router";
+import { useNavigate, Navigate } from "react-router";
 import useApp from "antd/es/app/useApp";
 import Modal from "antd/es/modal/Modal";
 
@@ -433,6 +435,19 @@ const UsersPage = () => {
   useEffect(() => {
     fetchUsers(userFilters);
   }, [userFilters, fetchUsers]);
+
+  const hasPermission = useSelector<RootState, boolean>(
+    (state) => (state.isAdmin || state.isModerator) ?? false
+  );
+
+  if (!hasPermission) {
+    return (
+      <Navigate
+        to="/app"
+        replace
+      />
+    );
+  }
 
   return (
     <Flex

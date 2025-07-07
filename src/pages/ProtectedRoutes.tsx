@@ -44,6 +44,12 @@ const ProtectedRoutes = () => {
         try {
           const userData = await getCurrentUserData();
           dispatch(authActions.setUserData(userData));
+          if (userData.roles.includes("ADMIN")) {
+            dispatch(authActions.setIsAdmin());
+          }
+          if (userData.roles.includes("MODERATOR")) {
+            dispatch(authActions.setIsModerator());
+          }
         } catch (error) {
           if (error instanceof AxiosError) {
             showError(error);

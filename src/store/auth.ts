@@ -5,6 +5,8 @@ import type { Profile } from "../types/user";
 interface InitialState {
   isAuthenticated: boolean;
   userData?: Profile;
+  isAdmin?: boolean;
+  isModerator?: boolean;
 }
 
 const initialState: InitialState = {
@@ -26,6 +28,12 @@ const authSlice = createSlice({
     },
     setUserData(state, action: PayloadAction<Profile>) {
       state.userData = action.payload;
+    },
+    setIsAdmin(state) {
+      state.isAdmin = true;
+    },
+    setIsModerator(state) {
+      state.isModerator = true;
     },
   },
 });
