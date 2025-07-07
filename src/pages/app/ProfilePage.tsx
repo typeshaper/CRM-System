@@ -1,4 +1,7 @@
 import * as EmailValidator from "email-validator";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router";
+import type { RootState } from "../../store";
 import {
   Typography,
   Flex,
@@ -98,6 +101,19 @@ const ProfilePage = () => {
     height: 0,
     width: "100%",
   };
+
+  const hasPermission = useSelector<RootState, boolean>(
+    (state) => (state.isAdmin || state.isModerator) ?? false
+  );
+
+  if (!hasPermission) {
+    return (
+      <Navigate
+        to="/app"
+        replace
+      />
+    );
+  }
 
   return (
     <>
