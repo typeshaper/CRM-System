@@ -122,145 +122,151 @@ const ProfilePage = () => {
         loading={isLoading}
         active
       >
-        <Flex
-          vertical
-          style={{ height: "100%" }}
-          gap="1rem"
-          align="flex-end"
-        >
-          <Form
-            initialValues={{
-              email: userData?.email,
-              phoneNumber: userData?.phoneNumber,
-              username: userData?.username,
-            }}
-            form={profileForm}
-            onFinish={handleSave}
+        {userData ? (
+          <Flex
+            vertical
+            style={{ height: "100%" }}
+            gap="1rem"
+            align="flex-end"
           >
-            <Flex
-              gap="2rem"
-              vertical
-              align="flex-start"
+            <Form
+              initialValues={{
+                email: userData.email,
+                phoneNumber: userData.phoneNumber,
+                username: userData.username,
+              }}
+              form={profileForm}
+              onFinish={handleSave}
             >
-              <List
-                size="large"
-                style={{ width: "50ch" }}
+              <Flex
+                gap="2rem"
+                vertical
+                align="flex-start"
               >
-                <List.Item>
-                  <Space
-                    style={{ height: "3rem" }}
-                    direction="horizontal"
-                  >
-                    <Text>
-                      <span style={{ fontWeight: "bold" }}>Username: </span>
-                    </Text>
-
-                    {isEditing && (
-                      <Form.Item
-                        name="username"
-                        style={formItemStyle}
-                        rules={[{ ...usernameValidationRules }]}
-                      >
-                        <Input style={{ width: " 100%" }} />
-                      </Form.Item>
-                    )}
-                    {!isEditing && userData?.username}
-                  </Space>
-                </List.Item>
-                <List.Item>
-                  <Space
-                    style={{ height: "3rem" }}
-                    direction="horizontal"
-                  >
-                    <Text>
-                      <span style={{ fontWeight: "bold" }}>Email: </span>
-                    </Text>
-
-                    {isEditing && (
-                      <Form.Item
-                        name="email"
-                        style={formItemStyle}
-                        rules={[
-                          {
-                            ...emailValidationRules,
-
-                            validator(_, value) {
-                              if (EmailValidator.validate(value)) {
-                                return Promise.resolve();
-                              }
-                              return Promise.reject(
-                                new Error(emailValidationRules.message)
-                              );
-                            },
-                          },
-                        ]}
-                      >
-                        <Input style={{ width: " 100%" }} />
-                      </Form.Item>
-                    )}
-                    {!isEditing && userData?.email}
-                  </Space>
-                </List.Item>
-                <List.Item>
-                  <Space
-                    style={{ height: "3rem" }}
-                    direction="horizontal"
-                  >
-                    <Text>
-                      <span style={{ fontWeight: "bold" }}>Phone number: </span>
-                    </Text>
-
-                    {isEditing && (
-                      <Form.Item
-                        name="phoneNumber"
-                        style={formItemStyle}
-                        rules={[
-                          {
-                            ...phoneNumberValidationRules,
-
-                            validator(_, value) {
-                              if (
-                                !value ||
-                                isPossiblePhoneNumber(value, "RU")
-                              ) {
-                                return Promise.resolve();
-                              }
-                              return Promise.reject(
-                                new Error(phoneNumberValidationRules.message)
-                              );
-                            },
-                          },
-                        ]}
-                      >
-                        <Input style={{ width: " 100%" }} />
-                      </Form.Item>
-                    )}
-                    {!isEditing && (userData?.phoneNumber || "-")}
-                  </Space>
-                </List.Item>
-              </List>
-
-              {!isEditing && (
-                <Button
-                  variant="solid"
-                  color="blue"
-                  onClick={handleEditButton}
+                <List
+                  size="large"
+                  style={{ width: "50ch" }}
                 >
-                  Edit
-                </Button>
-              )}
-              {isEditing && (
-                <Button
-                  variant="solid"
-                  color="green"
-                  htmlType="submit"
-                >
-                  Save
-                </Button>
-              )}
-            </Flex>
-          </Form>
-        </Flex>
+                  <List.Item>
+                    <Space
+                      style={{ height: "3rem" }}
+                      direction="horizontal"
+                    >
+                      <Text>
+                        <span style={{ fontWeight: "bold" }}>Username: </span>
+                      </Text>
+
+                      {isEditing && (
+                        <Form.Item
+                          name="username"
+                          style={formItemStyle}
+                          rules={[{ ...usernameValidationRules }]}
+                        >
+                          <Input style={{ width: " 100%" }} />
+                        </Form.Item>
+                      )}
+                      {!isEditing && userData.username}
+                    </Space>
+                  </List.Item>
+                  <List.Item>
+                    <Space
+                      style={{ height: "3rem" }}
+                      direction="horizontal"
+                    >
+                      <Text>
+                        <span style={{ fontWeight: "bold" }}>Email: </span>
+                      </Text>
+
+                      {isEditing && (
+                        <Form.Item
+                          name="email"
+                          style={formItemStyle}
+                          rules={[
+                            {
+                              ...emailValidationRules,
+
+                              validator(_, value) {
+                                if (EmailValidator.validate(value)) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                  new Error(emailValidationRules.message)
+                                );
+                              },
+                            },
+                          ]}
+                        >
+                          <Input style={{ width: " 100%" }} />
+                        </Form.Item>
+                      )}
+                      {!isEditing && userData.email}
+                    </Space>
+                  </List.Item>
+                  <List.Item>
+                    <Space
+                      style={{ height: "3rem" }}
+                      direction="horizontal"
+                    >
+                      <Text>
+                        <span style={{ fontWeight: "bold" }}>
+                          Phone number:{" "}
+                        </span>
+                      </Text>
+
+                      {isEditing && (
+                        <Form.Item
+                          name="phoneNumber"
+                          style={formItemStyle}
+                          rules={[
+                            {
+                              ...phoneNumberValidationRules,
+
+                              validator(_, value) {
+                                if (
+                                  !value ||
+                                  isPossiblePhoneNumber(value, "RU")
+                                ) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                  new Error(phoneNumberValidationRules.message)
+                                );
+                              },
+                            },
+                          ]}
+                        >
+                          <Input style={{ width: " 100%" }} />
+                        </Form.Item>
+                      )}
+                      {!isEditing && (userData.phoneNumber || "-")}
+                    </Space>
+                  </List.Item>
+                </List>
+
+                {!isEditing && (
+                  <Button
+                    variant="solid"
+                    color="blue"
+                    onClick={handleEditButton}
+                  >
+                    Edit
+                  </Button>
+                )}
+                {isEditing && (
+                  <Button
+                    variant="solid"
+                    color="green"
+                    htmlType="submit"
+                  >
+                    Save
+                  </Button>
+                )}
+              </Flex>
+            </Form>
+          </Flex>
+        ) : (
+          <Title level={2}>User not found</Title>
+        )}
       </Skeleton>
       <Button
         variant="solid"
