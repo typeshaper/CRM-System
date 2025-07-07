@@ -217,11 +217,15 @@ const UsersPage = () => {
       },
     },
     {
-      title: "Is blocked",
+      title: "Status",
       dataIndex: "isBlocked",
-      key: "isBlocked",
+      key: "status",
       ellipsis: true,
-      render: (_, user) => <p>{user.isBlocked ? "+" : "-"}</p>,
+      render: (_, user) => {
+        const activeUser = <Tag color="green">Active</Tag>;
+        const blockedUser = <Tag color="red">Active</Tag>;
+        return <p>{user.isBlocked ? activeUser : blockedUser}</p>;
+      },
       width: "10ch",
     },
     {
