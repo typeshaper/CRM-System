@@ -76,6 +76,12 @@ const UsersPage = () => {
     (state) => state.auth.isModerator
   );
 
+  const hasValidOrder = (str: string | undefined) => {
+    if (str === "asc") return "asc" as const;
+    if (str === "desc") return "desc" as const;
+    if (str === undefined) return undefined;
+  };
+
   const setUserFilters = (filters: UserFilters) => {
     dispatch(usersTableActions.setUserFilters(filters));
   };
@@ -545,12 +551,6 @@ const UsersPage = () => {
             size="middle"
             scroll={{ x: "max-content", y: "60vh" }}
             onChange={(_pagination, _filters, sorter) => {
-              const hasValidOrder = (str: string | undefined) => {
-                if (str === "asc") return "asc" as const;
-                if (str === "desc") return "desc" as const;
-                if (str === undefined) return undefined;
-              };
-
               const sortOrder = hasValidOrder(
                 (sorter as SorterResult<User>).order?.slice(0, -3)
               );
@@ -567,7 +567,7 @@ const UsersPage = () => {
         )}
       </Flex>
       <Modal
-        title="Basic Modal"
+        title="User roles"
         closable={{ "aria-label": "Custom Close Button" }}
         open={isRolesModalOpen}
         onCancel={handleRolesModalCancel}
