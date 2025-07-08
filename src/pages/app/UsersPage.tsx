@@ -53,6 +53,7 @@ import {
   type UsersMetaResponse,
 } from "../../types/admin.ts";
 import { formatDateFromIsoString } from "../../utility/date";
+import type { Role } from "../../types/user.ts";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -121,6 +122,19 @@ const UsersPage = () => {
     });
   });
 
+  const getRoleTagColor = (role: Role): PresetColorKey => {
+    switch (role) {
+      case "ADMIN":
+        return "purple";
+      case "MODERATOR":
+        return "orange";
+      case "USER":
+        return "blue";
+      default:
+        return "volcano";
+    }
+  };
+
   const columns: ColumnsType<User> = [
     {
       title: "Username",
@@ -184,7 +198,6 @@ const UsersPage = () => {
           </Space>
         );
       },
-      // ellipsis: true,
       width: "18ch",
     },
     {
@@ -202,19 +215,7 @@ const UsersPage = () => {
             }}
           >
             {user.roles.map((role) => {
-              let color: PresetColorKey = "magenta";
-              switch (role) {
-                case "ADMIN":
-                  color = "purple";
-                  break;
-                case "MODERATOR":
-                  color = "orange";
-                  break;
-                case "USER":
-                  color = "blue";
-                  break;
-              }
-
+              const color = getRoleTagColor(role);
               return <Tag color={color}>{role}</Tag>;
             })}
           </Space>
