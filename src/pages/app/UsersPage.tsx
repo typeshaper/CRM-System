@@ -25,6 +25,7 @@ import {
   type SelectProps,
 } from "antd";
 import useApp from "antd/es/app/useApp";
+import { hasValidOrder } from "../../utility/validation.ts";
 import Modal from "antd/es/modal/Modal";
 import type { ColumnsType } from "antd/es/table/InternalTable";
 import type { SorterResult } from "antd/es/table/interface";
@@ -75,12 +76,6 @@ const UsersPage = () => {
   const isModerator = useSelector<RootState, boolean>(
     (state) => state.auth.isModerator
   );
-
-  const hasValidOrder = (str: string | undefined) => {
-    if (str === "asc") return "asc" as const;
-    if (str === "desc") return "desc" as const;
-    if (str === undefined) return undefined;
-  };
 
   const setUserFilters = (filters: UserFilters) => {
     dispatch(usersTableActions.setUserFilters(filters));
