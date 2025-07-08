@@ -493,7 +493,7 @@ const UsersPage = () => {
         style={{
           border: "1px solid #E4E4E4",
           borderRadius: 10,
-          padding: "1.5rem 1.5rem 1.5rem 1.5rem",
+          padding: "1.5rem",
         }}
       >
         <Row style={{ paddingBottom: "1rem" }}>
