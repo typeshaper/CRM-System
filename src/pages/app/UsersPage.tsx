@@ -435,10 +435,6 @@ const UsersPage = () => {
     },
   ];
 
-  const filterMenuProps = {
-    items: filterMenuItems,
-  };
-
   let userHeading = "All users";
 
   if (userFilters.isBlocked) {
@@ -510,7 +506,7 @@ const UsersPage = () => {
                 onChange={(e) => handleSearchDebounced(e.currentTarget.value)}
               />
               {isAdmin && (
-                <Dropdown menu={filterMenuProps}>
+                <Dropdown menu={{ items: filterMenuItems }}>
                   <Button
                     style={{
                       minWidth: "12ch",
