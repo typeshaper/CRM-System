@@ -450,7 +450,7 @@ const UsersPage = () => {
   }
 
   const fetchUsers = useCallback(
-    debounce(async (queryParams: UserFilters) => {
+    async (queryParams: UserFilters) => {
       setIsLoading(true);
       try {
         const newUsersList = await getUsersList(queryParams);
@@ -462,13 +462,16 @@ const UsersPage = () => {
           setIsLoading(false);
         }
       }
-    }, 200),
-    []
+    },
+    [showError]
   );
+  const handleSearchDebounced = debounce((value: string) => {
+    setUserFilters({ search: value });
+  }, 500);
 
   useEffect(() => {
     fetchUsers(userFilters);
-  }, [userFilters, fetchUsers]);
+  }, [userFilters]);
 
   if (!isModerator && !isAdmin) {
     return (
@@ -504,11 +507,7 @@ const UsersPage = () => {
                 size="large"
                 placeholder="Search by name or email"
                 defaultValue={userFilters.search}
-                onChange={(e) =>
-                  setUserFilters({
-                    search: e.currentTarget.value,
-                  })
-                }
+                onChange={(e) => handleSearchDebounced(e.currentTarget.value)}
               />
               {isAdmin && (
                 <Dropdown menu={filterMenuProps}>
