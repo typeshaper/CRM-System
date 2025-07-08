@@ -468,7 +468,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     fetchUsers(userFilters);
-  }, [userFilters, fetchUsers, dispatch]);
+  }, [userFilters, fetchUsers]);
 
   if (!isModerator && !isAdmin) {
     return (
