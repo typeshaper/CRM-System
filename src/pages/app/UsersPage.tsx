@@ -132,8 +132,6 @@ const UsersPage = () => {
         return (
           <div
             style={{
-              wordWrap: "break-word",
-              wordBreak: "break-word",
               width: "200px",
             }}
           >
@@ -141,7 +139,6 @@ const UsersPage = () => {
           </div>
         );
       },
-      width: "200px",
     },
     {
       title: "Email",
@@ -162,8 +159,6 @@ const UsersPage = () => {
           <p>{user.email}</p>
         </Space>
       ),
-      width: "260px",
-      ellipsis: true,
     },
     {
       title: "Phone number",
@@ -189,7 +184,7 @@ const UsersPage = () => {
           </Space>
         );
       },
-      ellipsis: true,
+      // ellipsis: true,
       width: "18ch",
     },
     {
