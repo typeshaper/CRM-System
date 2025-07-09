@@ -83,10 +83,6 @@ const UsersPage = () => {
 
   const dispatch = useDispatch();
 
-  const showRolesModal = (user: User) => {
-    setSelectedUser(user);
-  };
-
   const handleRolesModalOk = async () => {
     try {
       if (selectedUser?.id) {
