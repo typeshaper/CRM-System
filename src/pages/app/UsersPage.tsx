@@ -248,6 +248,7 @@ const UsersPage = () => {
         return (
           <Space>
             <Modal
+              destroyOnHidden
               title="User roles"
               closable={{ "aria-label": "Custom Close Button" }}
               open={selectedUser?.id === user.id}
