@@ -511,6 +511,7 @@ const UsersPage = () => {
               <Input
                 prefix={<SearchOutlined />}
                 size="large"
+                name="searchUser"
                 placeholder="Search by name or email"
                 defaultValue={userFilters.search}
                 onChange={(e) => handleSearchDebounced(e.currentTarget.value)}
