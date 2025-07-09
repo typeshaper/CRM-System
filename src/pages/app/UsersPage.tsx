@@ -54,6 +54,7 @@ import {
 } from "../../types/admin.ts";
 import { formatDateFromIsoString } from "../../utility/date";
 import type { Role } from "../../types/user.ts";
+import { isEmpty } from "lodash";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -86,6 +87,14 @@ const UsersPage = () => {
   const handleRolesModalOk = async () => {
     try {
       if (selectedUser?.id) {
+        if (isEmpty(currentRoles) || currentRoles === selectedUser.roles) {
+          notification.info({
+            message: `Roles have not changed!`,
+            placement: "bottomRight",
+          });
+          setSelectedUser(null);
+          return;
+        }
         await editRoles(selectedUser?.id, { roles: currentRoles });
         setSelectedUser(null);
         fetchUsers(userFilters);
@@ -100,6 +109,7 @@ const UsersPage = () => {
       }
       setSelectedUser(null);
     }
+    setSelectedUser(null);
   };
 
   const handleRolesModalCancel = () => {
@@ -243,23 +253,6 @@ const UsersPage = () => {
       render: (_, user) => {
         return (
           <Space>
-            <Modal
-              destroyOnHidden
-              title="User roles"
-              closable={{ "aria-label": "Custom Close Button" }}
-              open={selectedUser?.id === user.id}
-              onCancel={handleRolesModalCancel}
-              onOk={handleRolesModalOk}
-            >
-              <Select
-                mode="tags"
-                style={{ width: "100%" }}
-                placeholder="Select roles"
-                options={roleSelectOptions}
-                defaultValue={selectedUser?.roles}
-                onChange={(values) => setCurrentRoles(values)}
-              />
-            </Modal>
             <Tooltip title="Go to profile">
               <Button
                 variant="outlined"
@@ -371,6 +364,7 @@ const UsersPage = () => {
                             return;
                           }
                           setSelectedUser(user);
+                          setCurrentRoles(user.roles);
                         }}
                       >
                         Edit roles
@@ -384,6 +378,23 @@ const UsersPage = () => {
             >
               <MoreOutlined />
             </Dropdown>
+            <Modal
+              destroyOnHidden
+              title="User roles"
+              closable={{ "aria-label": "Custom Close Button" }}
+              open={selectedUser?.id === user.id}
+              onCancel={handleRolesModalCancel}
+              onOk={handleRolesModalOk}
+            >
+              <Select
+                mode="tags"
+                style={{ width: "100%" }}
+                placeholder="Select roles"
+                options={roleSelectOptions}
+                defaultValue={user.roles}
+                onChange={(values) => setCurrentRoles(values)}
+              />
+            </Modal>
           </Space>
         );
       },
