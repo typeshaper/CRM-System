@@ -63,7 +63,6 @@ const UsersPage = () => {
   const navigate = useNavigate();
   const app = useApp();
   const notification = app.notification;
-  const [isRolesModalOpen, setIsRolesModalOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [currentRoles, setCurrentRoles] = useState<Roles[]>([]);
   const userFilters = useSelector(
@@ -84,15 +83,14 @@ const UsersPage = () => {
 
   const dispatch = useDispatch();
 
-  const showRolesModal = () => {
-    setIsRolesModalOpen(true);
+  const showRolesModal = (user: User) => {
+    setSelectedUser(user);
   };
 
   const handleRolesModalOk = async () => {
     try {
       if (selectedUser?.id) {
         await editRoles(selectedUser?.id, { roles: currentRoles });
-        setIsRolesModalOpen(false);
         setSelectedUser(null);
         fetchUsers(userFilters);
         notification.success({
@@ -104,13 +102,11 @@ const UsersPage = () => {
       if (error instanceof AxiosError) {
         showError(error);
       }
-      setIsRolesModalOpen(false);
       setSelectedUser(null);
     }
   };
 
   const handleRolesModalCancel = () => {
-    setIsRolesModalOpen(false);
     setSelectedUser(null);
   };
 
@@ -251,6 +247,22 @@ const UsersPage = () => {
       render: (_, user) => {
         return (
           <Space>
+            <Modal
+              title="User roles"
+              closable={{ "aria-label": "Custom Close Button" }}
+              open={selectedUser?.id === user.id}
+              onCancel={handleRolesModalCancel}
+              onOk={handleRolesModalOk}
+            >
+              <Select
+                mode="tags"
+                style={{ width: "100%" }}
+                placeholder="Select roles"
+                options={roleSelectOptions}
+                defaultValue={selectedUser?.roles}
+                onChange={(values) => setCurrentRoles(values)}
+              />
+            </Modal>
             <Tooltip title="Go to profile">
               <Button
                 variant="outlined"
@@ -361,7 +373,6 @@ const UsersPage = () => {
                           if (!isAdmin) {
                             return;
                           }
-                          showRolesModal();
                           setSelectedUser(user);
                         }}
                       >
@@ -552,22 +563,6 @@ const UsersPage = () => {
           <Skeleton active />
         )}
       </Flex>
-      <Modal
-        title="User roles"
-        closable={{ "aria-label": "Custom Close Button" }}
-        open={isRolesModalOpen}
-        onCancel={handleRolesModalCancel}
-        onOk={handleRolesModalOk}
-      >
-        <Select
-          mode="tags"
-          style={{ width: "100%" }}
-          placeholder="Select roles"
-          options={roleSelectOptions}
-          defaultValue={selectedUser?.roles}
-          onChange={(values) => setCurrentRoles(values)}
-        />
-      </Modal>
     </Flex>
   );
 };
