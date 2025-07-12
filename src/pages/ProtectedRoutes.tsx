@@ -1,26 +1,28 @@
+import { LoadingOutlined } from "@ant-design/icons";
+import { Flex, Spin } from "antd";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router";
 import { refreshSession } from "../api/auth";
-import { useEffect } from "react";
-import { authActions } from "../store/auth";
-import type { RootState } from "../store";
+import { getCurrentUserData } from "../api/user";
 import useErrorMessage from "../hooks/useErrorMessage";
 import authService from "../services/authService";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AxiosError } from "axios";
-import { Flex, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import type { RootState } from "../store";
+import { authActions } from "../store/auth";
 
 const ProtectedRoutes = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const showError = useErrorMessage();
-  const isAuth = useSelector<RootState>((state) => state.isAuthenticated);
+  const isAuth = useSelector<RootState, boolean>(
+    (state) => state.auth.isAuthenticated
+  );
+
   useEffect(() => {
     (async () => {
       const refreshToken = localStorage.getItem("refreshToken");
       const accessToken = authService.getAccessToken();
-
       if (refreshToken) {
         if (!accessToken) {
           try {
@@ -37,6 +39,20 @@ const ProtectedRoutes = () => {
           }
         } else {
           dispatch(authActions.login(refreshToken));
+        }
+        try {
+          const userData = await getCurrentUserData();
+          dispatch(authActions.setUserData(userData));
+          if (userData.roles.includes("ADMIN")) {
+            dispatch(authActions.setIsAdmin());
+          }
+          if (userData.roles.includes("MODERATOR")) {
+            dispatch(authActions.setIsModerator());
+          }
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            showError(error);
+          }
         }
       } else {
         dispatch(authActions.logout());

@@ -1,90 +1,278 @@
-import { Typography, Flex, List, Skeleton, Button } from "antd";
-import { getCurrentUserData } from "../../api/user";
-import { useEffect, useState } from "react";
-import type { Profile } from "../../types/user";
-import useErrorMessage from "../../hooks/useErrorMessage";
+import {
+  Button,
+  Flex,
+  Form,
+  Input,
+  List,
+  Skeleton,
+  Space,
+  Typography,
+} from "antd";
 import { AxiosError } from "axios";
-import { logout } from "../../api/auth";
-import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth";
-import authService from "../../services/authService";
+import { diff } from "deep-object-diff";
+import * as EmailValidator from "email-validator";
+import { isPossiblePhoneNumber } from "libphonenumber-js";
+import { isEmpty } from "lodash";
+import { useEffect, useState, type CSSProperties } from "react";
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate, useParams } from "react-router";
+import { getUserById, updateUserData } from "../../api/admin";
+import useErrorMessage from "../../hooks/useErrorMessage";
+import type { RootState } from "../../store";
+import type { Profile, ProfileRequest } from "../../types/user";
+import {
+  emailValidationRules,
+  phoneNumberValidationRules,
+  usernameValidationRules,
+} from "../../utility/validation";
 
 const ProfilePage = () => {
   const { Title, Text } = Typography;
+  const params = useParams();
   const [userData, setUserData] = useState<Profile>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const showError = useErrorMessage();
+  const [profileForm] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleEditButton = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = async (formData: ProfileRequest) => {
     try {
-      setIsLoggingOut(true);
-      await logout();
-      localStorage.removeItem("refreshToken");
-      authService.clearAccessToken();
-      dispatch(authActions.logout());
-      setIsLoggingOut(false);
-      navigate("/auth");
+      if (params.userId && userData) {
+        const prevUserData: ProfileRequest = {
+          username: userData.username,
+          phoneNumber: userData.phoneNumber,
+          email: userData.email,
+        };
+
+        const updatedUserData =
+          (diff(prevUserData, formData) as typeof prevUserData) ||
+          typeof formData;
+
+        if (isEmpty(updatedUserData)) {
+          setIsEditing(false);
+          return;
+        }
+
+        const newUserData = await updateUserData(
+          updatedUserData,
+          +params.userId
+        );
+        setIsEditing(false);
+        setUserData(newUserData);
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         showError(error);
-        setIsLoggingOut(false);
+        setIsEditing(false);
       }
     }
   };
 
+  const handleGoBack = () => {
+    navigate("..", { relative: "path" });
+  };
+
   useEffect(() => {
-    setIsLoading(true);
     (async () => {
-      try {
-        const response = await getCurrentUserData();
-        setUserData(response);
-        setIsLoading(false);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          showError(error);
+      if (params.userId) {
+        try {
+          const fetchedData = await getUserById(+params.userId);
+          setUserData(fetchedData);
+          setIsLoading(false);
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            showError(error);
+            setIsLoading(false);
+          }
         }
       }
     })();
-  }, []);
+  }, [params.userId]);
+
+  const formItemStyle: CSSProperties = {
+    height: 0,
+    width: "100%",
+  };
+
+  const hasPermission = useSelector<RootState, boolean>(
+    (state) => (state.auth.isAdmin || state.auth.isModerator) ?? false
+  );
+
+  if (!hasPermission) {
+    return (
+      <Navigate
+        to="/app"
+        replace
+      />
+    );
+  }
 
   return (
     <>
+      <Title>Profile info</Title>
       <Skeleton
-        active
         loading={isLoading}
+        active
       >
-        <Title>Your info</Title>
-        <Flex
-          vertical
-          style={{ height: "100%" }}
-          justify="space-between"
-        >
-          <List bordered>
-            <List.Item>
-              <Text>Username: {userData?.username}</Text>
-            </List.Item>
-            <List.Item>
-              <Text>Email: {userData?.email}</Text>
-            </List.Item>
-            <List.Item>
-              <Text>Phone number: {userData?.phoneNumber || "-"}</Text>
-            </List.Item>
-          </List>
-          <Button
-            onClick={handleLogout}
-            style={{ alignSelf: "start" }}
-            danger
-            disabled={isLoggingOut}
+        {userData ? (
+          <Flex
+            vertical
+            style={{ height: "100%" }}
+            gap="1rem"
+            align="flex-end"
           >
-            Logout
-          </Button>
-        </Flex>
+            <Form
+              initialValues={{
+                email: userData.email,
+                phoneNumber: userData.phoneNumber,
+                username: userData.username,
+              }}
+              form={profileForm}
+              onFinish={handleSave}
+            >
+              <Flex
+                gap="2rem"
+                vertical
+                align="flex-start"
+              >
+                <List
+                  size="large"
+                  style={{ width: "50ch" }}
+                >
+                  <List.Item>
+                    <Space
+                      style={{ height: "3rem" }}
+                      direction="horizontal"
+                    >
+                      <Text>
+                        <span style={{ fontWeight: "bold" }}>Username: </span>
+                      </Text>
+
+                      {isEditing && (
+                        <Form.Item
+                          name="username"
+                          style={formItemStyle}
+                          rules={[{ ...usernameValidationRules }]}
+                        >
+                          <Input style={{ width: " 100%" }} />
+                        </Form.Item>
+                      )}
+                      {!isEditing && userData.username}
+                    </Space>
+                  </List.Item>
+                  <List.Item>
+                    <Space
+                      style={{ height: "3rem" }}
+                      direction="horizontal"
+                    >
+                      <Text>
+                        <span style={{ fontWeight: "bold" }}>Email: </span>
+                      </Text>
+
+                      {isEditing && (
+                        <Form.Item
+                          name="email"
+                          style={formItemStyle}
+                          rules={[
+                            {
+                              ...emailValidationRules,
+
+                              validator(_, value) {
+                                if (EmailValidator.validate(value)) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                  new Error(emailValidationRules.message)
+                                );
+                              },
+                            },
+                          ]}
+                        >
+                          <Input style={{ width: " 100%" }} />
+                        </Form.Item>
+                      )}
+                      {!isEditing && userData.email}
+                    </Space>
+                  </List.Item>
+                  <List.Item>
+                    <Space
+                      style={{ height: "3rem" }}
+                      direction="horizontal"
+                    >
+                      <Text>
+                        <span style={{ fontWeight: "bold" }}>
+                          Phone number:{" "}
+                        </span>
+                      </Text>
+
+                      {isEditing && (
+                        <Form.Item
+                          name="phoneNumber"
+                          style={formItemStyle}
+                          rules={[
+                            {
+                              ...phoneNumberValidationRules,
+
+                              validator(_, value) {
+                                if (
+                                  !value ||
+                                  isPossiblePhoneNumber(value, "RU")
+                                ) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                  new Error(phoneNumberValidationRules.message)
+                                );
+                              },
+                            },
+                          ]}
+                        >
+                          <Input style={{ width: " 100%" }} />
+                        </Form.Item>
+                      )}
+                      {!isEditing && (userData.phoneNumber || "-")}
+                    </Space>
+                  </List.Item>
+                </List>
+
+                {!isEditing && (
+                  <Button
+                    variant="solid"
+                    color="blue"
+                    onClick={handleEditButton}
+                  >
+                    Edit
+                  </Button>
+                )}
+                {isEditing && (
+                  <Button
+                    variant="solid"
+                    color="green"
+                    htmlType="submit"
+                  >
+                    Save
+                  </Button>
+                )}
+              </Flex>
+            </Form>
+          </Flex>
+        ) : (
+          <Title level={2}>User not found</Title>
+        )}
       </Skeleton>
+      <Button
+        variant="solid"
+        color="default"
+        onClick={handleGoBack}
+      >
+        ← Back
+      </Button>
     </>
   );
 };
