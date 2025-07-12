@@ -61,9 +61,11 @@ const SignUpPage = () => {
   const handleSignupButton = async (userData: UserRegistration) => {
     setIsLoading(true);
     try {
-      const formattedPhone = formatPhoneNumber(userData.phoneNumber);
-      if (formattedPhone) {
-        userData.phoneNumber = formattedPhone;
+      if (userData.phoneNumber !== undefined) {
+        const formattedPhone = formatPhoneNumber(userData.phoneNumber);
+        if (formattedPhone) {
+          userData.phoneNumber = formattedPhone;
+        }
       }
       await signup(userData);
       notification.success({
@@ -198,9 +200,14 @@ const SignUpPage = () => {
                 ...phoneNumberValidationRules,
 
                 validator(_, value) {
-                  if (!value || isPossiblePhoneNumber(value, "RU")) {
+                  if (!value) {
                     return Promise.resolve();
                   }
+
+                  if (value && isPossiblePhoneNumber(value, "RU")) {
+                    return Promise.resolve();
+                  }
+
                   return Promise.reject(
                     new Error(phoneNumberValidationRules.message)
                   );

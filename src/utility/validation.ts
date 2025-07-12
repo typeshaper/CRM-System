@@ -35,7 +35,6 @@ export const emailValidationRules = {
 };
 
 export const phoneNumberValidationRules = {
-  required: false,
   message: "Must be valid phone number!",
 };
 
