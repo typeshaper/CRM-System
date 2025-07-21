@@ -52,8 +52,8 @@ import {
   type UserFilters,
   type UsersMetaResponse,
 } from "../../types/admin.ts";
-import { formatDateFromIsoString } from "../../utility/date";
 import type { Role } from "../../types/user.ts";
+import { format } from "date-fns";
 import { isEmpty } from "lodash";
 
 const UsersPage = () => {
@@ -242,7 +242,7 @@ const UsersPage = () => {
       key: "date",
       ellipsis: true,
       render: (_, user) => (
-        <p style={{ maxWidth: "10ch" }}>{formatDateFromIsoString(user.date)}</p>
+        <p style={{ maxWidth: "10ch" }}>{format(user.date, "dd.MM.Y")}</p>
       ),
       width: "15ch",
     },
