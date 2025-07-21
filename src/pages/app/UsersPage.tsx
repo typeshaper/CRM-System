@@ -32,7 +32,6 @@ import type { SorterResult } from "antd/es/table/interface";
 import type { PresetColorKey } from "antd/es/theme/internal";
 import { AxiosError } from "axios";
 import parsePhoneNumberFromString from "libphonenumber-js";
-import debounce from "lodash.debounce";
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router";
@@ -54,7 +53,8 @@ import {
 } from "../../types/admin.ts";
 import type { Role } from "../../types/user.ts";
 import { format } from "date-fns";
-import { isEmpty } from "lodash";
+import { objectIsEmpty } from "../../utility/helper.ts";
+import { debounce } from "../../utility/helper.ts";
 
 const UsersPage = () => {
   const [usersList, setUsersList] = useState<UsersMetaResponse<User>>();
@@ -87,7 +87,10 @@ const UsersPage = () => {
   const handleRolesModalOk = async () => {
     try {
       if (selectedUser?.id) {
-        if (isEmpty(currentRoles) || currentRoles === selectedUser.roles) {
+        if (
+          objectIsEmpty(currentRoles) ||
+          currentRoles === selectedUser.roles
+        ) {
           notification.info({
             message: `Roles have not changed!`,
             placement: "bottomRight",
@@ -471,6 +474,7 @@ const UsersPage = () => {
     },
     [showError]
   );
+
   const handleSearchDebounced = debounce((value: string) => {
     setUserFilters({ search: value });
   }, 500);
