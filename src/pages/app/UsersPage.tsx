@@ -242,7 +242,7 @@ const UsersPage = () => {
       key: "date",
       ellipsis: true,
       render: (_, user) => (
-        <p style={{ maxWidth: "10ch" }}>{format(user.date, "dd.MM.Y")}</p>
+        <p style={{ maxWidth: "10ch" }}>{format(user.date, "dd.MM.y")}</p>
       ),
       width: "15ch",
     },
