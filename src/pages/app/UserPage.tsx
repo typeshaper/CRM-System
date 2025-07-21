@@ -30,6 +30,7 @@ const UserPage = () => {
   const params = useParams();
   const [userData, setUserData] = useState<Profile>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const showError = useErrorMessage();
@@ -41,6 +42,7 @@ const UserPage = () => {
   };
 
   const handleSave = async (formData: ProfileRequest) => {
+    setIsSaving(true);
     try {
       if (params.userId && userData) {
         const prevUserData: ProfileRequest = {
@@ -68,6 +70,8 @@ const UserPage = () => {
         showError(error);
         setIsEditing(false);
       }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -252,6 +256,7 @@ const UserPage = () => {
                     variant="solid"
                     color="green"
                     htmlType="submit"
+                    loading={isSaving}
                   >
                     Save
                   </Button>
