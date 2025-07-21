@@ -8,11 +8,10 @@ import {
   Space,
   Typography,
 } from "antd";
+import { objectIsEmpty, getObjectDiff } from "../../utility/helper";
 import { AxiosError } from "axios";
-import { diff } from "deep-object-diff";
 import * as EmailValidator from "email-validator";
 import { isPossiblePhoneNumber } from "libphonenumber-js";
-import { isEmpty } from "lodash";
 import { useEffect, useState, type CSSProperties } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router";
@@ -50,9 +49,7 @@ const UserPage = () => {
           email: userData.email,
         };
 
-        const updatedUserData =
-          (diff(prevUserData, formData) as typeof prevUserData) ||
-          typeof formData;
+        const updatedUserData = getObjectDiff(prevUserData, formData);
 
         if (objectIsEmpty(updatedUserData)) {
           setIsEditing(false);

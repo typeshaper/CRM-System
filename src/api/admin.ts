@@ -45,7 +45,7 @@ export async function getUserById(id: Profile["id"]): Promise<Profile> {
 }
 
 export async function updateUserData(
-  newData: ProfileRequest,
+  newData: Partial<ProfileRequest>,
   id: Profile["id"]
 ): Promise<Profile> {
   try {
