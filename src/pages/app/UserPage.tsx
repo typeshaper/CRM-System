@@ -8,7 +8,7 @@ import {
   Space,
   Typography,
 } from "antd";
-import { objectIsEmpty, getObjectDiff } from "../../utility/helper";
+import { hasEmptyObject, getObjectDiff } from "../../utility/helper";
 import { AxiosError } from "axios";
 import * as EmailValidator from "email-validator";
 import { isPossiblePhoneNumber } from "libphonenumber-js";
@@ -51,7 +51,7 @@ const UserPage = () => {
 
         const updatedUserData = getObjectDiff(prevUserData, formData);
 
-        if (objectIsEmpty(updatedUserData)) {
+        if (hasEmptyObject(updatedUserData)) {
           setIsEditing(false);
           return;
         }

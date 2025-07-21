@@ -53,7 +53,7 @@ import {
 } from "../../types/admin.ts";
 import type { Role } from "../../types/user.ts";
 import { format } from "date-fns";
-import { objectIsEmpty } from "../../utility/helper.ts";
+import { hasEmptyObject } from "../../utility/helper.ts";
 import { debounce } from "../../utility/helper.ts";
 
 const UsersPage = () => {
@@ -88,7 +88,7 @@ const UsersPage = () => {
     try {
       if (selectedUser?.id) {
         if (
-          objectIsEmpty(currentRoles) ||
+          hasEmptyObject(currentRoles) ||
           currentRoles === selectedUser.roles
         ) {
           notification.info({
