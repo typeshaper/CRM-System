@@ -14,3 +14,17 @@ export function getObjectDiff<T extends object>(
   }
   return changedKeys;
 }
+
+export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
+  func: F,
+  delay: number
+) => {
+  let timeout: number;
+
+  return function (...args: Parameters<F>) {
+    clearInterval(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
