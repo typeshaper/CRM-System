@@ -17,7 +17,7 @@ export async function getUsersList(queryParams?: UserFilters) {
       headers: {
         accept: "application/json",
       },
-      params: { ...queryParams },
+      params: queryParams,
     });
 
     const resData: UsersMetaResponse<User> = await response.data;
