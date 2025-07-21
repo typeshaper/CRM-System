@@ -10,7 +10,7 @@ import type { RootState } from "../../store";
 import { authActions } from "../../store/auth";
 import type { Profile } from "../../types/user";
 
-const CurrentProfilePage = () => {
+const ProfilePage = () => {
   const { Title, Text } = Typography;
   const userData = useSelector<RootState, Profile | undefined>(
     (state) => state.auth.userData
@@ -70,4 +70,4 @@ const CurrentProfilePage = () => {
   );
 };
 
-export default CurrentProfilePage;
+export default ProfilePage;

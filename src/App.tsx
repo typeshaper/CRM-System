@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
 import "./App.css";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
-import CurrentProfilePage from "./pages/app/CurrentProfilePage";
+import ProfilePage from "./pages/app/ProfilePage";
 import UserPage from "./pages/app/UserPage";
 import TodoListPage from "./pages/app/TodoListPage";
 import UsersPage from "./pages/app/UsersPage";
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
             ),
           },
           { path: "tasks", element: <TodoListPage /> },
-          { path: "profile", element: <CurrentProfilePage /> },
+          { path: "profile", element: <ProfilePage /> },
           {
             path: "users",
             element: <UsersPage />,
