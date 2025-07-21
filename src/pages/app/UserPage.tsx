@@ -26,7 +26,7 @@ import {
   usernameValidationRules,
 } from "../../utility/validation";
 
-const ProfilePage = () => {
+const UserPage = () => {
   const { Title, Text } = Typography;
   const params = useParams();
   const [userData, setUserData] = useState<Profile>();
@@ -277,4 +277,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default UserPage;

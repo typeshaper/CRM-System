@@ -4,7 +4,7 @@ import "./App.css";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import CurrentProfilePage from "./pages/app/CurrentProfilePage";
-import ProfilePage from "./pages/app/ProfilePage";
+import UserPage from "./pages/app/UserPage";
 import TodoListPage from "./pages/app/TodoListPage";
 import UsersPage from "./pages/app/UsersPage";
 import LoginPage from "./pages/auth/LoginPage";
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
           },
           {
             path: "users/:userId",
-            element: <ProfilePage />,
+            element: <UserPage />,
           },
         ],
       },
