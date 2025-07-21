@@ -9,8 +9,8 @@ const initialState: InitialState = {
   userFilters: {},
 };
 
-const usersTableSlice = createSlice({
-  name: "usersTable",
+const usersSlice = createSlice({
+  name: "usersSlice",
   initialState,
   reducers: {
     setUserFilters(state, action: PayloadAction<UserFilters>) {
@@ -22,5 +22,5 @@ const usersTableSlice = createSlice({
   },
 });
 
-export const usersTableReducer = usersTableSlice.reducer;
-export const usersTableActions = usersTableSlice.actions;
+export const usersReducer = usersSlice.reducer;
+export const usersActions = usersSlice.actions;

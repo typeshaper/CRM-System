@@ -45,7 +45,7 @@ import {
 } from "../../api/admin.ts";
 import useErrorMessage from "../../hooks/useErrorMessage";
 import type { RootState } from "../../store/index.ts";
-import { usersTableActions } from "../../store/usersTable.ts";
+import { usersActions } from "../../store/users.ts";
 import {
   Roles,
   type User,
@@ -67,7 +67,7 @@ const UsersPage = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [currentRoles, setCurrentRoles] = useState<Roles[]>([]);
   const userFilters = useSelector(
-    (state: RootState) => state.usersTable.userFilters
+    (state: RootState) => state.users.userFilters
   );
 
   const isAdmin = useSelector<RootState, boolean>(
@@ -79,7 +79,7 @@ const UsersPage = () => {
   );
 
   const setUserFilters = (filters: UserFilters) => {
-    dispatch(usersTableActions.setUserFilters(filters));
+    dispatch(usersActions.setUserFilters(filters));
   };
 
   const dispatch = useDispatch();
