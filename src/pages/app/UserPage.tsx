@@ -54,7 +54,7 @@ const UserPage = () => {
           (diff(prevUserData, formData) as typeof prevUserData) ||
           typeof formData;
 
-        if (isEmpty(updatedUserData)) {
+        if (objectIsEmpty(updatedUserData)) {
           setIsEditing(false);
           return;
         }
