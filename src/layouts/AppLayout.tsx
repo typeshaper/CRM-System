@@ -35,20 +35,18 @@ const headerStyle: CSSProperties = {
 };
 
 const AppLayout = () => {
-  const [headerText, setHeaderText] = useState<string>("To-Do List!");
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const { Content, Sider } = Layout;
   const { Title } = Typography;
   const navigate = useNavigate();
   const location = useLocation();
   const isRootURL = location.pathname.match(/\/app\/?$/g);
+
   const handleCollapse = () => {
-    if (isCollapsed) {
-      setHeaderText("To-Do List!");
-      setIsCollapsed(false);
+    if (isSidebarCollapsed) {
+      setIsSidebarCollapsed(false);
     } else {
-      setHeaderText("To Do List!");
-      setIsCollapsed(true);
+      setIsSidebarCollapsed(true);
     }
   };
 
@@ -85,11 +83,13 @@ const AppLayout = () => {
         width={250}
         style={siderStyle}
         collapsible
-        collapsed={isCollapsed}
+        collapsed={isSidebarCollapsed}
         onCollapse={handleCollapse}
         breakpoint="lg"
       >
-        <Title style={headerStyle}>{headerText}</Title>
+        <Title style={headerStyle}>
+          {isSidebarCollapsed ? "To Do List!" : "To-Do List!"}
+        </Title>
         <Menu
           style={siderStyle}
           defaultSelectedKeys={[isRootURL ? "/app/tasks" : location.pathname]}
