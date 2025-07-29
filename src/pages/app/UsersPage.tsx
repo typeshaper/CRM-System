@@ -550,7 +550,7 @@ const UsersPage = () => {
               total: usersList.meta.totalAmount,
               onChange(page, pageSize) {
                 setUserFilters({
-                  offset: page - 1,
+                  offset: page === 1 ? undefined : page - 1,
                   limit: pageSize,
                 });
               },
