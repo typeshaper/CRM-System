@@ -1,15 +1,15 @@
-import { Flex, Image, Typography, Form, Input, Button, Checkbox } from "antd";
-import icon from "../../assets/auth-icon.png";
-import { useState, type CSSProperties } from "react";
-import { login } from "../../api/auth";
-import type { AuthData, Token } from "../../types/auth";
-import useErrorMessage from "../../hooks/useErrorMessage";
-import { AxiosError } from "axios";
-import { useNavigate, Link } from "react-router";
+import { Button, Checkbox, Flex, Form, Image, Input, Typography } from "antd";
 import useApp from "antd/es/app/useApp";
+import { AxiosError } from "axios";
+import { useState, type CSSProperties } from "react";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth";
+import { Link, useNavigate } from "react-router";
+import { login } from "../../api/auth";
+import icon from "../../assets/auth-icon.png";
+import useErrorMessage from "../../hooks/useErrorMessage";
 import authService from "../../services/authService";
+import { authActions } from "../../store/auth";
+import type { AuthData, Token } from "../../types/auth";
 
 const outerFlexContainerStyle: CSSProperties = {
   width: "100%",

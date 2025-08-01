@@ -1,3 +1,5 @@
+import type { UserFilters } from "../types/admin";
+
 export const titleValidationRules = {
   min: 2,
   max: 64,
@@ -35,6 +37,11 @@ export const emailValidationRules = {
 };
 
 export const phoneNumberValidationRules = {
-  required: false,
   message: "Must be valid phone number!",
+};
+
+export const hasValidOrder = (
+  str: string | undefined
+): str is UserFilters["sortOrder"] => {
+  return str === "asc" || str === "desc" || str === "undefined";
 };

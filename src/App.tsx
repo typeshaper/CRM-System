@@ -4,7 +4,9 @@ import "./App.css";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import ProfilePage from "./pages/app/ProfilePage";
+import UserPage from "./pages/app/UserPage";
 import TodoListPage from "./pages/app/TodoListPage";
+import UsersPage from "./pages/app/UsersPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import ProtectedRoutes from "./pages/ProtectedRoutes";
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
           },
           { path: "tasks", element: <TodoListPage /> },
           { path: "profile", element: <ProfilePage /> },
+          {
+            path: "users",
+            element: <UsersPage />,
+          },
+          {
+            path: "users/:userId",
+            element: <UserPage />,
+          },
         ],
       },
     ],
